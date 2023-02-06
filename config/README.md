@@ -1,7 +1,7 @@
 # ABOUT
 
 LSP (Linux Studio Plugins) is a collection of open-source plugins
-currently compatible with LADSPA, LV2 and LinuxVST formats.
+currently compatible with CLAP, LADSPA, LV2 and LinuxVST formats.
 
 The basic idea is to fill the lack of good and useful plugins under
 the GNU/Linux platform.
@@ -11,6 +11,12 @@ was made to implement separate and independent plugin distribution.
 
 All supplementary information you will find on official web site:
   https://lsp-plug.in/
+
+Note that after 1.2.0 release the lsp-plugins repository was decomposed
+into multiple subprojects. As a result, it is the repository without any code
+and for build purposes it gathers source code as dependencies from another
+repositories which are located here:
+  https://github.com/lsp-plugins/
 
 # LICENSING
 
@@ -40,23 +46,25 @@ Current matrix of hardware architecture and platform (OS) support is:
   ┌───────────┬───────────┬─────────┐
   │Arch / OS  │ GNU/Linux │ FreeBSD │
   ╞═══════════╪═══════════╪═════════╡
-  │i586       │     F     │    E    │
-  ├───────────┼───────────┼─────────┤
-  │x86_64     │     F     │    E    │
+  │aarch64    │     E     │    E    │
   ├───────────┼───────────┼─────────┤
   │armv6-a    │     E     │    E    │
   ├───────────┼───────────┼─────────┤
   │armv7-ar   │     E     │    E    │
   ├───────────┼───────────┼─────────┤
-  │aarch64    │     E     │    U    │
-  ├───────────┼───────────┼─────────┤
-  │ppc64      │     C     │    U    │
-  ├───────────┼───────────┼─────────┤
-  │s390x      │     C     │    U    │
+  │i586       │     F     │    E    │
   ├───────────┼───────────┼─────────┤
   │loongarch32│     C     │    U    │
   ├───────────┼───────────┼─────────┤
   │loongarch64│     C     │    U    │
+  ├───────────┼───────────┼─────────┤
+  │ppc64      │     C     │    U    │
+  ├───────────┼───────────┼─────────┤
+  │riscv-64   │     C     │    U    │
+  ├───────────┼───────────┼─────────┤
+  │s390x      │     C     │    U    │
+  ├───────────┼───────────┼─────────┤
+  │x86_64     │     F     │    E    │
   └───────────┴───────────┴─────────┘ 
 ```
 
@@ -66,17 +74,6 @@ The table legend is the following:
  * E - Experimental support, not enough feedback from users.
  * U - Unknown, the code may be built but the correctness of it's work has not been tested.
  * N - No support, the code may compile but the work has not been tested.
-
-Details about architectures supported in experimental mode:
-  * ARMv7-AR support has been tested on:
-    * Raspbian buster @ Raspberry Pi 4 B.
-    * Raspbian stretch @ Raspberry Pi 3 B.
-    * Raspbian stretch @ Raspberry Pi 2 B+ v1.2.
-    * TinkerOS @ TinkerBoard S.
-    There is not enough feedback from users about correct work of all plugins.
-  * AArch64 support has been tested on:
-    * Arch Linux @ Raspberry Pi 3 B+.
-    There is not enough feedback from users about correct work of all plugins.
 
 Supported plugin formats:
   * LADSPA (partial support: not supported by plugins that use MIDI or file loading due to LADSPA plugin format restrictions);
@@ -108,16 +105,17 @@ Binary releases contain all possible plugins in one bundle. The binaries are pac
 into archive named according to the following format:
 
 ```
-  lsp-plugins-<format>-<major>.<minor>.<micro>-<arch>.tar.gz
+  lsp-plugins-<format>-<major>.<minor>.<micro>-<platform>-<arch>.tar.gz
 ```
 
 The property <format> is the format of plugins, currently available:
+  * clap - plugins in [CLAP](https://github.com/free-audio/clap) format;
   * doc - documentation;
-  * jack - standalone version of plugins that require JACK for execution;
-  * ladspa - plugins in LADSPA format (not all plugins due to format's restriction);
-  * lv2 - plugins in LV2 format;
+  * jack - standalone version of plugins that require [JACK](https://jackaudio.org/) server for execution;
+  * ladspa - plugins in [LADSPA](https://en.wikipedia.org/wiki/LADSPA) format (not all plugins due to format's restriction);
+  * lv2 - plugins in [LV2](https://lv2plug.in/) format;
   * src - source code;
-  * vst2 - plugins in VST v2.4 format.
+  * vst2 - plugins in [VST 2.4](https://www.steinberg.net/) format.
 
 Property 'arch' contains short name of architecture the binaries are build for.
 Properties 'major', 'minor' and 'micro' form the version of release.
@@ -177,9 +175,13 @@ The usual directories for JACK binaries are:
   * /usr/sbin
   * /usr/local/sbin
   * /sbin
-
-The profiling release does not require special installations and can be executed
-from any location. After execution, the gprof profiling file 'gmon.out' is created.
+  
+The usual directories for CLAP are:
+  * /usr/lib/clap
+  * /usr/local/lib/clap
+  * /usr/lib64/clap
+  * /usr/local/lib64/clap
+  * ~/.clap
 
 # BUILDING
 
@@ -230,6 +232,7 @@ at the configuration stage:
 ```
 
 Available modules are:
+  * clap - CLAP plugin binaries;
   * doc - HTML documentation;
   * jack - JACK plugin binaries;
   * ladspa - LADSPA plugin binaries;
@@ -280,9 +283,6 @@ For more build options, issue:
 
 # DEBUGGING
 
-For debugging purposes the GNU Debugger (gdb) may be used:
-  gdb --args ./lsp-plugins-profile <plugin-id>
-
 For debugging and getting crash stack trace with Ardour, please follow these steps:
   * Open console
   * Run ardour from console with --gdb option
@@ -314,10 +314,11 @@ optimizations.
 
 To build testing subsystem, issue the following commands:
   make clean
-  make test
+  make config TEST=1
+  make
 
 After build, we can launch the test binary by issuing command:
-  .test/lsp-plugins-test
+  .build/host/lsp-plugin-fw/lsp-plugins-test
 
 This binary provides simple command-line interface, so here's the full usage:  
   USAGE: {utest|ptest|mtest} [args...] [test name...]
@@ -348,17 +349,17 @@ Each test has fully-qualified name separated by dot symbols, tests from differen
 test spaces (utest, ptest, mtest) may have similar fully-qualified names.
 
 To obtain a list of all unit tests we can issue:
-  .test/lsp-plugins-test utest --list
+  .build/host/lsp-plugin-fw/lsp-plugins-test utest --list
 
 And then we can launch all complex number processing unit tests and additionally
 'dsp.mix' unit test:
-  .test/lsp-plugins-test utest dsp.complex.* dsp.pcomplex.* dsp.mix
+  .build/host/lsp-plugin-fw/lsp-plugins-test utest dsp.complex.* dsp.pcomplex.* dsp.mix
 
 If we don's specify any unit test name in argument, then all available unit tests
 will be launched.
 
 To start debugging of some unit test, you need to pass additional arguments:
-  .test/lsp-plugins-test utest --nofork --debug --verbose
+  .build/host/lsp-plugin-fw/lsp-plugins-test/lsp-plugins-test utest --nofork --debug --verbose
   
 Because unit tests are short-time fully-automated tests, they are parallelized and
 executed by default by number_of_cores*2 processes. To disable this, we specify option
@@ -371,7 +372,7 @@ We also can use performance tests to obtain full performance profile of target m
 Because performance tests in most cases take much time for gathering statistics,
 the final statistics for each test can be saved in a separate file by specifying --outfile
 option:
-  .test/lsp-plugins-test ptest -o performance-test.log
+  .build/host/lsp-plugin-fw/lsp-plugins-test ptest -o performance-test.log
 
 Manual tests are mostly designed for developers' purposes.
 
