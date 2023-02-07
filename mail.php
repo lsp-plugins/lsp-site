@@ -1,4 +1,4 @@
-<?php 
+<?php
 	require_once("./config/config.php");
 	require_once("./config/plugins.php");
 	
@@ -18,13 +18,15 @@
 		{
 			$text = "Received feedback from {$_POST['name']} <{$_POST['email']}>:\n\n{$_POST['text']}\n";
 			$transport = Swift_SmtpTransport::newInstance($MAIL['host'], $MAIL['port'], $MAIL['auth']);
-			$transport->setUsername($MAIL['user']);
-			$transport->setPassword($MAIL['password']);
+			if ($MAIL['auth'] != null) {
+				$transport->setUsername($MAIL['user']);
+				$transport->setPassword($MAIL['password']);
+			}
 
 			$mailer = Swift_Mailer::newInstance($transport);
 			$message = Swift_Message::newInstance('LSP Plugins: Received feedback');
-			$message->setFrom(array($_POST['email'] => $_POST['name']));
-			$message->setTo("{$MAIL['user']}@{$MAIL['domain']}");
+			$message->setFrom(($MAIL['from'] != null) ? $MAIL['from'] : array($_POST['email'] => $_POST['name']));
+			$message->setTo(($MAIL['to'] != null) ? $MAIL['to'] : "{$MAIL['user']}@{$MAIL['domain']}");
 			$message->setBody($text);
 
 			if ($mailer->send($message))

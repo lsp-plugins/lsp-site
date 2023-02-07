@@ -7,7 +7,7 @@ $PAGES = array(
 	'manuals' => array('name' => 'Manuals', 'page' => 'manuals.php', 'reentrant' => true, 'icon' => 'manuals.png', 'style' => 'manuals_class' ),
 	'video' => array('name' => 'Video', 'page' => 'video.php', 'icon' => 'video.png', 'style' => 'video_class' ),
 	'download' => array('name' => 'Download', 'page' => 'download.php', 'icon' => 'download.png', 'style' => 'download_class' ),
-#	'feedback' => array('name' => 'Feedback', 'page' => 'feedback.php', 'icon' => 'feedback.png', 'style' => 'feedback_class' ),
+	'feedback' => array('name' => 'Feedback', 'page' => 'feedback.php', 'icon' => 'feedback.png', 'style' => 'feedback_class' ),
 	
 	'test' => array('name' => 'Test', 'page' => 'test.php', 'hidden' => 1),
 );
