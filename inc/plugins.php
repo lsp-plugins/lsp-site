@@ -24,8 +24,6 @@
 			if ($plugin['id'] != $PAGE)
 				continue;
 			
-			echo "<h1>" . htmlspecialchars($plugin['description']) . "</h1>\n";
-			
 			$fmt = array();
 			if (isset($plugin['clap_uid']) && ($plugin['clap_uid']))
 				array_push($fmt, '<a href="https://github.com/free-audio/clap" target="_blank">CLAP</a>');
