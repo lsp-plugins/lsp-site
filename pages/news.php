@@ -1,6 +1,6 @@
 <h1>NEWS</h1>
 
-<h3>2023-03-21</h3>
+<h3>2023-03-22</h3>
 
 <p>LSP Plugins 1.2.6 released.</p>
 <ul>
