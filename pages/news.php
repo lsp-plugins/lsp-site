@@ -1,5 +1,31 @@
 <h1>NEWS</h1>
 
+<h3>2023-03-21</h3>
+
+<p>LSP Plugins 1.2.6 released.</p>
+<ul>
+<li><b>Implemented Mixer plugin series for 4, 8 and 16 Mono/Stereo channels.</b></li>
+<li><b>Implemented A/B Tester plugin series with blind option.</b></li>
+<li>Parametric Equalizer is now smoothly operating with frequency/gain/q factor for each mode: FIR, IIR, FFT, SPM.</li>
+<li>Added popup menu for more precise control over the equalizer dot on the graph for Parametric Equalizer.</li>
+<li>Added frequency and note displaying (with detune in cents) over the currently configured filter in the Parametric Equalizer.</li>
+<li>Implemented automatic and manual inspect mode for filters in Parametric Equalizer.</li>
+<li>Implemented more user-friendly inspecting slider to the Spectrum Analyzer plugin series: 
+  frequency value, amplitude and note (with detune in cents) are displayed now near the slider
+  which can be adjusted with mouse movements.</li>
+<li>Added basic SFZ import support by the Multisampler plugin series.</li>
+<li>Added shared objects related to 3D rendering to LV2, VST and CLAP packages.</li>
+<li>Fixed buggy tether for the parameter popup window. </li>
+<li>Fixed improper data stream synchronization using LV2:Atom protocol.</li>
+<li>Implemented linear ramping lramp_* functions in the lsp-dsp-lib optimized for i686, x86_64, ARM32 and AArch64 architectures.</li>
+<li>Fixed avx::dyn_biquad_process_x8_fma3 function implementation which could cause some data distortion in the output buffer.</li>
+<li>Fixed plugin state out of sync for CLAP plugin format on state restore in REAPER.</li>
+<li>Several bugfixes in UI libraries.</li>
+<li>Better support for build under different ARM architectures.</li>
+<li>The Windows support status has been changed to 'Compiles'.</li>
+<li>The AArch64 support status has been changed to 'Full'.</li>
+</ul>
+
 <h3>2023-01-29</h3>
 <p>LSP Plugins 1.2.5 released.</p>
 <ul>
