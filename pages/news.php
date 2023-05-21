@@ -1,6 +1,8 @@
 <h1>NEWS</h1>
 
 <h3>2023-05-21</h3>
+
+<p>LSP Plugins 1.2.7 released.</p>
 <ul>
 <li>Fixed CLAP UI support for Bitwig Studio.</li>
 <li>Fixed build that disabled CairoCanvas for Inline Display feature.</li>
