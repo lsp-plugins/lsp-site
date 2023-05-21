@@ -1,5 +1,22 @@
 <h1>NEWS</h1>
 
+<h3>2023-05-21</h3>
+<ul>
+<li>Fixed CLAP UI support for Bitwig Studio.</li>
+<li>Fixed build that disabled CairoCanvas for Inline Display feature.</li>
+<li>Fixed memory leakage issued by the libcairo font cache on the plugin UI close. Moved custom font rendering solution to direct usage of libfreetype.</li>
+<li>Fixed crash (BadMatch) for Fluxbox window manager on popup windows.</li>
+<li>Fixed popup window heading display in Fluxbox.</li>
+<li>Fixed non-working solo button for Parametric Equalizer after 1.2.6 release.</li>
+<li>Removed Makefile.d. Dependencies are now automatically generated at the build stage.</li>
+<li>Added possibility to invert the behaviour of mouse scroll for all widgets or for graph dot widget.</li>
+<li>Added frequency display and gain for each filter of Graphic Equalizer plugin series.</li>
+<li>Added measure button and meter line on graph for Spectrum Analyzer plugin series.</li>
+<li>Added display of filter number, filer channel and filter type near to the frequency and note.</li>
+<li>Added possibility to change the thickness of lies on the spectrum graph for the Spectrum Analyzer plugin series.</li>
+<li>Some output parameters like Latency are not exported into configuration file anymore.</li>
+</ul>
+
 <h3>2023-03-22</h3>
 
 <p>LSP Plugins 1.2.6 released.</p>
