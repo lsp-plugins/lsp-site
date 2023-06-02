@@ -3,7 +3,7 @@
 	require_once("./config/plugins.php");
 	
 	require_once("./lib/recaptcha/autoload.php");
-	require("./swiftmailer/lib/swift_required.php");
+	require("./vendor/autoload.php");
 	
 	if (($_REQUEST['send'] != null) && ($_REQUEST['send'] != 0))
 	{
@@ -17,14 +17,14 @@
 		if ($resp->isSuccess())
 		{
 			$text = "Received feedback from {$_POST['name']} <{$_POST['email']}>:\n\n{$_POST['text']}\n";
-			$transport = Swift_SmtpTransport::newInstance($MAIL['host'], $MAIL['port'], $MAIL['auth']);
+			$transport = new Swift_SmtpTransport($MAIL['host'], $MAIL['port'], $MAIL['auth']);
 			if ($MAIL['auth'] != null) {
 				$transport->setUsername($MAIL['user']);
 				$transport->setPassword($MAIL['password']);
 			}
 
-			$mailer = Swift_Mailer::newInstance($transport);
-			$message = Swift_Message::newInstance('LSP Plugins: Received feedback');
+			$mailer = new Swift_Mailer($transport);
+			$message = new Swift_Message('LSP Plugins: Received feedback');
 			$message->setFrom(($MAIL['from'] != null) ? $MAIL['from'] : array($_POST['email'] => $_POST['name']));
 			$message->setTo(($MAIL['to'] != null) ? $MAIL['to'] : "{$MAIL['user']}@{$MAIL['domain']}");
 			$message->setBody($text);
