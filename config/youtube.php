@@ -25,7 +25,11 @@ $YOUTUBE = array(
 	'MCIpQebU5o4' => 'Oscilloscope',
 	'6ZuW28u1qns' => 'Multiband Dynamic Processor',
 	'1Og6vAZ2BLo' => 'Noise Generator',
-	'EFf4VqvMUXM' => 'A/B Tester & Mixer'
+	'EFf4VqvMUXM' => 'A/B Tester & Mixer',
+	'BN0h4WnNnW8' => 'Filter',
+	'_WD9GndORQA' => 'Flanger',
+	'wb8QnU4yRF0' => 'GOTT Compressor',
+	'_0VjhooWRBQ' => 'Multiband Limiter'
 );
 
 ?>

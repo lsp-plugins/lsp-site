@@ -1,5 +1,28 @@
 <h1>NEWS</h1>
 
+<h3>2023-07-20</h3>
+
+<p>LSP Plugins 1.2.8 released!</p>
+<p>This is a pretty hard release because we introduce four new plugin series!</p>
+<ul>
+<li><b>Implemented GOTT (Grand Over-The-Top) Compressor plugin series.</b></li>
+<li><b>Implemented Filter plugin series.</b></li>
+<li><b>Implemented Flanger plugin series.</b></li>
+<li><b>Implemented Multiband Limiter plugin series.</b></li>
+<li>Implemented high-precision oversampling algorithms for Oscilloscope plugin series.</li>
+<li>Updated default values for file selectors in Impulse Responses and Impulse Reverb plugin series.</li>
+<li>Added generation of explicit element definitions for LV2 groups in TTL files as a workaround to LV2 problem related to missing predefined port groups' elements.</li>
+<li>Added 'All' channel selector to Sampler and Multisampler plugin series which is now the default value for channel selector.</li>
+<li>Added missing audio preview for single-channel Sampler Plugin series.</li>
+<li>Adding missing output balance knobs in Impulse Reverb Mono plugin.</li>
+<li>Fixed improper behaviour of the bypass switch for Multiband Compressor, Expander and Dynamics Processor plugin series.</li>
+<li>Fixed bug in the font manager which could yield memory corrption after complete font manager cleanup (reproducible when switching visual schemas).</li>
+<li>Fixed memory leakage in the UI (not freed resources on UI close).</li>
+<li>Fixed bug in ALR function for Limiter plugin series which could cause random audio scratches.</li>
+<li>Fixed gain jumping bug in A/B tester plugin.</li>
+<li>Serveral bugfixes in the core DSP modules provided by the lsp-dsp-units library.</li>
+</ul>
+
 <h3>2023-05-21</h3>
 
 <p>LSP Plugins 1.2.7 released.</p>
@@ -71,7 +94,7 @@
 <h3>2022-12-21</h3>
 <p>The anniversary release 1.2.4 of LSP Plugins is ready.</p>
 <ul>
-<li>Implemented Noise Generator plugin series.</li>
+<li><b>Implemented Noise Generator plugin series.</b></li>
 <li>Added 'Stretch' and 'Compensate' functions to the sampler plugin (contributed by Vitalius Kuchalskis).</li>
 <li>Added support of 'Loop' feature by the Sampler plugin series.</li>
 <li>Added audio sample preview feature in the file open dialog for Sampler, Trigger, Impulse Responses and Impulse Reverb plugin series.</li>
