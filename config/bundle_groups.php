@@ -41,6 +41,11 @@
 			'description' => 'Tools that allow to play different samples.'
 		),
 		array(
+			'id' => 'effects',
+			'name' => 'Effects',
+			'description' => 'Different effects.'
+		),
+		array(
 			'id' => 'generators',
 			'name' => 'Generators / Oscillators',
 			'description' => 'Tools that generate some signal according to the specified input parameters.'
