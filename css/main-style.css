@@ -347,7 +347,7 @@ a img:hover {
   margin: 0 auto;
   font-size: 12px;
   margin-bottom: 6px;
-  max-width: 540px;
+  max-width: 640px;
 }
 
 .img-load {
@@ -1690,9 +1690,13 @@ pre {
     margin: 0 auto !important;
   }
 
-  .lpa, .bou, .pay, .eth, .ptr, .lpa:hover, .bou:hover, .pay:hover, .eth:hover, .ptr:hover { display: table; margin-bottom: 10px;}
-  .sup-container {display: inline-block;}
-
+  .lpa, .bou, .pay, .eth, .ptr, .qiwi, .lpa:hover, .bou:hover, .pay:hover, .eth:hover, .ptr:hover, .qiwi:hover {
+  	display: table;
+  	margin-bottom: 10px;
+  }
+  .sup-container {
+  	display: inline-block;
+  }
 }
 
 @media only screen and (min-width : 0px) and (max-width : 550px) {
