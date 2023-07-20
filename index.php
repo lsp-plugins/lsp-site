@@ -73,6 +73,11 @@
 											target="_blank" title="Donate using Bountysource"
 											rel="noopener">Bountysource</a>
 									</div>
+									<div class="qiwi">
+										<a href="<?=$SITEROOT?>?page=qiwi"
+											target="_blank" title="Donate using QIWI"
+											rel="noopener">QIWI</a>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -85,17 +90,17 @@
 		</div>
 		<!-- Menu -->
 		<div id="menu" class="smooth">
-				<?php require("./pages/menu.php") ?>
-			</div>
+			<?php require("./pages/menu.php") ?>
+		</div>
 		<!-- Main content -->
 		<div id="main" class="main smooth">
-				<?php require("./pages/{$PAGES[$curr_page]['page']}"); ?>
-			</div>
+			<?php require("./pages/{$PAGES[$curr_page]['page']}"); ?>
+		</div>
 		<!-- Footer -->
 		<div id="footer">
 			<a href="/index.php"><div class="footer-logo-wrapper">
-					<div class="footer-logo"></div>
-				</div></a>
+				<div class="footer-logo"></div>
+			</div></a>
 			<div class="footer-text">
 				<p>The project is developed and maintained by LSP Project Team with the main founder and developer at the head - Vladimir Sadovnikov.
 					If you're ready to join, contribute to the project or contact to the developer - please use the <a href="<?=$SITEROOT?>/?page=feedback">feedback form</a> and do not forget to leave your e-mail address.
@@ -115,9 +120,6 @@
 								echo "<li class=\"sel menu-li-footer \">";
 							else
 								echo "<li class=\"menu-li-footer \">";
-
-							/*if (isset($value['icon']))
-								echo "<img src=\"${SITEROOT}/img/${value['icon']}\">";*/
 
 							if (($key != $curr_page) || ((isset($value['reentrant'])) && ($value['reentrant'])))
 								echo "<a href=\"${SITEROOT}?page={$key}\">" . htmlspecialchars($value['name']) . "</a>";
@@ -179,9 +181,9 @@
 		</div>
 	</div>
 	<script type="text/javascript">
-			$(document).ready(function() {
-				$(".fancybox").fancybox();
-			});
-		</script>
+		$(document).ready(function() {
+			$(".fancybox").fancybox();
+		});
+	</script>
 	</body>
 </html>
