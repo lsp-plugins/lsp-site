@@ -75,8 +75,7 @@
 									</div>
 									<div class="qiwi">
 										<a href="<?=$SITEROOT?>?page=qiwi"
-											target="_blank" title="Donate using QIWI"
-											rel="noopener">QIWI</a>
+											title="Donate using QIWI">QIWI</a>
 									</div>
 								</div>
 							</div>
