@@ -1,5 +1,37 @@
 <h1>NEWS</h1>
 
+<h3>2023-08-21</h3>
+
+<p>LSP Plugins 1.2.10 released!</p>
+<ul>
+<li><b>Implemented Beat Breather plugin series.</b></li>
+<li>Added phase switches to Delay Compensator plugin series.</li>
+<li>Implemented Stereo Split mode for stereo version of all dynamic plugins:</li>
+<ul>
+  <li>Compressor and Multiband Compressor;</li>
+  <li>Dynamics Processor and Multiband Dynamics Processor;</li>
+  <li>Expander and Multiband Expander;</li>
+  <li>Gate and Multiband Gate;</li>
+  <li>GOTT Compressor.</li>
+</ul>
+<li>Added Allpass filter to the Filter plugin series.</li>
+<li>Added Bandpass, Ladder-pass and Ladder-rej filters to Parametric Equalizer plugin series.</li>
+<li>Introduced Linear Phase mode for the Crossover plugin series.</li>
+<li>Introduced Linear Phase mode for multiband plugin series:</li>
+<ul>
+  <li>GOTT Compressor;</li>
+  <li>Multiband Compressor;</li>
+  <li>Multiband Dynamics Processor;</li>
+  <li>Multiband Expander;</li>
+  <li>Multiband Gate;</li>
+  <li>Multiband Limiter.</li>
+</ul>
+<li>Fixed missing inline display for Phase Detector plugin.</li>
+<li>Fixed invalid input signal level metering for Flanger plugin series.</li>
+<li>Fixed frequency inspection bug for LeftRight and MidSide versions of Parametric Equalizer plugin series.</li>
+<li>Fixed improper latency value report by Multiband Limiter plugin series.</li>
+</ul>
+
 <h3>2023-07-20</h3>
 
 <p>LSP Plugins 1.2.8 released!</p>

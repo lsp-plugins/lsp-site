@@ -29,7 +29,8 @@ $YOUTUBE = array(
 	'BN0h4WnNnW8' => 'Filter',
 	'_WD9GndORQA' => 'Flanger',
 	'wb8QnU4yRF0' => 'GOTT Compressor',
-	'_0VjhooWRBQ' => 'Multiband Limiter'
+	'_0VjhooWRBQ' => 'Multiband Limiter',
+	'-mJ0fQqwAy4' => 'Beat Breather'
 );
 
 ?>
