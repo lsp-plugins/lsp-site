@@ -1,5 +1,15 @@
 <h1>NEWS</h1>
 
+<h3>2023-09-10</h3>
+
+<p>LSP Plugins 1.2.11 released!</p>
+<ul>
+<li>Added partial support of AVX-512 instruction set.</li>
+<li>Windows support changed to experimental.</li>
+<li>Fixed code issues reported by the PVS Studio static analyzer.</li>
+<li>Fixed improper band characteristics drawn on band Mute for multiband plugins in Linear Phase mode.</li>
+</ul>
+
 <h3>2023-08-21</h3>
 
 <p>LSP Plugins 1.2.10 released!</p>
