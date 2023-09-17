@@ -19,7 +19,7 @@
 				'mode' => 'radio',
 				'name' => 'gender',
 				'type' => 'char',
-				'answers' => array(
+				'items' => array(
 					array('text' => 'Male', 'value' => 'm'),
 					array('text' => 'Female', 'value' => 'f'),
 					array('text' => 'Other', 'value' => 'o')
@@ -30,7 +30,7 @@
 				'mode' => 'radio',
 				'name' => 'status',
 				'type' => 'key',
-				'answers' => array(
+				'items' => array(
 					array('text' => 'Student', 'value' => 'stud'),
 					array('text' => 'Teacher/Mentor', 'value' => 'men'),
 					array('text' => 'Freelancer', 'value' => 'free'),
@@ -47,7 +47,7 @@
 				'name' => 'role',
 				'type' => 'key',
 				'table' => 'lsp_market_survey_roles',
-				'answers' => array(
+				'items' => array(
 					array('text' => 'Consumer/Listener', 'value' => 'con'),
 					array('text' => 'Enthusiast', 'value' => 'ent'),
 					array('text' => 'DJ', 'value' => 'dj'),
@@ -71,7 +71,7 @@
 				'mode' => 'radio',
 				'name' => 'income',
 				'type' => 'key',
-				'answers' => array(
+				'items' => array(
 					array('text' => 'I don\'t have any income', 'value' => 'none'),
 					array('text' => 'Rare/variable income', 'value' => 'rare'),
 					array('text' => 'Small income', 'value' => 'small'),
@@ -85,7 +85,7 @@
 				'mode' => 'radio',
 				'name' => 'purchase',
 				'type' => 'key',
-				'answers' => array(
+				'items' => array(
 					array('text' => 'I don\'t use audio processing plugins', 'value' => 'none'),
 					array('text' => 'I don\'t purchase licenses and use only free software/plugins', 'value' => 'free'),
 					array('text' => 'I use cracks, keygens and published license keys at some internet resources to make use of audio software costless for me', 'value' => 'hack'),
@@ -99,7 +99,7 @@
 				'mode' => 'radio',
 				'name' => 'income',
 				'type' => 'key',
-				'answers' => array(
+				'items' => array(
 					array('text' => 'No, never heard about it previously', 'value' => 'no'),
 					array('text' => 'Heard something but never tried', 'value' => 'some'),
 					array('text' => 'Know about it and don\'t want to try', 'value' => 'rej'),
@@ -118,7 +118,7 @@
 				'name' => 'income',
 				'custom' => 'custom',
 				'type' => 'int',
-				'answers' => array(
+				'items' => array(
 					array('text' => 'Not more than $10', 'value' => '10'),
 					array('text' => '$11-$20', 'value' => '20'),
 					array('text' => '$21-$30', 'value' => '30'),
@@ -140,7 +140,7 @@
 				'name' => 'income',
 				'custom' => 'custom',
 				'type' => 'int',
-				'answers' => array(
+				'items' => array(
 					array('text' => 'Not more than $10', 'value' => '10'),
 					array('text' => '$11-$20', 'value' => '20'),
 					array('text' => '$21-$30', 'value' => '30'),
@@ -162,7 +162,7 @@
 				'name' => 'income',
 				'custom' => 'custom',
 				'type' => 'int',
-				'answers' => array(
+				'items' => array(
 					array('text' => 'Not more than $10', 'value' => '10'),
 					array('text' => '$11-$20', 'value' => '20'),
 					array('text' => '$21-$30', 'value' => '30'),
@@ -185,7 +185,7 @@
 				'name' => 'income',
 				'custom' => 'custom',
 				'type' => 'int',
-				'answers' => array(
+				'items' => array(
 					array('text' => 'Not more than $10', 'value' => '10'),
 					array('text' => '$11-$20', 'value' => '20'),
 					array('text' => '$21-$30', 'value' => '30'),
