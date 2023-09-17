@@ -47,7 +47,7 @@
 				$src_value = $vars[$custom_id];
 			}
 			
-			$value = validate_value($item['type'], $src_value);
+			$value = validate_value($question['type'], $src_value);
 			if (!isset($value))
 			{
 				return validation_error($question, "Could not parse value '{$src_value}'.");
@@ -93,30 +93,30 @@
 			}
 			
 			// Parse the value provided by user
-			$src_value = $vars[$name];
 			if (isset($item['custom'])) {
 				$custom_id = "{$name}_${item['custom']}";
-				$src_value = $vars[$custom_id];
-			}
+				$key = $vars[$custom_id];
 			
-			$new_value = validate_value($key, $src_value);
-			if (!isset($new_value))
-			{
-				return validation_error($question, "Could not parse value '{$src_value}'.");
-			}
-			
-			// Apply additional constraints if there are
-			if ($item['constraints']) {
-				$func = $item['constraints'];
-				$error = $func($value);
-				if (isset($error))
+				$new_value = validate_value($question['type'], $key);
+				if (!isset($new_value))
 				{
-					return validation_error($question, $error);
+					return validation_error($question, "Could not parse value '{$key}'.");
+				}
+				$key = $new_value;
+				
+				// Apply additional constraints if there are
+				if ($item['constraints']) {
+					$func = $item['constraints'];
+					$error = $func($key);
+					if (isset($error))
+					{
+						return validation_error($question, $error);
+					}
 				}
 			}
 			
 			// Save the result to the array
-			array_push($value, $new_value);
+			array_push($value, $key);
 		}
 		
 		// Ensure that the value was set and commit result
