@@ -122,7 +122,7 @@
 <div data-theme="dark" class="g-recaptcha" data-sitekey="<?= $GOOGLE['recaptcha_pub'] ?>"></div>
 
 <div class="fs-send">
-	<input type="submit" ><label for="">Complete the survey</label>
+	<input type="submit" text="Complete the survey">
 </div>
 
 </form>
