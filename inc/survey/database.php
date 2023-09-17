@@ -13,7 +13,7 @@
 			}
 			
 			$type = "s";
-			if ($item[type] === 'int') {
+			if ($item['type'] === 'int') {
 				$type = "i";
 			}
 			
