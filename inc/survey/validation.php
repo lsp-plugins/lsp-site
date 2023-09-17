@@ -54,8 +54,8 @@
 			}
 			
 			// Apply additional constraints if there are
-			if (isset($item['constraints'])) {
-				$func = $item['constraints'];
+			if (isset($question['constraints'])) {
+				$func = $question['constraints'];
 				$error = $func($value);
 				if (isset($error))
 				{
@@ -105,8 +105,8 @@
 				$key = $new_value;
 				
 				// Apply additional constraints if there are
-				if (isset($item['constraints'])) {
-					$func = $item['constraints'];
+				if (isset($question['constraints'])) {
+					$func = $question['constraints'];
 					$error = $func($key);
 					if (isset($error))
 					{
