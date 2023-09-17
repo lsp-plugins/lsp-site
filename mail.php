@@ -5,7 +5,7 @@
 	require_once("./lib/recaptcha/autoload.php");
 	require("./vendor/autoload.php");
 	
-	if (($_REQUEST['send'] != null) && ($_REQUEST['send'] != 0))
+	if ($_SERVER['REQUEST_METHOD'] === 'POST')
 	{
 		$message = 'Sorry, something went wrong while submitting form. You may try again some amount of time later.';
 		$button = 'Try again';

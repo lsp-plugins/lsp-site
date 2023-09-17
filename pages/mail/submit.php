@@ -4,7 +4,7 @@
 <div id="fb_div" class="fb-div">
 
 
-<form id="fb_form" action="<?=$SITEROOT?>/mail.php?send=1" method="POST">
+<form id="fb_form" action="<?=$SITEROOT?>/mail.php" method="POST">
 	<div class="feedback-submit">
 		<div class="fs-name">Your name:<input type="text" name="name"></div>
 		<div class="fs-email">Contact e-mail:<input type="text" name="email"></div>
