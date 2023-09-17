@@ -1,6 +1,16 @@
 <?php 
 	require_once("./inc/header.php");
-	require_once("./inc/survey/common.php");
+	require_once("./inc/survey.php");
+	
+	function price_constraints($price) {
+		if ($price <= 100) {
+			return "You need to enter value of at least 101.";
+		}
+		if ($price >= 10000) {
+			return "The price is too high, we do not provide enterprise solutions for big corporations.";
+		}
+		return null;
+	}
 
 	$survey = array(
 		'header' => 'Consumer survey from LSP Project',
@@ -118,6 +128,7 @@
 				'name' => 'para_eq',
 				'custom' => 'custom',
 				'type' => 'int',
+				'constraints' => price_constraints,
 				'items' => array(
 					array('text' => 'Not more than $10', 'value' => '10'),
 					array('text' => '$11-$20', 'value' => '20'),
@@ -140,6 +151,7 @@
 				'name' => 'mb_comp',
 				'custom' => 'custom',
 				'type' => 'int',
+				'constraints' => price_constraints,
 				'items' => array(
 					array('text' => 'Not more than $10', 'value' => '10'),
 					array('text' => '$11-$20', 'value' => '20'),
@@ -161,6 +173,7 @@
 				'mode' => 'radio',
 				'name' => 'flanger',
 				'type' => 'int',
+				'constraints' => price_constraints,
 				'items' => array(
 					array('text' => 'Not more than $10', 'value' => '10'),
 					array('text' => '$11-$20', 'value' => '20'),
@@ -184,6 +197,7 @@
 				'name' => 'pd_delay',
 				'custom' => 'custom',
 				'type' => 'int',
+				'constraints' => price_constraints,
 				'items' => array(
 					array('text' => 'Not more than $10', 'value' => '10'),
 					array('text' => '$11-$20', 'value' => '20'),
@@ -201,15 +215,9 @@
 		)
 	);
 	
-	require_once("./inc/survey/common.php");
-	
-	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-		require_once("./inc/survey/submit.php");
-		make_survey($survey, $_POST);
-	}
-	else {
-		make_survey($survey, array());
-	}
+	require_once("./inc/survey/generation.php");
 
+	process_survey($survey);
+	
 	require_once("./inc/footer.php");
 ?>

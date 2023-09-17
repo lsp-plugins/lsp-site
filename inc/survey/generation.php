@@ -1,7 +1,5 @@
 <?php
-	/*
-	*/
-
+	// Survey form generation functions
 	function make_radio_answers($name, $list, $vars) {
 		foreach ($list as $item) {
 			$id = "{$name}_${item['value']}";
