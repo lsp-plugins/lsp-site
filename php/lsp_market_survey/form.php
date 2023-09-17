@@ -61,7 +61,7 @@
 <h2>According to your opinion, what is the fair price range for the
 <a href="<?=$SITEROOT?>/?page=manuals&section=para_equalizer_x32_stereo" target="_blank">LSP Parametric Equalizer plugin series</a>
 (<a href="https://youtu.be/TfpJPsiouuU" target="_blank">Demo on YouTube</a>)?</h2>
-<p><input type="radio" id="para_eq_10" name="para_eq" value="10"><label for="para_eq_10">Less than $10</label></p>
+<p><input type="radio" id="para_eq_10" name="para_eq" value="10"><label for="para_eq_10">Not more than $10</label></p>
 <p><input type="radio" id="para_eq_20" name="para_eq" value="20"><label for="para_eq_20">$11-$20</label></p>
 <p><input type="radio" id="para_eq_30" name="para_eq" value="30"><label for="para_eq_30">$21-$30</label></p>
 <p><input type="radio" id="para_eq_40" name="para_eq" value="40"><label for="para_eq_40">$31-$40</label></p>
@@ -76,7 +76,7 @@
 <h2>According to your opinion, what is the fair price range for the
 <a href="<?=$SITEROOT?>/?page=manuals&section=mb_compressor_stereo" target="_blank">LSP Multiband Compressor plugin series</a>
 (<a href="https://youtu.be/RCdk94Hta3o" target="_blank">Demo on YouTube</a>)?</h2>
-<p><input type="radio" id="mb_comp_10" name="mb_comp" value="10"><label for="mb_comp_10">Less than $10</label></p>
+<p><input type="radio" id="mb_comp_10" name="mb_comp" value="10"><label for="mb_comp_10">Not more than $10</label></p>
 <p><input type="radio" id="mb_comp_20" name="mb_comp" value="20"><label for="mb_comp_20">$11-$20</label></p>
 <p><input type="radio" id="mb_comp_30" name="mb_comp" value="30"><label for="mb_comp_30">$21-$30</label></p>
 <p><input type="radio" id="mb_comp_40" name="mb_comp" value="40"><label for="mb_comp_40">$31-$40</label></p>
@@ -91,7 +91,7 @@
 <h2>According to your opinion, what is the fair price for the 
 <a href="<?=$SITEROOT?>/?page=manuals&section=flanger_stereo">LSP Flanger plugin series</a>
 (<a href="https://youtu.be/_WD9GndORQA" target="_blank">Demo on YouTube</a>)?</h2>
-<p><input type="radio" id="flanger_10" name="flanger" value="10"><label for="flanger_10">Less than $10</label></p>
+<p><input type="radio" id="flanger_10" name="flanger" value="10"><label for="flanger_10">Not more than $10</label></p>
 <p><input type="radio" id="flanger_20" name="flanger" value="20"><label for="flanger_20">$11-$20</label></p>
 <p><input type="radio" id="flanger_30" name="flanger" value="30"><label for="flanger_30">$21-$30</label></p>
 <p><input type="radio" id="flanger_40" name="flanger" value="40"><label for="flanger_40">$31-$40</label></p>
@@ -107,7 +107,7 @@
 <a href="<?=$SITEROOT?>/?page=manuals&section=phase_detector">LSP Phase Detector plugin</a> and
 <a href="<?=$SITEROOT?>/?page=manuals&section=comp_delay_stereo">Delay Compensator plugin series</a>
 (<a href="https://youtu.be/j-rNb409GYg" target="_blank">Demo on YouTube</a>).</h2>
-<p><input type="radio" id="pd_delay_10" name="pd_delay" value="10"><label for="pd_delay_10">Less than $10</label></p>
+<p><input type="radio" id="pd_delay_10" name="pd_delay" value="10"><label for="pd_delay_10">Not more than $10</label></p>
 <p><input type="radio" id="pd_delay_20" name="pd_delay" value="20"><label for="pd_delay_20">$11-$20</label></p>
 <p><input type="radio" id="pd_delay_30" name="pd_delay" value="30"><label for="pd_delay_30">$21-$30</label></p>
 <p><input type="radio" id="pd_delay_40" name="pd_delay" value="40"><label for="pd_delay_40">$31-$40</label></p>
