@@ -6,6 +6,8 @@
 	
 	function process_survey($survey)
 	{
+		global $_SERVER, $_POST;
+		
 		if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			$ok = validate_survey($survey, $_POST) <= 0;
 			if ($ok)
