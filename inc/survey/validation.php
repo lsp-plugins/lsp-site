@@ -13,7 +13,7 @@
 			return (preg_match('/^\-?[\d+]$/', $value)) ? $value : null;
 		}
 		elseif ($type == 'key') {
-			return ((strlen(value) <= 8) && (preg_match('/^[a-zA-Z_]\w*$/', $value))) ? $value : null;
+			return ((strlen($value) <= 8) && (preg_match('/^[a-zA-Z_]\w*$/', $value))) ? $value : null;
 		}
 		else if ($type == 'char') {
 			return strlen($value) == 1 ? $value : null; 
