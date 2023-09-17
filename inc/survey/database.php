@@ -50,7 +50,7 @@
 	function save_survey($survey) {
 		// Estimate connection link
 		global $DATABASES;
-		$link = $DATABASES['survey'];
+		$link = $DATABASES['surveys'];
 		if (!isset($link)) {
 			return false;
 		}
