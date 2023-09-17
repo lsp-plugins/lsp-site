@@ -10,12 +10,16 @@
 		$ok = false;
 		
 		if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-			$ok = validate_survey($survey, $_POST) <= 0;
+			$errors = validate_survey($survey, $_POST);
+			$ok = $errors <= 0;
+			echo "Validation errors: {$errors}";
 			if ($ok)
 			{
+				echo "Saving to database";
 				$ok = save_survey($survey);
 			}
 			
+			echo "Post result: {$ok}";
 			if (!$ok)
 			{
 				make_survey($survey, $_POST);
