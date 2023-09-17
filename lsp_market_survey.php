@@ -97,7 +97,7 @@
 			array(
 				'text' => 'Are you familiar with the <a href="' . $SITEROOT . '/" target="_blank">Linux Studio Plugins project</a>?',
 				'mode' => 'radio',
-				'name' => 'income',
+				'name' => 'familiar',
 				'type' => 'key',
 				'items' => array(
 					array('text' => 'No, never heard about it previously', 'value' => 'no'),
@@ -115,7 +115,7 @@
 				          '<a href="' . $SITEROOT . '/?page=manuals&section=para_equalizer_x32_stereo" target="_blank">LSP Parametric Equalizer plugin series</a> ' .
 				          '(<a href="https://youtu.be/TfpJPsiouuU" target="_blank">Demo on YouTube</a>)?',
 				'mode' => 'radio',
-				'name' => 'income',
+				'name' => 'para_eq',
 				'custom' => 'custom',
 				'type' => 'int',
 				'items' => array(
@@ -137,7 +137,7 @@
 				          '<a href="' . $SITEROOT . '/?page=manuals&section=mb_compressor_stereo" target="_blank">LSP Multiband Compressor plugin series</a> ' .
 				          '(<a href="https://youtu.be/RCdk94Hta3o" target="_blank">Demo on YouTube</a>)?',
 				'mode' => 'radio',
-				'name' => 'income',
+				'name' => 'mb_comp',
 				'custom' => 'custom',
 				'type' => 'int',
 				'items' => array(
@@ -159,7 +159,7 @@
 				          '<a href="' . $SITEROOT . '/?page=manuals&section=flanger_stereo">LSP Flanger plugin series</a> ' .
 				          '(<a href="https://youtu.be/_WD9GndORQA" target="_blank">Demo on YouTube</a>)?',
 				'mode' => 'radio',
-				'name' => 'income',
+				'name' => 'flanger',
 				'type' => 'int',
 				'items' => array(
 					array('text' => 'Not more than $10', 'value' => '10'),
@@ -181,7 +181,7 @@
 				          '<a href="' . $SITEROOT . '/?page=manuals&section=comp_delay_stereo">Delay Compensator plugin series</a> ' .
 				          '(<a href="https://youtu.be/j-rNb409GYg" target="_blank">Demo on YouTube</a>).?',
 				'mode' => 'radio',
-				'name' => 'income',
+				'name' => 'pd_delay',
 				'custom' => 'custom',
 				'type' => 'int',
 				'items' => array(

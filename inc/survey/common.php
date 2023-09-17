@@ -1,22 +1,5 @@
 <?php
 	/*
-	gender=f
-	status=free
-	role=dj
-	role=mus
-	role=jour
-	role=eng
-	income=rare
-	familiar=other
-	para_eq=custom
-	para_eq_custom=123
-	mb_comp=custom
-	mb_comp_custom=123
-	flanger=90
-	flanger_custom=asdfasdf
-	pd_delay=90
-	pd_delay_custom=asdfasf
-	g-recaptcha-response=03AFcWeA6VR4pBMKprxL-T8RQ6l9eG_kjzDWw3SKXPrpX4dylAv1K5NAN8o1kbfoH8N58Iup5vgEGK6zs7CoMF98TjxjkCZnSi-QizJBoZzmx1NkO0bb9wcAhM1xpLyGR6wsS0bDjewn27a_UYKJQ9QO7uh2u_gS02QrJLZOMW1Xvlaq2S-rKw33j5VR24QxCN_iAkWFJrNvUdqjxseyhiMgBMdFjBvPtB4x6v0a2jLQ1IxZ_JOI7fS9jRqNIcGs1mgBMQx8NM7gh34ieAd3fqiQT1lxmj3KxMB0j9xPggcVlTEpSnRwkkHnKOqi8MqjU5RmM-aH83_d0AALt0pKwhMTkLJZjaOndzsJA_IUmUOhoJMu9iXqOgb3OWh5DmsGiv9uJpQuicaFKhO6Desj2mM15qxCAtnJ7HjmKrqsUKqaB5Encrfi_s6qmMsVtzJ7QlV2xtSqXLV848nVgxH55m59t6bSE6I6bvnwRjTgJVWtwdeqkgqbLZAoWc5uYW7jO2Rxwl5dfXKCCyKHnJtRZY8ZKn1f6cUVK5UoCgWEhclPBIMyAcOdNtlVc
 	*/
 
 	function make_radio_answers($name, $list, $vars) {
