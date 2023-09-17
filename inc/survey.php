@@ -12,14 +12,11 @@
 		if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			$errors = validate_survey($survey, $_POST);
 			$ok = $errors <= 0;
-			echo "Validation errors: {$errors}";
 			if ($ok)
 			{
-				echo "Saving to database";
 				$ok = save_survey($survey);
 			}
 			
-			echo "Post result: {$ok}";
 			if (!$ok)
 			{
 				make_survey($survey, $_POST);
