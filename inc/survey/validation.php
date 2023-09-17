@@ -68,7 +68,7 @@
 		
 		// Ensure that the value was set and commit result
 		if (!isset($value)) {
-			return validation_error($question, "At least one option should be selected.");
+			return validation_error($question, "You need to select an option.");
 		}
 		$question['value'] = $value;
 		
