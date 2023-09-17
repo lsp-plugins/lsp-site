@@ -5,7 +5,7 @@
 	function make_radio_answers($name, $list, $vars) {
 		foreach ($list as $item) {
 			$id = "{$name}_${item['value']}";
-			$is_checked = isset($vars[$item['value']]) ? $vars[$item['value']] === $item['value'] : false;
+			$is_checked = isset($vars[$item['name']]) ? $vars[$item['name']] === $item['value'] : false;
 			$checked = ($is_checked) ? " checked" : '';
 			echo "<p>";
 			echo "<input type=\"radio\" id=\"{$id}\" name=\"{$name}\" value=\"{$item['value']}\"{$checked}>";
@@ -28,10 +28,10 @@
 	function make_check_answers($name, $list, $vars) {
 		foreach ($list as $item) {
 			$id = "{$name}_${item['value']}";
-			$is_checked = isset($vars[$item['value']]) && is_array($vars[$item['value']]) ? in_array($item['value'], $vars[$item['value']]) : false;
+			$is_checked = isset($vars[$id]);
 			$checked = ($is_checked) ? " checked" : '';
 			echo "<p>";
-			echo "<input type=\"checkbox\" id=\"{$id}\" name=\"{$name}\" value=\"{$item['value']}\"{$checked}>";
+			echo "<input type=\"checkbox\" id=\"{$id}\" name=\"{$id}\" value=\"{$item['value']}\"{$checked}>";
 			
 			if (isset($item['custom'])) {
 				$custom_id = "{$name}_${item['custom']}";
@@ -50,6 +50,10 @@
 	
 	function make_question($question, $vars) {
 		echo "<h2>{$question['text']}</h2>\n";
+		if (isset($question['error'])) {
+			$error = htmlspecialchars($question['error']);
+			echo "<p class=\"survey_error\">Error: {$error}</p>\n";
+		}
 		if ($question['mode'] === 'radio') {
 			make_radio_answers($question['name'], $question['items'], $vars);
 		} elseif ($question['mode'] === 'check') {
@@ -63,11 +67,16 @@
 		global $GOOGLE;
 		
 		echo "<h1>{$survey['header']}</h1>\n";
-		
+
 		echo "<form id=\"fb_form\" action=\"{$survey['page']}\" method=\"POST\">\n";
-		
+
 		foreach ($survey['info'] as $p) {
 			echo "<p>{$p}</p>\n";
+		}
+		
+		if (isset($survey['error'])) {
+			$error = htmlspecialchars($survey['error']);
+			echo "<p class=\"survey_error\">Error: {$error}</p>\n";
 		}
 		
 		foreach ($survey['questions'] as $q) {
