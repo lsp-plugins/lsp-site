@@ -48,7 +48,7 @@
 			$is_checked = isset($vars[$item['value']]) && is_array($vars[$item['value']]) ? in_array($item['value'], $vars[$item['value']]) : false;
 			$checked = ($is_checked) ? " checked" : '';
 			echo "<p>";
-			echo "<input type=\"radio\" id=\"{$id}\" name=\"{$name}\" value=\"{$item['value']}\"{$checked}>";
+			echo "<input type=\"checkbox\" id=\"{$id}\" name=\"{$name}\" value=\"{$item['value']}\"{$checked}>";
 			
 			if (isset($item['custom'])) {
 				$custom_id = "{$name}_${item['custom']}";
