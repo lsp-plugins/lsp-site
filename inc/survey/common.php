@@ -67,10 +67,12 @@
 	
 	function make_question($question, $vars) {
 		echo "<h2>{$question['text']}</h2>\n";
-		if ($question['mode'] == 'radio') {
+		if ($question['mode'] === 'radio') {
 			make_radio_answers($question['name'], $question['items'], $vars);
-		} elseif ($question['mode'] == 'check') {
+		} elseif ($question['mode'] === 'check') {
 			make_check_answers($question['name'], $question['items'], $vars);
+		} else {
+			echo "<p>Invalid mode: {$question['mode']}</p>\n";
 		}
 	}
 	
