@@ -215,7 +215,10 @@
 		)
 	);
 	
-	process_survey($survey);
+	if (!process_survey($survey))
+	{
+		require_once("./inc/survey/submitted.php");
+	}
 	
 	require_once("./inc/footer.php");
 ?>

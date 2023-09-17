@@ -2,6 +2,7 @@
 	// Survey form validation functions
 	
 	function validation_error($obj, $message) {
+		error_log("Validation error: {$message}");
 		$obj['error'] = $message;
 		return 1;
 	}
@@ -131,8 +132,7 @@
 		} elseif ($question['mode'] === 'check') {
 			$errors += validate_check_answers($question, $vars);
 		} else {
-			$question['error'] = 'Invalid answer passed to the question.'.
-			++$errors;
+			$errors += validation_error($question, 'Invalid answer passed to the question.');
 		}
 		
 		return $errors;
@@ -149,8 +149,7 @@
 		
 		if (!$resp->isSuccess())
 		{
-			$survey['error'] = 'You need to pass CAPTCHA test to verify that you\'re a human.';
-			++$errors;
+			$errors += validation_error($survey, 'You need to pass CAPTCHA test to verify that you\'re a human.');
 		}
 		
 		// Verify answers

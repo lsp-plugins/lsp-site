@@ -7,19 +7,17 @@
 	function process_survey($survey)
 	{
 		global $_SERVER, $_POST;
+		$ok = false;
 		
 		if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+			require_once("./inc/survey/submitted.php");
 			$ok = validate_survey($survey, $_POST) <= 0;
 			if ($ok)
 			{
 				$ok = save_survey($survey);
 			}
 			
-			if ($ok)
-			{
-				require_once("./inc/survey/submitted.php");
-			}
-			else
+			if (!$ok)
 			{
 				make_survey($survey, $_POST);
 			}
@@ -27,5 +25,7 @@
 		else {
 			make_survey($survey, array());
 		}
+		
+		return $ok;
 	}
 ?>
