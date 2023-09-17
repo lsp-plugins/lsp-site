@@ -15,6 +15,9 @@
 			if ($ok)
 			{
 				$ok = save_survey($survey);
+				if (!$ok) {
+					$survey['error'] = "Error saving results of the form to database.";
+				}
 			}
 			
 			if (!$ok)

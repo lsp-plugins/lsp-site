@@ -148,15 +148,16 @@
 		global $GOOGLE;
 		$errors = 0;
 
-		// Verify CAPTCHA
-		$recaptcha = new \ReCaptcha\ReCaptcha($GOOGLE['recaptcha_sec']);
-		$resp = $recaptcha->setExpectedHostname($GOOGLE['recaptcha_host'])
-			->verify($_REQUEST['g-recaptcha-response'], $_SERVER['REMOTE_ADDR']);
+		// TODO: uncomment this
+// 		// Verify CAPTCHA
+// 		$recaptcha = new \ReCaptcha\ReCaptcha($GOOGLE['recaptcha_sec']);
+// 		$resp = $recaptcha->setExpectedHostname($GOOGLE['recaptcha_host'])
+// 			->verify($_REQUEST['g-recaptcha-response'], $_SERVER['REMOTE_ADDR']);
 		
-		if (!$resp->isSuccess())
-		{
-			$errors += validation_error($survey, 'You need to pass CAPTCHA test to verify that you\'re a human.');
-		}
+// 		if (!$resp->isSuccess())
+// 		{
+// 			$errors += validation_error($survey, 'You need to pass CAPTCHA test to verify that you\'re a human.');
+// 		}
 		
 		// Verify answers
 		foreach ($survey['questions'] as &$q) {
