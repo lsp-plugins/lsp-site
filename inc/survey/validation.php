@@ -45,21 +45,21 @@
 			if (isset($item['custom'])) {
 				$custom_id = "{$name}_${item['custom']}";
 				$src_value = $vars[$custom_id];
-			}
 			
-			$value = validate_value($question['type'], $src_value);
-			if (!isset($value))
-			{
-				return validation_error($question, "Could not parse value '{$src_value}'.");
-			}
-			
-			// Apply additional constraints if there are
-			if (isset($question['constraints'])) {
-				$func = $question['constraints'];
-				$error = $func($value);
-				if (isset($error))
+				$value = validate_value($question['type'], $src_value);
+				if (!isset($value))
 				{
-					return validation_error($question, $error);
+					return validation_error($question, "Could not parse value '{$src_value}'.");
+				}
+				
+				// Apply additional constraints if there are
+				if (isset($question['constraints'])) {
+					$func = $question['constraints'];
+					$error = $func($value);
+					if (isset($error))
+					{
+						return validation_error($question, $error);
+					}
 				}
 			}
 		}
