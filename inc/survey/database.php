@@ -63,6 +63,7 @@
 		
 		try {
 			mysqli_autocommit($mysql, false);
+			mysqli_select_db($mysql, $link['database']);
 			
 			// Insert all single-value arguments
 			$id = save_survey_row($mysql, $survey);
