@@ -5,7 +5,7 @@
 	function make_radio_answers($name, $list, $vars) {
 		foreach ($list as $item) {
 			$id = "{$name}_${item['value']}";
-			$is_checked = isset($vars[$item['name']]) ? $vars[$item['name']] === $item['value'] : false;
+			$is_checked = isset($vars[$name]) ? $vars[$name] === $item['value'] : false;
 			$checked = ($is_checked) ? " checked" : '';
 			echo "<p>";
 			echo "<input type=\"radio\" id=\"{$id}\" name=\"{$name}\" value=\"{$item['value']}\"{$checked}>";
