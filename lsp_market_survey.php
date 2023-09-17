@@ -129,7 +129,7 @@
 					array('text' => '$71-$80', 'value' => '80'),
 					array('text' => '$81-$90', 'value' => '90'),
 					array('text' => '$91-$100', 'value' => '100'),
-					array('text' => 'More than $100', 'value' => 'x')
+					array('text' => 'More than $100', 'value' => 'custom', 'custom' => 'custom')
 				)
 			),
 			array(
@@ -151,7 +151,7 @@
 					array('text' => '$71-$80', 'value' => '80'),
 					array('text' => '$81-$90', 'value' => '90'),
 					array('text' => '$91-$100', 'value' => '100'),
-					array('text' => 'More than $100', 'value' => 'x')
+					array('text' => 'More than $100', 'value' => 'custom', 'custom' => 'custom')
 				)
 			),
 			array(
@@ -160,7 +160,6 @@
 				          '(<a href="https://youtu.be/_WD9GndORQA" target="_blank">Demo on YouTube</a>)?',
 				'mode' => 'radio',
 				'name' => 'income',
-				'custom' => 'custom',
 				'type' => 'int',
 				'items' => array(
 					array('text' => 'Not more than $10', 'value' => '10'),
@@ -173,7 +172,7 @@
 					array('text' => '$71-$80', 'value' => '80'),
 					array('text' => '$81-$90', 'value' => '90'),
 					array('text' => '$91-$100', 'value' => '100'),
-					array('text' => 'More than $100', 'value' => 'x')
+					array('text' => 'More than $100', 'value' => 'custom', 'custom' => 'custom')
 				)
 			),
 			array(
@@ -196,7 +195,7 @@
 					array('text' => '$71-$80', 'value' => '80'),
 					array('text' => '$81-$90', 'value' => '90'),
 					array('text' => '$91-$100', 'value' => '100'),
-					array('text' => 'More than $100', 'value' => 'x')
+					array('text' => 'More than $100', 'value' => 'custom', 'custom' => 'custom')
 				)
 			)
 		)
