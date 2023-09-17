@@ -90,6 +90,9 @@
 			make_question($q, $vars);
 		}
 		
+		echo "<div data-theme=\"dark\" class=\"g-recaptcha\" data-sitekey=\"{$GOOGLE['recaptcha_pub']}\"></div>\n";
+		echo "<div class=\"fs-send\"><input type=\"submit\" value=\"Complete the survey\"></div>\n";
+		
 		echo "</form>\n";
 	}
 ?>
