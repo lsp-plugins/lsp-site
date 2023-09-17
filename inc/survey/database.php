@@ -47,7 +47,6 @@
 		$stmt = mysqli_prepare($mysql, "INSERT INTO {$question['table']}(nSurveyId, value) VALUES (?, ?)");
 		try {
 			foreach ($values as $value) {
-				echo "Saving {$id}={$value} to {$question['table']}\n";
 				mysqli_stmt_bind_param($stmt, "is", $id, $value);
 				mysqli_stmt_execute($stmt);
 			}
