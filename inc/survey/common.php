@@ -77,6 +77,7 @@
 	}
 	
 	function make_survey($survey, $vars) {
+		global $GOOGLE;
 		
 		echo "<h1>{$survey['header']}</h1>\n";
 		
