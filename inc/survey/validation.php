@@ -154,7 +154,7 @@
 		}
 		
 		// Verify answers
-		foreach ($survey['questions'] as $q) {
+		foreach ($survey['questions'] as &$q) {
 			$errors += validate_question($q, $vars);
 		}
 		
