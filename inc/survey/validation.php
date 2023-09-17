@@ -1,7 +1,7 @@
 <?php
 	// Survey form validation functions
 	
-	function validation_error($obj, $message) {
+	function validation_error(&$obj, $message) {
 		error_log("Validation error: {$message}");
 		echo("Validation error: {$message}\n");
 		$obj['error'] = $message;
@@ -23,7 +23,7 @@
 		return null;
 	}
 
-	function validate_radio_answers($question, $vars) {
+	function validate_radio_answers(&$question, $vars) {
 		$value = null;
 		$name = $question['name'];
 		
@@ -73,7 +73,7 @@
 		return 0;
 	}
 	
-	function validate_check_answers($question, $vars) {
+	function validate_check_answers(&$question, $vars) {
 		$value = array();
 		$name = $question['name'];
 		
@@ -125,7 +125,7 @@
 		return 0;
 	}
 	
-	function validate_question($question, $vars) {
+	function validate_question(&$question, $vars) {
 		$errors = 0;
 		
 		if ($question['mode'] === 'radio') {
@@ -139,7 +139,7 @@
 		return $errors;
 	}
 	
-	function validate_survey($survey, $vars) {
+	function validate_survey(&$survey, $vars) {
 		global $GOOGLE;
 		$errors = 0;
 
