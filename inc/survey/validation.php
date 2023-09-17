@@ -76,7 +76,7 @@
 	}
 	
 	function validate_check_answers(&$question, $vars) {
-		$value = array();
+		$values = array();
 		$name = $question['name'];
 		
 		foreach ($question['items'] as $item) {
@@ -89,7 +89,7 @@
 			
 			// Check that the provided value is not duplicated
 			$key = $item['value'];
-			if (in_array($key, $value))
+			if (in_array($key, $values))
 			{
 				return validation_error($question, "Duplicate key '{$key}'.");
 			}
@@ -118,14 +118,14 @@
 			}
 			
 			// Save the result to the array
-			array_push($value, $key);
+			array_push($values, $key);
 		}
 		
 		// Ensure that the value was set and commit result
-		if (count($value) <= 1) {
+		if (count($values) <= 1) {
 			return validation_error($question, "At least one option should be selected.");
 		}
-		$question['value'] = $value;
+		$question['value'] = $values;
 		
 		return 0;
 	}

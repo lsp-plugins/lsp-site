@@ -28,8 +28,12 @@
 		$types_sql = implode('', $types);
 		
 		$stmt = mysqli_prepare($mysql, "INSERT INTO {$survey['table']}({$fields_sql}) VALUES ({$args_sql})");
-		mysqli_stmt_bind_param($stmt, $types_sql, ...$values);
-		mysqli_stmt_execute($stmt);
+		try {
+			mysqli_stmt_bind_param($stmt, $types_sql, ...$values);
+			mysqli_stmt_execute($stmt);
+		} finally {
+			mysqli_stmt_close($stmt);
+		}
 		
 		return mysqli_insert_id($mysql);
 	}
@@ -41,9 +45,14 @@
 		}
 		
 		$stmt = mysqli_prepare($mysql, "INSERT INTO {$question['table']}(nSurveyId, value) VALUES (?, ?)");
-		foreach ($values as $value) {
-			mysqli_stmt_bind_param($stmt, "is", $id, $value);
-			mysqli_stmt_execute($stmt);
+		try {
+			foreach ($values as $value) {
+				echo "Saving {$id}={$value} to {$question['table']}\n";
+				mysqli_stmt_bind_param($stmt, "is", $id, $value);
+				mysqli_stmt_execute($stmt);
+			}
+		} finally {
+			mysqli_stmt_close($stmt);
 		}
 	}
 
