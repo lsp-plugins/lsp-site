@@ -10,7 +10,6 @@
 		$ok = false;
 		
 		if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-			require_once("./inc/survey/submitted.php");
 			$ok = validate_survey($survey, $_POST) <= 0;
 			if ($ok)
 			{

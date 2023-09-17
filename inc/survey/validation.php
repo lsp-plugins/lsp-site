@@ -3,6 +3,7 @@
 	
 	function validation_error($obj, $message) {
 		error_log("Validation error: {$message}");
+		echo("Validation error: {$message}\n");
 		$obj['error'] = $message;
 		return 1;
 	}
