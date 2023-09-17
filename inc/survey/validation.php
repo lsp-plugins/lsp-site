@@ -13,7 +13,7 @@
 			return (preg_match('/^\-?[\d+]$/', $value)) ? $value : null;
 		}
 		elseif ($type == 'key') {
-			return (preg_match('/^[a-zA-Z_]\w*$/', $value)) ? $value : null;
+			return ((strlen(value) <= 8) && (preg_match('/^[a-zA-Z_]\w*$/', $value))) ? $value : null;
 		}
 		else if ($type == 'char') {
 			return strlen($value) == 1 ? $value : null; 
@@ -87,7 +87,7 @@
 			
 			// Check that the provided value is not duplicated
 			$key = $item['value'];
-			if (in_array($key))
+			if (in_array($key, $value))
 			{
 				return validation_error($question, "Duplicate key '{$key}'.");
 			}
@@ -99,8 +99,8 @@
 				$src_value = $vars[$custom_id];
 			}
 			
-			$value = validate_value($key, $src_value);
-			if (!isset($value))
+			$new_value = validate_value($key, $src_value);
+			if (!isset($new_value))
 			{
 				return validation_error($question, "Could not parse value '{$src_value}'.");
 			}
@@ -114,6 +114,9 @@
 					return validation_error($question, $error);
 				}
 			}
+			
+			// Save the result to the array
+			array_push($value, $new_value);
 		}
 		
 		// Ensure that the value was set and commit result
