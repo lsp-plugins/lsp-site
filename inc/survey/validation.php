@@ -10,7 +10,7 @@
 
 	function validate_value($type, $value) {
 		if ($type === 'int') {
-			return (preg_match('/^-?[\d+]$/', $value)) ? $value : null;
+			return (preg_match('/^-?\d+$/', $value)) ? $value : null;
 		}
 		elseif ($type == 'key') {
 			return ((strlen($value) <= 8) && (preg_match('/^[a-zA-Z_]\w*$/', $value))) ? $value : null;
