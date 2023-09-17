@@ -1,8 +1,8 @@
 
 <div style="display:inline-block; width:100%;">
-	<p style="text-align:center;">If you want to contact to developers, please submit the following form.</p>
 <div id="fb_div" class="fb-div">
 
+<p style="text-align:center;">If you want to contact to developers, please submit the following form.</p>
 
 <form id="fb_form" action="<?=$SITEROOT?>/mail.php" method="POST">
 	<div class="feedback-submit">
