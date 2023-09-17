@@ -8,12 +8,12 @@
 
 <form id="fb_form" action="<?=$SITEROOT?>/lsp_market_survey.php" method="POST">
 
-<p>Please specify your gender</p>
+<h2>Please specify your gender</h2>
 <p><input type="radio" id="gender_m" name="gender" value="m"><label for="gender_m">Male</label></p>
 <p><input type="radio" id="gender_f" name="gender" value="f"><label for="gender_f">Female</label></p>
 <p><input type="radio" id="gender_o" name="gender" value="o"><label for="gender_o">Other</label></p>
 
-<p>What is your work status?</p>
+<h2>What is your work status?</h2>
 <p><input type="radio" id="status_stud" name="status" value="stud"><label for="status_stud">Student</label></p>
 <p><input type="radio" id="status_teach" name="status" value="teach"><label for="status_teach">Teacher/Mentor</label></p>
 <p><input type="radio" id="status_free" name="status" value="free"><label for="status_free">Freelancer</label></p>
@@ -23,7 +23,7 @@
 <p><input type="radio" id="status_pens" name="status" value="pens"><label for="status_pens">Pensioner</label></p>
 <p><input type="radio" id="status_none" name="status" value="none"><label for="status_none">None of above</label></p>
 
-<p>What roles match to your relation to music production?</p>
+<h2>What roles match to your relation to music production?</h2>
 <p><input type="checkbox" id="role_lst" name="role" value="lst"><label for="role_lst">Listener</label></p>
 <p><input type="checkbox" id="role_ent" name="role" value="ent"><label for="role_ent">Enthusiast</label></p>
 <p><input type="checkbox" id="role_dj" name="role" value="dj"><label for="role_dj">DJ</label></p>
@@ -41,7 +41,7 @@
 <p><input type="checkbox" id="role_hw_dev" name="role" value="hw_dev"><label for="role_hw_dev">Developer of sound-related hardware devices</label></p>
 <p><input type="checkbox" id="role_oth" name="role" value="oth"><label for="role_oth">Other</label></p>
 
-<p>What is your money income from music?</p>
+<h2>What is your money income from music?</h2>
 <p><input type="radio" id="income_none" name="income" value="none"><label for="income_none">I don't have any income</label></p>
 <p><input type="radio" id="income_rare" name="income" value="rare"><label for="income_rare">Rare/variable income</label></p>
 <p><input type="radio" id="income_small" name="income" value="small"><label for="income_small">Small income</label></p>
@@ -49,7 +49,7 @@
 <p><input type="radio" id="income_high" name="income" value="high"><label for="income_high">Higher than satisfactory income</label></p>
 <p><input type="radio" id="income_huge" name="income" value="huge"><label for="income_huge">Very high income</label></p>
 
-<p>Are you familiar with the <a href="<?=$SITEROOT?>/" target="_blank">Linux Studio Plugins project</a>?</p>
+<h2>Are you familiar with the <a href="<?=$SITEROOT?>/" target="_blank">Linux Studio Plugins project</a>?</h2>
 <p><input type="radio" id="familiar_no" name="familiar" value="no"><label for="familiar_no">No, never heard about it previously</label></p>
 <p><input type="radio" id="familiar_some" name="familiar" value="some"><label for="familiar_some">Heard something but never tried</label></p>
 <p><input type="radio" id="familiar_know" name="familiar" value="know"><label for="familiar_know">Know about it but don't have possibility to use it</label></p>
@@ -58,10 +58,9 @@
 <p><input type="radio" id="familiar_regular" name="familiar" value="regular"><label for="familiar_regular">Regularly use some of it's stuff in my work</label></p>
 <p><input type="radio" id="familiar_always" name="familiar" value="always"><label for="familiar_always">Use it's stuff almost in every my project</label></p>
 
-<p>According to your opinion, what is the fair price range for the
+<h2>According to your opinion, what is the fair price range for the
 <a href="<?=$SITEROOT?>/?page=manuals&section=para_equalizer_x32_stereo" target="_blank">LSP Parametric Equalizer plugin series</a>
-(<a href="https://youtu.be/TfpJPsiouuU" target="_blank">Demo on YouTube</a>)?
-
+(<a href="https://youtu.be/TfpJPsiouuU" target="_blank">Demo on YouTube</a>)?</h2>
 <p><input type="radio" id="para_eq_10" name="para_eq" value="10"><label for="para_eq_10">Less than $10</label></p>
 <p><input type="radio" id="para_eq_20" name="para_eq" value="20"><label for="para_eq_20">$11-$20</label></p>
 <p><input type="radio" id="para_eq_30" name="para_eq" value="30"><label for="para_eq_30">$21-$30</label></p>
@@ -74,10 +73,9 @@
 <p><input type="radio" id="para_eq_100" name="para_eq" value="100"><label for="para_eq_100">$91-$100</label></p>
 <p><input type="radio" id="para_eq_custom" name="para_eq" value="custom"><label for="">More than $100 (please specify):</label>&nbsp;<input type="text" name="para_eq_custom" value="" /></p>
 
-<p>According to your opinion, what is the fair price range for the
+<h2>According to your opinion, what is the fair price range for the
 <a href="<?=$SITEROOT?>/?page=manuals&section=mb_compressor_stereo" target="_blank">LSP Multiband Compressor plugin series</a>
-(<a href="https://youtu.be/RCdk94Hta3o" target="_blank">Demo on YouTube</a>)?
-
+(<a href="https://youtu.be/RCdk94Hta3o" target="_blank">Demo on YouTube</a>)?</h2>
 <p><input type="radio" id="mb_comp_10" name="mb_comp" value="10"><label for="mb_comp_10">Less than $10</label></p>
 <p><input type="radio" id="mb_comp_20" name="mb_comp" value="20"><label for="mb_comp_20">$11-$20</label></p>
 <p><input type="radio" id="mb_comp_30" name="mb_comp" value="30"><label for="mb_comp_30">$21-$30</label></p>
@@ -90,10 +88,9 @@
 <p><input type="radio" id="mb_comp_100" name="mb_comp" value="100"><label for="mb_comp_100">$91-$100</label></p>
 <p><input type="radio" id="mb_comp_custom" name="mb_comp" value="custom"><label for="">More than $100 (please specify):</label>&nbsp;<input type="text" name="mb_comp_custom" value="" /></p>
 
-<p>According to your opinion, what is the fair price for the 
+<h2>According to your opinion, what is the fair price for the 
 <a href="<?=$SITEROOT?>/?page=manuals&section=flanger_stereo">LSP Flanger plugin series</a>
-(<a href="https://youtu.be/_WD9GndORQA" target="_blank">Demo on YouTube</a>)?
-
+(<a href="https://youtu.be/_WD9GndORQA" target="_blank">Demo on YouTube</a>)?</h2>
 <p><input type="radio" id="flanger_10" name="flanger" value="10"><label for="flanger_10">Less than $10</label></p>
 <p><input type="radio" id="flanger_20" name="flanger" value="20"><label for="flanger_20">$11-$20</label></p>
 <p><input type="radio" id="flanger_30" name="flanger" value="30"><label for="flanger_30">$21-$30</label></p>
@@ -106,11 +103,10 @@
 <p><input type="radio" id="flanger_100" name="flanger" value="100"><label for="flanger_100">$91-$100</label></p>
 <p><input type="radio" id="flanger_custom" name="flanger" value="custom"><label for="">More than $100 (please specify):</label>&nbsp;<input type="text" name="flanger_custom" value="" /></p>
 
-<p>According to your opinion, what is the fair price for the bundle of
+<h2>According to your opinion, what is the fair price for the bundle of
 <a href="<?=$SITEROOT?>/?page=manuals&section=phase_detector">LSP Phase Detector plugin</a> and
 <a href="<?=$SITEROOT?>/?page=manuals&section=comp_delay_stereo">Delay Compensator plugin series</a>
-(<a href="https://youtu.be/j-rNb409GYg" target="_blank">Demo on YouTube</a>).
-
+(<a href="https://youtu.be/j-rNb409GYg" target="_blank">Demo on YouTube</a>).</h2>
 <p><input type="radio" id="pd_delay_10" name="pd_delay" value="10"><label for="pd_delay_10">Less than $10</label></p>
 <p><input type="radio" id="pd_delay_20" name="pd_delay" value="20"><label for="pd_delay_20">$11-$20</label></p>
 <p><input type="radio" id="pd_delay_30" name="pd_delay" value="30"><label for="pd_delay_30">$21-$30</label></p>
