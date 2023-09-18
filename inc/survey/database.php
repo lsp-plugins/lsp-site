@@ -7,11 +7,15 @@
 		
 		// Form the list of arguments
 		foreach ($survey['questions'] as $item) {
+			if ($item['mode'] === 'captcha') {
+				continue;
+			}
+
 			$value = $item['value'];
 			if (!is_scalar($value)) {
 				continue;
 			}
-			
+
 			$type = "s";
 			if ($item['type'] === 'int') {
 				$type = "i";
@@ -78,6 +82,9 @@
 			
 			// Insert multiple keys bound to the survey
 			foreach ($survey['questions'] as $item) {
+				if ($item['mode'] === 'captcha') {
+					continue;
+				}
 				save_survey_multiple_value($mysql, $id, $item);
 			}
 			

@@ -13,6 +13,7 @@
 	};
 
 	$survey = array(
+		'id' => 'market_survey',
 		'header' => 'Consumer survey from LSP Project',
 		'info' => array(
 			"As you probably know, LSP Project got first working builds of plugins for Windows.",
@@ -24,17 +25,6 @@
 		'page' => $SITEROOT . "/lsp_market_survey.php",
 		'table' => 'lsp_market_survey',
 		'questions' => array(
-			array(
-				'text' => 'Please specify your gender.',
-				'mode' => 'radio',
-				'name' => 'gender',
-				'type' => 'char',
-				'items' => array(
-					array('text' => 'Male', 'value' => 'm'),
-					array('text' => 'Female', 'value' => 'f'),
-					array('text' => 'Other', 'value' => 'o')
-				)
-			),
 			array(
 				'text' => 'What is your work status?',
 				'mode' => 'radio',
@@ -211,6 +201,10 @@
 					array('text' => '$91-$100', 'value' => '100'),
 					array('text' => 'More than $100', 'value' => 'custom', 'custom' => 'custom')
 				)
+			),
+			array(
+				'text' => 'Please confirm that you are a human.',
+				'mode' => 'captcha'
 			)
 		)
 	);

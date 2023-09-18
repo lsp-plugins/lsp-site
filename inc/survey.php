@@ -3,7 +3,8 @@
 	require_once("./inc/survey/generation.php");
 	require_once("./inc/survey/validation.php");
 	require_once("./inc/survey/database.php");
-	
+	require_once("./inc/survey/js.php");
+
 	function process_survey($survey)
 	{
 		global $_SERVER, $_POST;

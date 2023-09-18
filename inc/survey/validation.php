@@ -3,7 +3,6 @@
 	
 	function validation_error(&$obj, $message) {
 		error_log("Validation error: {$message}");
-		echo("Validation error: {$message}\n");
 		$obj['error'] = $message;
 		return 1;
 	}
@@ -129,7 +128,23 @@
 		
 		return 0;
 	}
-	
+
+	function validate_captcha(&$question, $vars) {
+		global $GOOGLE;
+
+		$errors = 0;
+		$recaptcha = new \ReCaptcha\ReCaptcha($GOOGLE['recaptcha_sec']);
+		$resp = $recaptcha->setExpectedHostname($GOOGLE['recaptcha_host'])
+			->verify($_REQUEST['g-recaptcha-response'], $_SERVER['REMOTE_ADDR']);
+
+		if (!$resp->isSuccess())
+		{
+			return validation_error($question, 'You need to pass CAPTCHA test to verify that you\'re a human.');
+		}
+
+		return 0;
+	}
+
 	function validate_question(&$question, $vars) {
 		$errors = 0;
 		
@@ -137,6 +152,8 @@
 			$errors += validate_radio_answers($question, $vars);
 		} elseif ($question['mode'] === 'check') {
 			$errors += validate_check_answers($question, $vars);
+		} elseif ($question['mode'] === 'captcha') {
+			$errors += validate_captcha($question, $vars);
 		} else {
 			$errors += validation_error($question, 'Invalid answer passed to the question.');
 		}
@@ -145,19 +162,8 @@
 	}
 	
 	function validate_survey(&$survey, $vars) {
-		global $GOOGLE;
 		$errors = 0;
 
-		// Verify CAPTCHA
-		$recaptcha = new \ReCaptcha\ReCaptcha($GOOGLE['recaptcha_sec']);
-		$resp = $recaptcha->setExpectedHostname($GOOGLE['recaptcha_host'])
-			->verify($_REQUEST['g-recaptcha-response'], $_SERVER['REMOTE_ADDR']);
-		
-		if (!$resp->isSuccess())
-		{
-			$errors += validation_error($survey, 'You need to pass CAPTCHA test to verify that you\'re a human.');
-		}
-		
 		// Verify answers
 		foreach ($survey['questions'] as &$q) {
 			$errors += validate_question($q, $vars);
