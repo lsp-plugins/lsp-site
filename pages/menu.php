@@ -24,7 +24,7 @@
 							echo "<img src=\"${SITEROOT}/img/${value['icon']}\">";*/
 
 						if (($key != $curr_page) || ((isset($value['reentrant'])) && ($value['reentrant'])))
-							echo "<a href=\"${SITEROOT}?page={$key}\">" . htmlspecialchars($value['name']) . "</a>";
+							echo "<a href=\"${SITEROOT}/?page={$key}\">" . htmlspecialchars($value['name']) . "</a>";
 						else
 							echo htmlspecialchars($value['name']);
 
@@ -55,7 +55,7 @@
 								echo "<img src=\"${SITEROOT}/img/${value['icon']}\">";*/
 
 							if (($key != $curr_page) || ((isset($value['reentrant'])) && ($value['reentrant'])))
-								echo "<a href=\"${SITEROOT}?page={$key}\">" . htmlspecialchars($value['name']) . "</a>";
+								echo "<a href=\"${SITEROOT}/?page={$key}\">" . htmlspecialchars($value['name']) . "</a>";
 							else
 								echo htmlspecialchars($value['name']);
 

@@ -4,7 +4,7 @@
 	
 	$price_constraints = function ($price) {
 		if ($price <= 100) {
-			return "You need to enter value of at least 101.";
+			return "You need to enter value at least of 101.";
 		}
 		if ($price >= 10000) {
 			return "The price is too high, we do not provide enterprise solutions for big corporations.";
@@ -119,6 +119,7 @@
 				'custom' => 'custom',
 				'type' => 'int',
 				'constraints' => $price_constraints,
+				'js_validation' => 'price_constraints',
 				'items' => array(
 					array('text' => 'Not more than $10', 'value' => '10'),
 					array('text' => '$11-$20', 'value' => '20'),
@@ -130,7 +131,7 @@
 					array('text' => '$71-$80', 'value' => '80'),
 					array('text' => '$81-$90', 'value' => '90'),
 					array('text' => '$91-$100', 'value' => '100'),
-					array('text' => 'More than $100', 'value' => 'custom', 'custom' => 'custom')
+					array('text' => 'More than $100', 'value' => 'user', 'custom' => 'custom')
 				)
 			),
 			array(
@@ -142,6 +143,7 @@
 				'custom' => 'custom',
 				'type' => 'int',
 				'constraints' => $price_constraints,
+				'js_validation' => 'price_constraints',
 				'items' => array(
 					array('text' => 'Not more than $10', 'value' => '10'),
 					array('text' => '$11-$20', 'value' => '20'),
@@ -153,7 +155,7 @@
 					array('text' => '$71-$80', 'value' => '80'),
 					array('text' => '$81-$90', 'value' => '90'),
 					array('text' => '$91-$100', 'value' => '100'),
-					array('text' => 'More than $100', 'value' => 'custom', 'custom' => 'custom')
+					array('text' => 'More than $100', 'value' => 'user', 'custom' => 'custom')
 				)
 			),
 			array(
@@ -164,6 +166,7 @@
 				'name' => 'flanger',
 				'type' => 'int',
 				'constraints' => $price_constraints,
+				'js_validation' => 'price_constraints',
 				'items' => array(
 					array('text' => 'Not more than $10', 'value' => '10'),
 					array('text' => '$11-$20', 'value' => '20'),
@@ -175,7 +178,7 @@
 					array('text' => '$71-$80', 'value' => '80'),
 					array('text' => '$81-$90', 'value' => '90'),
 					array('text' => '$91-$100', 'value' => '100'),
-					array('text' => 'More than $100', 'value' => 'custom', 'custom' => 'custom')
+					array('text' => 'More than $100', 'value' => 'user', 'custom' => 'custom')
 				)
 			),
 			array(
@@ -188,6 +191,7 @@
 				'custom' => 'custom',
 				'type' => 'int',
 				'constraints' => $price_constraints,
+				'js_validation' => 'price_constraints',
 				'items' => array(
 					array('text' => 'Not more than $10', 'value' => '10'),
 					array('text' => '$11-$20', 'value' => '20'),
@@ -199,7 +203,7 @@
 					array('text' => '$71-$80', 'value' => '80'),
 					array('text' => '$81-$90', 'value' => '90'),
 					array('text' => '$91-$100', 'value' => '100'),
-					array('text' => 'More than $100', 'value' => 'custom', 'custom' => 'custom')
+					array('text' => 'More than $100', 'value' => 'user', 'custom' => 'custom')
 				)
 			),
 			array(

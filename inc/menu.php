@@ -73,7 +73,7 @@
 			else
 			{
 				$path = (strlen($item['path']) > 0) ? $item['path'] . '/' : '';
-				print("<li><a href=\"${SITEROOT}?page=manuals&amp;section=${item['id']}\">${item['text']}</a></li>\n");
+				print("<li><a href=\"${SITEROOT}/?page=manuals&amp;section=${item['id']}\">${item['text']}</a></li>\n");
 			}
 		}
 		print "</ul>\n";
