@@ -37,6 +37,10 @@ th {
   background-color: #373944;
 }
 
+::-webkit-scrollbar-corner{
+  background:#25272e00;
+}
+
 ::-webkit-scrollbar-button {
   background-image: url('');
   background-repeat: no-repeat;
@@ -66,6 +70,7 @@ th {
 
 ::-webkit-scrollbar {
   width: 6px;
+  height: 6px;
 }
 
 ::selection {
@@ -393,7 +398,6 @@ a img:hover {
   -moz-transition: all 0.3s ease;
   -ms-transition: all 0.3s ease;
 }
-
 
 .lpa {
   background: url(../svg/lpa.png) no-repeat top left;
@@ -841,6 +845,52 @@ input[type="button"], input[type="submit"] {
   -ms-transition: all 0.3s ease;
 }
 
+/* for survey page */
+.survey-adaptive {
+  width: auto;
+  margin: 0;
+}
+
+.survey-scroll {
+  height: 255px;
+  overflow: scroll;
+}
+
+.survey-scroll>p {
+  margin-block-start: 5px;
+  margin-block-end: 5px;
+  padding-right: 5px;
+  text-align: left !important;
+}
+
+.fs-send {
+  width: 304px;
+  display: grid;
+  grid-gap: 5px;
+  grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+  -ms-grid-columns: (23% 2.666%)[3] 23%;
+  -ms-grid-rows: 100% 5px 100%;
+  grid-template-rows: repeat(2, auto);
+}
+
+.fs-send>input[type="button"], .fs-send>input[type="submit"] {
+  width: auto;
+  margin-top:5px;
+}
+
+input[class="survey"][type="text"] {
+  float: none;
+  margin-left: 5px;
+  width: 108px;
+}
+
+input[type="radio"][class="survey"], input[type="checkbox"][class="survey"] {
+  float: left;
+  width: auto;
+  margin: 5px 10px 0px 20px;
+}
+
+/* end for survey page */
 input:focus, textarea:focus, input[type="button"]:hover, input[type="submit"]:hover {
   background: #1b1c22;
   transition: all 0.3s ease;
@@ -872,10 +922,6 @@ div.g-recaptcha, div.g-recaptcha div {
   padding: 0;
   display: inline-block;
   margin-top: -2px;
-}
-
-.fs-send {
-  display: inline-block;
 }
 
 .main {
@@ -1017,7 +1063,6 @@ tr.stroke {
   padding: 0;
   text-transform: uppercase;
   text-align: left !important;
-
 }
 
 .menu-mob-popup li {
@@ -1410,9 +1455,9 @@ tr.stroke {
 }
 
 @media only screen and (min-width : 353px) and (max-width : 768px) {
-
-pre {
-  font-size: 11px;}
+  pre {
+    font-size: 11px;
+  }
 }
 
 @media only screen and (min-width : 711px) and (max-width : 768px) {
@@ -1420,7 +1465,6 @@ pre {
     font-size: 13px;
     max-width: 768px;
   }
-
 
   .ti-box-youtube {
     height: 198px;
@@ -1514,7 +1558,6 @@ pre {
 }
 
 @media only screen and (min-width : 551px) and (max-width : 710px) {
-
   .lsp-content {
     font-size: 13px;
     max-width: 710px;
@@ -1689,6 +1732,14 @@ pre {
 }
 
 @media only screen and (min-width : 0px) and (max-width : 600px) {
+
+  /* start for survey page */
+  .survey-adaptive {
+    width: 304px;
+    margin: 0 auto;
+  }
+
+  /* end for survey page */
   .bundle-box {
     display: block;
     float: none !important;
@@ -1696,11 +1747,12 @@ pre {
   }
 
   .lpa, .bou, .pay, .eth, .ptr, .qiwi, .lpa:hover, .bou:hover, .pay:hover, .eth:hover, .ptr:hover, .qiwi:hover {
-  	display: table;
-  	margin-bottom: 10px;
+    display: table;
+    margin-bottom: 10px;
   }
+
   .sup-container {
-  	display: inline-block;
+    display: inline-block;
   }
 }
 

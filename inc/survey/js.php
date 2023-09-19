@@ -4,6 +4,7 @@
 		var list = $("div[id^='" + group + "_']" );
 		list.filter( function() { return this.id != div_id; } ).hide();
 		list.filter( function() { return this.id == div_id; } ).show();
+		$('body').scrollTo('#' + group + '_question');
 	}
 
 	function price_constraints(price) {

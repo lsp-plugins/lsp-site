@@ -14,7 +14,7 @@
 		elseif ($type == 'key') {
 			return ((strlen($value) <= 8) && (preg_match('/^[a-zA-Z_]\w*$/', $value))) ? $value : null;
 		}
-		else if ($type == 'char') {
+		elseif ($type == 'char') {
 			return strlen($value) == 1 ? $value : null; 
 		}
 		
@@ -121,7 +121,7 @@
 		}
 		
 		// Ensure that the value was set and commit result
-		if (count($values) <= 1) {
+		if (count($values) < 1) {
 			return validation_error($question, "At least one option should be selected.");
 		}
 		$question['value'] = $values;
@@ -150,11 +150,14 @@
 		
 		if ($question['mode'] === 'radio') {
 			$errors += validate_radio_answers($question, $vars);
-		} elseif ($question['mode'] === 'check') {
+		}
+		elseif ($question['mode'] === 'check') {
 			$errors += validate_check_answers($question, $vars);
-		} elseif ($question['mode'] === 'captcha') {
+		}
+		elseif ($question['mode'] === 'captcha') {
 			$errors += validate_captcha($question, $vars);
-		} else {
+		}
+		else {
 			$errors += validation_error($question, 'Invalid answer passed to the question.');
 		}
 		
