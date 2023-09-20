@@ -1,9 +1,16 @@
 <?php
 	function save_survey_row($mysql, $survey) {
-		$fields = array();
-		$values = array();
-		$args = array();
-		$types = array();
+		global $_SERVER;
+
+		$user_agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
+		if (isset($user_agent) && (strlen($user_agent) > 512)) {
+			$user_agent = substr($user_agent, 0, 512);
+		}
+
+		$fields = array('user_agent');
+		$values = array($user_agent);
+		$args = array('?');
+		$types = array('s');
 		
 		// Form the list of arguments
 		foreach ($survey['questions'] as $item) {
