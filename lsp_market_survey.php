@@ -22,7 +22,7 @@
 			"To understand the value of LSP Project on the consumer market and estimate the fair price for the sofware, we ask you to complete this short survey.",
 			"The survey is completely anonymous and won't take more than 5 minutes of your time."
 		),
-		'page' => $SITEROOT . "/lsp_market_survey.php",
+		'page' => $SITEROOT . "/lsp_market_survey",
 		'table' => 'lsp_market_survey',
 		'questions' => array(
 			array(
