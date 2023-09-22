@@ -100,14 +100,14 @@
 				'name' => 'familiar',
 				'type' => 'key',
 				'items' => array(
-					array('text' => 'No, never heard about it previously', 'value' => 'no'),
-					array('text' => 'Heard something but never tried', 'value' => 'some'),
-					array('text' => 'Know about it and don\'t want to try', 'value' => 'rej'),
-					array('text' => 'Know about it, want to try but don\'t have possibility yet', 'value' => 'want'),
-					array('text' => 'Know about it but prefer other tools', 'value' => 'oth'),
-					array('text' => 'Rarely use some of it\'s tools in my work', 'value' => 'rare'),
-					array('text' => 'Regularly use some of it\'s tools in my work', 'value' => 'reg'),
-					array('text' => 'Use it\'s tools almost in every my project', 'value' => 'perm')
+					array('text' => 'No, I\'ve never heard of it before', 'value' => 'no'),
+					array('text' => 'I\'ve heard of it but I haven\'t tried their plugins', 'value' => 'some'),
+					array('text' => 'I know about their plugins and don\'t want to try them', 'value' => 'rej'),
+					array('text' => 'I want to try their plugins, but it hasn\'t been possible for me to use them', 'value' => 'want'),
+					array('text' => 'I know about their plugins but I prefer other ones', 'value' => 'oth'),
+					array('text' => 'I rarely use their plugins in my work', 'value' => 'rare'),
+					array('text' => 'I regularly use their plugins in my work', 'value' => 'reg'),
+					array('text' => 'I almost always use their plugins in my work', 'value' => 'perm')
 				)
 			),
 			array(

@@ -1,5 +1,23 @@
 <h1>NEWS</h1>
 
+<h3>2023-09-21</h3>
+
+<p>LSP Consumer survey!</p>
+
+<p>If you are regularly observing the evolution of LSP Project, you probably already noticed that LSP Plugins
+are moving towards Windows support.</p>
+
+<p>Despite we're not planning to distribute them for free for Windows platform while keeping Linux and FreeBSD builds free.</p>
+
+<p>The main reason is, if people use proprietary solutions, then it is pretty fair to ask money for the job that developers of LSP project already did for almost 8 years of the project activity.</p>
+
+<p>That's why we publish the consumer survey, to understand the value of our product and the price that we can ask for the binary distributions of the product for Windows.</p>
+
+<p>Please take some time and complete the survey to make our job even better: <a href="https://lsp-plug.in/lsp_market_survey">https://lsp-plug.in/lsp_market_survey</a></p>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Wwwtj_64Bhk?si=QOev5LVgR-x03jh0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen>
+</iframe>
+
 <h3>2023-09-10</h3>
 
 <p>LSP Plugins 1.2.11 released!</p>
