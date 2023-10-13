@@ -1,5 +1,21 @@
 <h1>NEWS</h1>
 
+<h3>2023-10-14</h3>
+
+<p>LSP Plugins 1.2.12 released!</p>
+<ul>
+<li>Implemented Autogain plugin series for controlling the loudness of the signal
+  according to the ITU-R BS.1770-4 specificaions.</li>
+<li>Implemented SIMD-optimized curve and gain calculation functions for compressors
+  which allow to lower the CPU consumption by compressor plugins.</li>
+<li>More AVX-512 optimized functions added to the low-level DSP code.</li>
+<li>Additional SIMD-optimized functions added to DSP library.</li>
+<li>Fixed VST2 plugin crash on UI close in OBS Studio.</li>
+<li>Fixed invalid default values of parameters for CLAP plugin format.</li>
+<li>Fixed double memory free of generated port metadata in CLAP, VST2 and LV2 wrappers.</li>
+<li>Fixed HPF/LPF knob activity in the UI for multiband dynamics plugins.</li>
+</ul>
+
 <h3>2023-09-21</h3>
 
 <p>LSP Consumer survey!</p>
