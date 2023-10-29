@@ -1,5 +1,25 @@
 <h1>NEWS</h1>
 
+<h3>2023-10-30</h3>
+<p>LSP Plugins 1.2.13 released with bugfixes and improvements!</p>
+<ul>
+<li>Fixed bug in Multiband Limiter plugin series caused by invalid processing of
+  large input buffers.</li>
+<li>Fixed bug in Compensation Delay plugin series caused by invalid processing of
+  large input buffers.</li>
+<li>Fixed crackling sound caused by small buffer gaps in Autogain plugin series.</li>
+<li>Fixed bug introduced in 1.2.11 version related to improper optimized function
+  for AVX-512 instruction set that could cause dynamic processing plugins (like
+  Compressor, Expander, Gate, etc) work improperly.</li>
+<li>Several optimizations of DSP library with AVX and AVX2 instruction sets.</li>
+<li>Many additional optimizations of DSP library with AVX-512 instruction set.</li>
+<li>Optimizations of compressor, expander and gate modules with SIMD instructions.</li>
+<li>Gate module now uses lsp-dsp-lib for low-level gain and curve optimizations.</li>
+<li>Reduced the gain curve refresh rate for all multiband plugins which may reduce
+  CPU usage for small input buffer sizes.</li>
+<li>Optimized common gain curve calculation for all multiband plugins.</li>
+</ul>
+
 <h3>2023-10-14</h3>
 
 <p>LSP Plugins 1.2.12 released!</p>
