@@ -1,5 +1,50 @@
 <h1>NEWS</h1>
 
+<h3>2023-12-23</h3>
+<p>LSP Plugins celebrates the 8th anniversary and introduces the 1.2.14 release!</p>
+<ul>
+<li>Implemented Clipper plugins series.</li>
+<li>Implemented Multiband Clipper plugin series.</li>
+<li>Implemented Parametric Equalizer x8 plugin series.</li>
+<li>Updated VST 2.x plugin naming to fit the maximum possible length of 31 characters.</li>
+<li>Added tracking of maximum values option for Spectrum Analyzer plugin series.</li>
+<li>Added possibility to change frequency values by double click for GOTT Compressor.</li>
+<li>Improved performance of expression language in the UI.</li>
+<li>Implemented separate input and output signal spectrum analysis for Filter,
+  Graphic Equalizer and Parametric Equalizer plugin series.</li>
+<li>Updated default value and extended range of the zoom fader for Filter, Graphic
+  Equalizer and Parametric Equalizer plugin series.</li>
+<li>Added possibility to globally adjust filter point size for Filter, Graphic Equalizer
+  and Parametric Equalizer plugin series.</li>
+<li>Added gain level display for filter info of the Parametric Equalizer and Filter plugin series.</li>
+<li>Added missing inline display to the Autogain plugin series.</li>
+<li>Threshold markers are now editable for all dynamics and multiband dynamics plugins.</li>
+<li>Implemented switch that controls automatic scaling of spectrum graph for plugin series:</li>
+<ul>
+  <li>Beat Breaher.</li>
+  <li>Filter.</li>
+  <li>GOTT Compressor.</li>
+  <li>Graphic Equalizer.</li>
+  <li>Multiband Compressor.</li>
+  <li>Multiband Dynamic Processor.</li>
+  <li>Multiband Gate.</li>
+  <li>Multiband Expander.</li>
+  <li>Multiband Limiter.</li>
+  <li>Noise Generator.</li>
+  <li>Parametric Equalizer.</li>
+</ul>
+<li>Many code updates that could cause potential problems related to using another
+  decimal point for floating-point number formatting.</li>
+<li>Added frequency and note displaying for band splits for all multiband plugin
+  series.</li>
+<li>Added support of storing current file type selection in file dialogs of UI.</li>
+<li>Optimization of compressor and gate functions using AVX-512 instruction set.</li>
+<li>Fixed bug in Mid/Side conversion functions for AArch64 architecture (contributed
+  by marcan at GitHub).</li>
+<li>Introduced SIMD-optimized expander curve and gain functions.</li>
+<li>Improved performance of logarithmic values calculations for DSP modules.</li>
+</ul>
+
 <h3>2023-10-30</h3>
 <p>LSP Plugins 1.2.13 released with bugfixes and improvements!</p>
 <ul>
