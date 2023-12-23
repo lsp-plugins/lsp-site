@@ -21,7 +21,7 @@
 <li>Threshold markers are now editable for all dynamics and multiband dynamics plugins.</li>
 <li>Implemented switch that controls automatic scaling of spectrum graph for plugin series:</li>
 <ul>
-  <li>Beat Breaher.</li>
+  <li>Beat Breather.</li>
   <li>Filter.</li>
   <li>GOTT Compressor.</li>
   <li>Graphic Equalizer.</li>
