@@ -20,6 +20,7 @@
 	   def_menu_item('development', 'building', 'Building');
 	   def_menu_item('development', 'testing', 'Testing');
 	   def_menu_item('development', 'eclipse', 'Eclipse IDE Integration');
+	   def_menu_item('development', 'ui_guidelines', 'UI Development Guidelines');
 	def_menu_item('', 'troubleshooting', 'Troubleshooting');
 	
 ?>
