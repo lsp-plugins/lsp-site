@@ -37,7 +37,7 @@
 			<div class="footer-links">
 				<div>LINKS</div>
 				<ul>
-					<li><a href="https://github.com/sadko4u/" target="_blank">GitHub</a></li>
+					<li><a href="https://github.com/lsp-plugins/lsp-plugins/" target="_blank">GitHub</a></li>
 					<li><a href="https://linuxmusicians.com/" target="_blank">LinuxMusicians</a></li>
 					<li><a href="https://lv2plug.in/" target="_blank">LV2</a></li>
 					<li><a href="https://www.kvraudio.com/plugins/lsp" target="_blank">KVR Audio</a></li>
