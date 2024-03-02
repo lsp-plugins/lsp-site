@@ -68,15 +68,23 @@
 											target="_blank" title="Donate with Ethereum Wallet"
 											rel="noopener">Ethereum</a>
 									</div>
+									<div class="yoomoney">
+										<a href="<?=$SITEROOT?>?page=yoomoney"
+											title="Donate using Yoomoney">Yoomoney</a>
+									</div>
+<?php /*
 									<div class="bou">
 										<a href="https://salt.bountysource.com/teams/lsp-plugins"
 											target="_blank" title="Donate using Bountysource"
 											rel="noopener">Bountysource</a>
 									</div>
+*/ ?>
+<?php /*
 									<div class="qiwi">
 										<a href="<?=$SITEROOT?>?page=qiwi"
 											title="Donate using QIWI">QIWI</a>
 									</div>
+*/ ?>
 								</div>
 							</div>
 						</div>

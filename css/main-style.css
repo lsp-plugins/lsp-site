@@ -376,7 +376,7 @@ a img:hover {
   display: inline-block;
 }
 
-.don, .lpa, .bou, .pay, .eth, .ptr, .qiwi {
+.don, .lpa, .bou, .pay, .eth, .ptr, .qiwi, .yoomoney {
   display: inline-block;
   vertical-align: top;
   margin: 4px 0 0 4px;
@@ -391,7 +391,7 @@ a img:hover {
   height: 100%;
 }
 
-.lpa, .bou, .pay, .eth, .ptr, .qiwi, .lpa:hover, .bou:hover, .pay:hover, .eth:hover, .ptr:hover, .qiwi:hover {
+.lpa, .bou, .pay, .eth, .ptr, .qiwi, .yoomoney, .lpa:hover, .bou:hover, .pay:hover, .eth:hover, .ptr:hover, .qiwi:hover, yoomoney:hover {
   height: 25px;
   transition: all 0.3s ease;
   -webkit-transition: all 0.3s ease;
@@ -435,6 +435,12 @@ a img:hover {
   padding-left: 28px;
 }
 
+.yoomoney {
+  background: url(../svg/yoomoney.png) no-repeat top left;
+  background-size: contain;
+  padding-left: 28px;
+}
+
 .lpa:hover {
   background: url(../svg/lpa_gray.png) no-repeat top left;
   background-size: contain;
@@ -470,6 +476,13 @@ a img:hover {
   background-size: contain;
   padding-left: 28px;
 }
+
+.yoomoney:hover {
+  background: url(../svg/yoomoney_gray.png) no-repeat top left;
+  background-size: contain;
+  padding-left: 28px;
+}
+
 
 .container {
   width: 100%;
