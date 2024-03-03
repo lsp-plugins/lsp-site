@@ -9,8 +9,7 @@ $PAGES = array(
 	'download' => array('name' => 'Download', 'page' => 'download.php', 'icon' => 'download.png', 'style' => 'download_class' ),
 	'feedback' => array('name' => 'Feedback', 'page' => 'feedback.php', 'icon' => 'feedback.png', 'style' => 'feedback_class' ),
 	'qiwi' => array('name' => 'QIWI', 'page' => 'qiwi.php', 'hidden' => 1),
-	'yoomoney' => array('name' => 'Yoomoney', 'page' => 'yoomoney.php', 'hidden' => 1),
-	'test' => array('name' => 'Test', 'page' => 'test.php', 'hidden' => 1),
+	'yoomoney' => array('name' => 'Yoomoney', 'page' => 'yoomoney.php', 'hidden' => 1)
 );
 
 $SITEROOT = '';
