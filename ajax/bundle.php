@@ -61,6 +61,9 @@
 			<?php } ?>
 			<div class="format-div">
 				<b>Formats:</b>
+				<?php if (isset($plug['clap_uid']) && (strlen($plug['clap_uid']) > 0)) { ?>
+					<a href="https://github.com/free-audio/clap/" target="_blank" class="formats-links clap smooth" alt="CLAP"></a>
+				<? } ?>
 				<?php if (isset($plug['ladspa_label']) && (strlen($plug['ladspa_label']) > 0)) { ?>
 					<a href="https://www.ladspa.org/" target="_blank" class="formats-links ladspa smooth" alt="LADSPA"></a>
 				<? } ?>
@@ -69,6 +72,9 @@
 				<? }?>
 				<?php if (isset($plug['vst2_uid']) && (strlen($plug['vst2_uid']) > 0)) { ?>
 					<a href="https://www.linux-sound.org/linux-vst-plugins.html" target="_blank" class="formats-links vst" alt="VST 2.x"></a>
+				<? }?>
+				<?php if (isset($plug['vst3_uid']) && (strlen($plug['vst3_uid']) > 0)) { ?>
+					<a href="https://www.steinberg.net/" target="_blank" class="formats-links vst3" alt="VST 3"></a>
 				<? }?>
 				<?php if (isset($plug['jack']) && ($plug['jack'])) { ?>
 					<a href="https://jackaudio.org/" target="_blank" class="formats-links jack" alt="JACK"></a>

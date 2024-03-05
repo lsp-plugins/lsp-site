@@ -1378,6 +1378,13 @@ tr.stroke {
   opacity: 1;
 }
 
+.clap {
+  background: url(../img/f-clap.png) no-repeat bottom center;
+  background-size: contain;
+  width: 53px;
+  height: 16px;
+}
+
 .ladspa {
   background: url(../img/f-ladspa.png) no-repeat bottom center;
   background-size: contain;
@@ -1394,6 +1401,13 @@ tr.stroke {
 
 .vst {
   background: url(../img/f-vst.png) no-repeat bottom center;
+  background-size: contain;
+  width: 27px;
+  height: 16px;
+}
+
+.vst3 {
+  background: url(../img/f-vst3.png) no-repeat bottom center;
   background-size: contain;
   width: 27px;
   height: 16px;
