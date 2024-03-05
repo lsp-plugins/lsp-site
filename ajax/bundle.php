@@ -60,7 +60,7 @@
 				</iframe>
 			<?php } ?>
 			<div class="format-div">
-				<b>Formats:</b>
+				<b>Formats:</b><br>
 				<?php if (isset($plug['clap_uid']) && (strlen($plug['clap_uid']) > 0)) { ?>
 					<a href="https://github.com/free-audio/clap/" target="_blank" class="formats-links clap smooth" alt="CLAP"></a>
 				<? } ?>

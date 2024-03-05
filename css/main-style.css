@@ -1381,43 +1381,43 @@ tr.stroke {
 .clap {
   background: url(../img/f-clap.png) no-repeat bottom center;
   background-size: contain;
-  width: 53px;
-  height: 16px;
+  width: 28px;
+  height: 18px;
 }
 
 .ladspa {
   background: url(../img/f-ladspa.png) no-repeat bottom center;
   background-size: contain;
-  width: 53px;
-  height: 16px;
+  width: 60px;
+  height: 18px;
 }
 
 .lv2 {
   background: url(../img/f-lv2.png) no-repeat bottom center;
   background-size: contain;
-  width: 25px;
-  height: 16px;
+  width: 29px;
+  height: 18px;
 }
 
 .vst {
   background: url(../img/f-vst.png) no-repeat bottom center;
   background-size: contain;
-  width: 27px;
-  height: 16px;
+  width: 31px;
+  height: 18px;
 }
 
 .vst3 {
   background: url(../img/f-vst3.png) no-repeat bottom center;
   background-size: contain;
-  width: 27px;
-  height: 16px;
+  width: 29px;
+  height: 18px;
 }
 
 .jack {
   background: url(../img/f-jack.png) no-repeat bottom center;
   background-size: contain;
-  width: 83px;
-  height: 16px;
+  width: 93px;
+  height: 18px;
 }
 
 @media only screen and (min-width : 769px) and (max-width : 1000px) {
