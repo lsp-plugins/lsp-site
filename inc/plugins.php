@@ -24,6 +24,8 @@
 			if ($plugin['id'] != $PAGE)
 				continue;
 			
+			echo "<h1>" . htmlspecialchars($plugin['description']) . "</h1>\n";
+			
 			$fmt = array();
 			if (isset($plugin['clap_uid']) && ($plugin['clap_uid']))
 				array_push($fmt, '<a href="https://github.com/free-audio/clap" target="_blank">CLAP</a>');
@@ -35,11 +37,13 @@
 				array_push($fmt, '<a href="https://lv2plug.in/" target="_blank">LV2</a>');
 			if ((isset($plugin['vst2_uid'])) && (strlen($plugin['vst2_uid']) > 0))
 				array_push($fmt, '<a href="https://www.steinberg.net/" target="_blank">VST2</a>');
+			if ((isset($plugin['vst3_uid'])) && (strlen($plugin['vst3_uid']) > 0))
+				array_push($fmt, '<a href="https://www.steinberg.net/" target="_blank">VST3</a>');
 		
 			$full_name = htmlspecialchars("{$PACKAGE['short']} {$plugin['description']} ({$plugin['acronym']})");
 			$author = htmlspecialchars($plugin['author']);
 			
-			echo "<img class=\"plugin\" src=\"${DOCROOT}img/plugins/{$plugin['id']}.png\" alt=\"{$plugin['name']}\">\n";
+			echo "<img class=\"plugin\" src=\"{$DOCROOT}img/plugins/{$plugin['id']}.png\" alt=\"{$plugin['name']}\">\n";
 			echo "<p><b>Detailed:&nbsp;</b>{$full_name}</p>\n";
 			echo "<p><b>Formats:&nbsp;</b>" . implode(',&nbsp;', $fmt) . "</p>\n";
 			echo "<p><b>Categories:&nbsp;</b>" . implode(',&nbsp;', $plugin['groups']) . "</p>\n";
@@ -52,7 +56,7 @@
 	function out_image($id, $alt)
 	{
 		global $DOCROOT;
-		echo "<img src=\"${DOCROOT}/img/{$id}.png\" alt=\"{$alt}\">\n";
+		echo "<img src=\"{$DOCROOT}/img/{$id}.png\" alt=\"{$alt}\">\n";
 	}
 	
 	function plugin_ref($id)
@@ -63,7 +67,7 @@
 			return;
 		
 		$header = htmlspecialchars("{$PACKAGE['short']} {$page['text']}");
-		print("<b><a href=\"${DOCROOT}html/plugins/${page['id']}.html\">{$header}</a></b>");
+		print("<b><a href=\"{$DOCROOT}html/plugins/{$page['id']}.html\">{$header}</a></b>");
 	}
 
 ?>

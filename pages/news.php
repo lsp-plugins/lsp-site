@@ -1,6 +1,6 @@
 <h1>NEWS</h1>
 
-<h3>2024-03-05</h3>
+<h3>2024-03-06</h3>
 <p>LSP Plugins 1.2.15 released!</p>
 <p>Added experimental VST3 plugin format support.</p>
 <p>Added built-in presets for Compressor plugin series.</p>
