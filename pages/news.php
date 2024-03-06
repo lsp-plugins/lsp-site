@@ -2,34 +2,36 @@
 
 <h3>2024-03-06</h3>
 <p>LSP Plugins 1.2.15 released!</p>
-<p>Added experimental VST3 plugin format support.</p>
-<p>Added built-in presets for Compressor plugin series.</p>
-<p>Fixed bug in smoothing mode of Parametric Equalizer and Filter plugins that could
+<ul>
+<li>Added experimental VST3 plugin format support.</li>
+<li>Added built-in presets for Compressor plugin series.</li>
+<li>Fixed bug in smoothing mode of Parametric Equalizer and Filter plugins that could
   be caused when using large buffer sizes. Additional optimizations to reduce CPU
-  resources when processing in smoothing mode.</p>
-<p>Updated behaviour of band frequency splits in the UI for Multiband Compressor,
-  Multiband Expander, Multiband Gate Multiband Dynamic Processor and Crossover plugin series.</p>
-<p>Several bugfixes and improvements in implementations of VST2, LV2 and CLAP formats.</p>
-<p>Added possibility to manually enter channel name in Mixer plugin series.</p>
-<p>Added MIDI velocity control code display in Sampler and Multisampler plugin series.</p>
-<p>Added support of LR2 (12 dB/oct) filters by the Crossover plugins series.</p>
-<p>Added S/M Apply switch to Crossover plugin series that applies effect of Solo/Mute buttons
-  to corresponding frequency band's outputs.</p>
-<p>Improved grid color and visibility for the Spectrum analyzer plugin series in
-  Spectralizer mode.</p>
-<p>Implemented Hold option for Compressor, Dynamics Processor, Expander and Gate plugin series.</p>
-<p>Implemented Hold option for Multiband Compressor, Dynamics Processor, Expander and Gate plugin series.</p>
-<p>Added Dry/Wet balance control for Compressor, Dynamics Processor, Expander,
-  Gate and Trigger plugin series.</p>
-<p>Added Dry/Wet balance control for Multiband Compressor, Dynamics Processor, Expander,
-  Gate and GOTT Compressor plugin series.</p>
-<p>Fixed phasing issue between dry and wet signal for GOTT Compressor in Linear Phase mode.</p>
-<p>Fixed invalid curve markers display in Multiband Gate plugin series.</p>
-<p>Re-implemented allpass filters for Equalizer that could yield to high frequency
-  pitch buildup.</p>
-<p>Updated split editing behaviour for Multiband plugin series and Crossover plugin series.</p>
-<p>Added basic UI design guidelines to the documentation.</p>
-<p>Several bugfixes in graphic toolkit library.</p>
+  resources when processing in smoothing mode.</li>
+<li>Updated behaviour of band frequency splits in the UI for Multiband Compressor,
+  Multiband Expander, Multiband Gate Multiband Dynamic Processor and Crossover plugin series.</li>
+<li>Several bugfixes and improvements in implementations of VST2, LV2 and CLAP formats.</li>
+<li>Added possibility to manually enter channel name in Mixer plugin series.</li>
+<li>Added MIDI velocity control code display in Sampler and Multisampler plugin series.</li>
+<li>Added support of LR2 (12 dB/oct) filters by the Crossover plugins series.</li>
+<li>Added S/M Apply switch to Crossover plugin series that applies effect of Solo/Mute buttons
+  to corresponding frequency band's outputs.</li>
+<li>Improved grid color and visibility for the Spectrum analyzer plugin series in
+  Spectralizer mode.</li>
+<li>Implemented Hold option for Compressor, Dynamics Processor, Expander and Gate plugin series.</li>
+<li>Implemented Hold option for Multiband Compressor, Dynamics Processor, Expander and Gate plugin series.</li>
+<li>Added Dry/Wet balance control for Compressor, Dynamics Processor, Expander,
+  Gate and Trigger plugin series.</li>
+<li>Added Dry/Wet balance control for Multiband Compressor, Dynamics Processor, Expander,
+  Gate and GOTT Compressor plugin series.</li>
+<li>Fixed phasing issue between dry and wet signal for GOTT Compressor in Linear Phase mode.</li>
+<li>Fixed invalid curve markers display in Multiband Gate plugin series.</li>
+<li>Re-implemented allpass filters for Equalizer that could yield to high frequency
+  pitch buildup.</li>
+<li>Updated split editing behaviour for Multiband plugin series and Crossover plugin series.</li>
+<li>Added basic UI design guidelines to the documentation.</li>
+<li>Several bugfixes in graphic toolkit library.</li>
+</ul>
 
 <h3>2023-12-23</h3>
 <p>LSP Plugins celebrates the 8th anniversary and introduces the 1.2.14 release!</p>
