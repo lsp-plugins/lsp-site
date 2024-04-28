@@ -1,10 +1,7 @@
-<!DOCTYPE html>
-
 <?php
-	require_once("./config/config.php");
+    require_once("./config/config.php");
+	require_once("./inc/site/session.php");
 	require_once("./config/plugins.php");
-
-	require_once("./lib/recaptcha/autoload.php");
 
 	// Determine current page
 	$curr_page='';
@@ -15,6 +12,16 @@
 		reset($PAGES);
 		$curr_page = key($PAGES);
 	}
+	
+	// Intialize user session if it is required
+	if ($PAGES[$curr_page] ?? false) {
+		ensure_user_session_is_set();
+	}
+?>
+<!DOCTYPE html>
+
+<?php
+	require_once("./lib/recaptcha/autoload.php");
 ?>
 
 <html lang="en-gb" dir="ltr" vocab="http://schema.org/">
