@@ -807,6 +807,7 @@ div.plugin_select div {
   width: fit-content;
 }
 
+/* Feedback form */
 .fb-div {
   width: 304px;
   margin: 0 auto;
@@ -823,6 +824,65 @@ div.plugin_select div {
   display: block;
   width: 100%;
   margin-bottom: 8px;
+}
+
+.fs-send {
+  width: 304px;
+  display: grid;
+  grid-gap: 5px;
+  grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+  -ms-grid-columns: (23% 2.666%)[3] 23%;
+  -ms-grid-rows: 100% 5px 100%;
+  grid-template-rows: repeat(2, auto);
+}
+
+.fs-send>input[type="button"], .fs-send>input[type="submit"] {
+  width: auto;
+  margin-top:5px;
+}
+
+/* Authentication form */
+.auth-div {
+  width: 408px;
+  margin: 0 auto;
+  display: block;
+}
+
+.auth-submit {
+  width: 100%;
+  display: inline-block;
+}
+
+.auth-register {
+  width: 100%;
+  display: inline-block;
+}
+
+.auth-restore {
+  width: 100%;
+  display: inline-block;
+}
+
+.auth-name, .auth-email, .auth_password, .auth-message {
+  float: right;
+  display: block;
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.auth-send {
+  width: 304px;
+  display: grid;
+  grid-gap: 5px;
+  grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+  -ms-grid-columns: (23% 2.666%)[3] 23%;
+  -ms-grid-rows: 100% 5px 100%;
+  grid-template-rows: repeat(2, auto);
+}
+
+.auth-send>input[type="button"], .auth-send>input[type="submit"] {
+  width: auto;
+  margin-top:5px;
 }
 
 /* Input elements */
@@ -874,21 +934,6 @@ input[type="button"], input[type="submit"] {
   margin-block-end: 5px;
   padding-right: 5px;
   text-align: left !important;
-}
-
-.fs-send {
-  width: 304px;
-  display: grid;
-  grid-gap: 5px;
-  grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
-  -ms-grid-columns: (23% 2.666%)[3] 23%;
-  -ms-grid-rows: 100% 5px 100%;
-  grid-template-rows: repeat(2, auto);
-}
-
-.fs-send>input[type="button"], .fs-send>input[type="submit"] {
-  width: auto;
-  margin-top:5px;
 }
 
 input[class="survey"][type="text"] {

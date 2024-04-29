@@ -30,6 +30,18 @@
 
 						echo "</li>\n";
 					}
+					
+					$user = get_session_user();
+					if (isset($user)) {
+						$logout_token = get_csrf_token('logout', true);
+						echo "<li class=\"menu-li\">";
+						echo "<a href=\"${SITEROOT}/signout?token={$logout_token}\">Sign out</a>\n";
+						echo "</li>\n";
+					} else {
+						echo "<li class=\"menu-li\">";
+						echo "<a href=\"${SITEROOT}/signin\">Sign in</a>\n";
+						echo "</li>\n";
+					}
 				?>
 				</ul>
 			</div>
