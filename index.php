@@ -2,7 +2,6 @@
 <!DOCTYPE html>
 
 <?php require_once("./lib/recaptcha/autoload.php"); ?>
-<?php require_once("./inc/header.php"); ?>
 <?php
 	// Determine current page
 	$curr_page='';
@@ -19,6 +18,7 @@
 		ensure_user_session_is_set();
 	}
 ?>
+<?php require_once("./inc/header.php"); ?>
 <?php require("./pages/{$PAGES[$curr_page]['page']}"); ?>
 <?php require_once("./inc/footer.php"); ?>
 
