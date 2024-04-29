@@ -1,29 +1,3 @@
-<?php
-    require_once("./config/config.php");
-	require_once("./inc/site/session.php");
-	require_once("./config/plugins.php");
-
-	// Determine current page
-	$curr_page='';
-	if (array_key_exists('page', $_REQUEST))
-		$curr_page = $_REQUEST['page'];
-
-	if ((!$curr_page) || (!array_key_exists($curr_page, $PAGES))) {
-		reset($PAGES);
-		$curr_page = key($PAGES);
-	}
-	
-	// Intialize user session if it is required
-	if ($PAGES[$curr_page] ?? false) {
-		ensure_user_session_is_set();
-	}
-?>
-<!DOCTYPE html>
-
-<?php
-	require_once("./lib/recaptcha/autoload.php");
-?>
-
 <html lang="en-gb" dir="ltr" vocab="http://schema.org/">
 	<head>
 		<title>Linux Studio Plugins Project</title>
