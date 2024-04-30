@@ -1,6 +1,28 @@
 <?php
 $DB_CONNECTIONS = array();
 
+function db_log_exception($e) {
+	error_log("SQL exception: {$e->getMessage()}\n {$e->getTraceAsString()}");
+}
+
+function db_current_timestamp($delta = null) {
+	$curr_date = date("Y-m-d H:i:s");
+	if (!isset($delta))
+		return $curr_date;
+	
+	return date(
+		"Y-m-d H:i:s",
+		strtotime($delta, strtotime($curr_date))
+	);
+}
+
+function db_add_time_interval($timestamp, $delta) {
+	return date(
+		"Y-m-d H:i:s",
+		strtotime($delta, strtotime($timestamp))
+	);
+}
+
 function connect_db($database)
 {
 	global $DATABASES, $DB_CONNECTIONS;
@@ -21,16 +43,21 @@ function connect_db($database)
 	}
 	
 	// Connect to the database
-	$link = $DATABASES[$database];
-	$db = mysqli_connect("{$link['host']}:{$link['port']}", $link['user'], $link['password']);
-	if (!isset($db)) {
+	try {
+		$link = $DATABASES[$database];
+		$db = mysqli_connect("{$link['host']}:{$link['port']}", $link['user'], $link['password']);
+		if (!isset($db)) {
+			return null;
+		}
+		
+		// Setup connection parameters
+		mysqli_autocommit($db, false);
+		mysqli_select_db($db, $link['database']);
+		mysqli_report(MYSQLI_REPORT_ALL ^ MYSQLI_REPORT_INDEX);
+	} catch (mysqli_sql_exception $e) {
+		db_log_exception($e);
 		return null;
 	}
-	
-	// Setup connection parameters
-	mysqli_autocommit($db, false);
-	mysqli_select_db($db, $link['database']);
-	mysqli_report(MYSQLI_REPORT_ALL);
 	
 	// Store connection
 	$DB_CONNECTIONS[$database] = $db;

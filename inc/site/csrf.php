@@ -20,7 +20,7 @@ function db_make_csrf_token($db, $session_id, $scope, $permanent = false) {
 			return $id;
 		} catch (mysqli_sql_exception $e) {
 			if (!unique_key_violation($e)) {
-				error_log("SQL exception: " . $e->getMessage());
+				db_log_exception($e);
 				break;
 			}
 		} finally {

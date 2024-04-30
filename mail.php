@@ -1,7 +1,7 @@
 <?php require_once("inc/top.php"); ?>
 <?php
 	require_once("./lib/recaptcha/autoload.php");
-	require("./vendor/autoload.php");
+	require_once("./vendor/autoload.php");
 	
 	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		$message = 'Sorry, something went wrong while submitting form. You may try again some amount of time later.';

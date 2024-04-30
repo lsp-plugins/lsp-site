@@ -76,7 +76,7 @@ function create_session($db)
 			
 		} catch (mysqli_sql_exception $e) {
 			if (!unique_key_violation($e)) {
-				error_log("SQL exception: " . $e->getMessage());
+				db_log_exception($e);
 				break;
 			}
 		} finally {
@@ -176,7 +176,6 @@ function set_session_user($user)
 		mysqli_stmt_close($stmt);
 	}
 	
-	$USER_SESSION['id'] = $user_id;
 	$USER_SESSION['user'] = $user;
 	
 	return true;
