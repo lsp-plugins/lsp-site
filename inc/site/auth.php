@@ -9,7 +9,7 @@ require_once('user_token.php');
 function db_auth_user($db, $session_id, $email, $password) {
 	$stmt = null;
 	try {
-		$enc_email = encrypt_text($email);
+		$enc_email = encrypt_non_salted_text($email);
 		$stmt = mysqli_prepare($db,
 			"SELECT " .
 			"  c.id id, c.support_id support_id, c.email email, c.password password, " .
@@ -67,7 +67,7 @@ function db_create_user($db, $email, $password, $type) {
 	if (!isset($user_type))
 		return null;
 		
-	$enc_email = encrypt_text($email);
+	$enc_email = encrypt_non_salted_text($email);
 	$enc_password = encrypt_text($password);
 	
 	$stmt = null;
@@ -124,7 +124,7 @@ function db_auth_get_user($db, $options) {
 		} elseif (array_key_exists('email', $options)) {
 			$condition = "c.email = ?";
 			$types = 's';
-			$value = encrypt_text($options['email']);
+			$value = encrypt_non_salted_text($options['email']);
 		} elseif (array_key_exists('support_id', $options)) {
 			$condition = "c.support_id = ?";
 			$types = 's';
@@ -161,7 +161,7 @@ function db_auth_get_user($db, $options) {
 			return null;
 		}
 		
-		$email = decrypt_text($row['email']);
+		$email = decrypt_non_salted_text($row['email']);
 		return array(
 			'id' => $row['id'],
 			'support_id' => $row['support_id'],
@@ -204,7 +204,7 @@ function db_auth_update_user($db, $user_id, $options) {
 		$types .= 's';
 	} elseif (isset($options['email'])) {
 		array_push($expressions, 'email=?');
-		array_push($values, encrypt_text($options['email']));
+		array_push($values, encrypt_non_salted_text($options['email']));
 		$types .= 's';
 	} elseif (isset($options['type'])) {
 		array_push($expressions, 'type=?');
