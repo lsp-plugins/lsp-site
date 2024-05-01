@@ -1,8 +1,36 @@
 <?php
 $DB_CONNECTIONS = array();
 
+function db_log_query($query, $types, $values) {
+	error_log("query = {$query}, types = {$types}, values = " . var_export($values, true));
+}
+
 function db_log_exception($e) {
 	error_log("SQL exception: {$e->getMessage()}\n {$e->getTraceAsString()}");
+}
+
+function db_safe_close($stmt) {
+	if (!isset($stmt)) {
+		return;
+	}
+	
+	try {
+		mysqli_stmt_close($stmt);
+	} catch (Exception $e) {
+		/* nothing */
+	}
+}
+
+function db_safe_rollback($db) {
+	if (!isset($db)) {
+		return;
+	}
+	
+	try {
+		mysqli_rollback($db);
+	} catch (Exception $e) {
+		/* nothing */
+	}
 }
 
 function db_current_timestamp($delta = null) {
@@ -64,12 +92,16 @@ function connect_db($database)
 	return $db;
 }
 
-function unique_key_violation($obj) {
+function unique_key_violation($obj, $key = null) {
 	$is_exception = $obj instanceof mysqli_sql_exception;
 	$error_num = ($is_exception) ? $obj->getCode() : mysqli_errno($obj);
+	if (!isset($key)) {
+		$key = '.*';
+	}
+	
 	if (($error_num === 1062) || ($error_num === 1586)) {
 		$error_str = ($is_exception) ? $obj->getMessage() : $obj->getmysqli_error($obj);
-		if (preg_match("/Duplicate entry '.*' for key '.*'/", $error_str)) {
+		if (preg_match("/Duplicate entry '.*' for key '{$key}'/", $error_str)) {
 			return true;
 		}
 	} 
@@ -104,9 +136,13 @@ function id_from_dict($db, $table, $key) {
 			return null;
 		
 		return $row['id'];
+	} catch (mysqli_sql_exception $e) {
+		db_log_exception($e);
 	} finally {
 		mysqli_stmt_close($stmt);
 	}
+	
+	return null;
 }
 
 ?>

@@ -1,6 +1,7 @@
 <?php
 
 require_once('database.php');
+require_once('logging.php');
 require_once('uuid.php');
 require_once('auth.php');
 
@@ -43,19 +44,40 @@ function db_get_session($db, $session_id)
 	}
 }
 
-// Update last use time of a session
-function update_session($db, $session_id)
-{
-	if (!isset($session_id))
+function db_update_session($db, $session_id, $options) {
+	if (!isset($session_id)) {
 		return false;
-
-	$stmt = mysqli_prepare($db, "UPDATE sessions SET expire=current_timestamp + interval 1 day WHERE id=?");
+	}
+	if (!isset($options)) {
+		return false;
+	}
+	
+	$expressions = [ "expire=?"];
+	$values = [ db_current_timestamp("+1 day")];
+	$types = 's';
+	
+	if (array_key_exists('user_id', $options)) {
+		array_push($expressions, 'user_id=?');
+		array_push($values, $options['user_id']);
+		$types .= 'i';
+	}
+	
+	$stmt = null;
 	try {
-		mysqli_stmt_bind_param($stmt, 's', $session_id);
+		$types .= 's';
+		array_push($values, $session_id);
+		
+		$query = "UPDATE sessions " .
+			"SET " . implode(', ', $expressions) . " " .
+			"WHERE id=?";
+		$stmt = mysqli_prepare($db, $query);
+		mysqli_stmt_bind_param($stmt, $types, ...$values);
 		return mysqli_stmt_execute($stmt);
 	} finally {
-		mysqli_stmt_close($stmt);
+		db_safe_close($stmt);
 	}
+	
+	return false;
 }
 
 function create_session($db)
@@ -108,7 +130,7 @@ function user_session_id()
 	if (!isset($session))
 		return null;
 	
-	if (update_session($db, $session_id)) {
+	if (db_update_session($db, $session_id, [])) {
 		mysqli_commit($db);
 		$USER_SESSION = $session;
 		return $session_id;
@@ -147,33 +169,47 @@ function ensure_user_session_is_set()
 	return null;
 }
 
-function set_session_user($user)
+function set_session_user($ip_addr, $user)
 {
 	global $USER_SESSION;
 	
 	$session_id = $USER_SESSION['id'];
-	if (!isset($session_id))
+	$session_user = $USER_SESSION['user'];
+	if (!isset($session_id)) {
 		return false;
+	}
 	
 	// Connect to the database
-	$db = connect_db('site');
-	if (!isset($db))
-		return null;
-	
 	$user_id = (isset($user)) ? $user['id'] : null;
-	$stmt = mysqli_prepare($db, "UPDATE sessions SET expire=current_timestamp + interval 1 day, user_id=? WHERE id=?");
+	
+	$db = null;
 	try {
-		mysqli_stmt_bind_param($stmt, 'ss', $user_id, $session_id);
-		if (!mysqli_stmt_execute($stmt))
+		$db = connect_db('site');
+		if (!isset($db)) {
+			return null;
+		}
+		
+		if (!db_update_session($db, $session_id, ['user_id' => $user_id])) {
 			return false;
-		
-		// Cleanup CSRF tokens
-		if (!isset($user_id))
+		}
+
+		if (!isset($user_id)) {
 			db_remove_csrf_tokens($db, $session_id, 'logout');
-		
+		}
 		mysqli_commit($db);
+			
 	} finally {
-		mysqli_stmt_close($stmt);
+		db_safe_rollback($db);
+	}
+	
+	// Log to history
+	$log_data = [
+		'ip_addr' => $ip_addr
+	];
+	if (isset($user)) {
+		log_user_action($user['id'], $session_id, 'authenticated', $log_data);
+	} elseif (isset($session_user)) {
+		log_user_action($session_user['id'], $session_id, 'logged_out', $log_data);
 	}
 	
 	$USER_SESSION['user'] = $user;

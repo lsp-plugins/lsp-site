@@ -7,8 +7,11 @@ require_once("./lib/recaptcha/autoload.php");
 function process_auth_request(&$user_email, &$password_reset_token) {
 	global $GOOGLE;
 	global $SITE_URL, $MAIL_ADDR;
+	
+	$ip_addr = $_SERVER['REMOTE_ADDR'];
 
-	if (!ensure_user_session_is_set())
+	$session = ensure_user_session_is_set();
+	if (!isset($session))
 		return 'HTTP session expired';
 	
 	$user = get_session_user();
@@ -41,12 +44,12 @@ function process_auth_request(&$user_email, &$password_reset_token) {
 		if (!isset($password))
 			return 'Password not specified';
 		
-		$user = auth_user($email, $password);
+		$user = auth_user($session, $ip_addr, $email, $password);
 		if (!isset($user))
 			return 'Wrong email of password specified';
 			
 		// Redirect to download page
-		set_session_user($user);
+		set_session_user($ip_addr, $user);
 		header("Location: {$SITE_URL}/?page=download");
 		exit();
 	
@@ -62,19 +65,19 @@ function process_auth_request(&$user_email, &$password_reset_token) {
 		if (strcmp($password, $password2) !== 0)
 			return 'Password and password confirmation do not match';
 			
-		$user = create_user($email, $password, 'regular');
+		$user = create_user($session, $ip_addr, $email, $password, 'regular');
 		if (!isset($user))
 			return "Trying to register already registered user";
 
 		// Bind user to session
-		set_session_user($user);
+		set_session_user($ip_addr, $user);
 			
 		// Redirect to download page
 		header("Location: {$SITE_URL}/?page=download");
 		exit();
 	} elseif (isset($_POST['restore'])) {
 		// Create password reset token
-		$token = auth_create_password_reset_token($email);
+		$token = auth_create_password_reset_token($session, $ip_addr, $email);
 		if (!isset($token)) {
 			return 'Unknown error occurred when resetting password, please try again.';
 		}
@@ -128,13 +131,13 @@ function process_auth_request(&$user_email, &$password_reset_token) {
 		}
 		
 		// Change password
-		$user = auth_change_user_password($user['id'], $password);
+		$user = auth_change_user_password($session, $ip_addr, $user['id'], $password);
 		if (!isset($user)) {
 			return 'Failed password reset. Please try again';
 		}
 		
 		// Bind user to session
-		set_session_user($user);
+		set_session_user($ip_addr, $user);
 		
 		// Redirect to download page
 		header("Location: {$SITE_URL}/?page=download");
