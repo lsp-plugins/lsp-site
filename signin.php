@@ -1,4 +1,7 @@
 <?php
+
+chdir($_SERVER['DOCUMENT_ROOT']);
+
 require_once("./inc/top.php");
 require_once("./inc/site/auth.php");
 require_once("./inc/service/mail.php");
@@ -71,6 +74,20 @@ function process_auth_request(&$user_email, &$password_reset_token) {
 
 		// Bind user to session
 		set_session_user($ip_addr, $user);
+		
+		// Create password reset token
+		$token = auth_create_email_verification_token($session, $ip_addr, $user['id']);
+		if (isset($token)) {
+			send_mail(
+				[ $MAIL_ADDR['noreply'] => 'Email verification service' ],
+				[ $email => 'LSP Customer' ],
+				'LSP Plugins: email verification',
+				'email_verification', 
+				[
+					'site_url' => "{$SITE_URL}/",
+					'recovery_url' => "{$SITE_URL}/actions/verify_email?token={$token['id']}"
+				]);
+		}
 			
 		// Redirect to download page
 		header("Location: {$SITE_URL}/?page=download");
@@ -87,10 +104,11 @@ function process_auth_request(&$user_email, &$password_reset_token) {
 			[ $MAIL_ADDR['noreply'] => 'Password reset service' ],
 			[ $email => 'LSP Customer' ],
 			'LSP Plugins: password reset',
-			'password_reset', array(
+			'password_reset', 
+			[
 				'site_url' => "{$SITE_URL}/",
 				'recovery_url' => "{$SITE_URL}/signin?token={$token['id']}"
-			));
+			]);
 
 		return ($result) ?
 			"Password reset mail has been sent" :

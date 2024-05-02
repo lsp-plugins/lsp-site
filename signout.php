@@ -1,5 +1,7 @@
 <?php
 
+chdir($_SERVER['DOCUMENT_ROOT']);
+
 require_once('./inc/top.php');
 require_once('./inc/site/csrf.php');
 require_once('./inc/site/auth.php');

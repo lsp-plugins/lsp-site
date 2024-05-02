@@ -51,6 +51,10 @@ function db_add_time_interval($timestamp, $delta) {
 	);
 }
 
+function db_strtotime($timestamp) {
+	return strtotime($timestamp);
+}
+
 function connect_db($database)
 {
 	global $DATABASES, $DB_CONNECTIONS;

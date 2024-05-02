@@ -1,8 +1,81 @@
 <?php
-	require_once('./inc/files.php');
+require_once('./inc/files.php');
+require_once('./inc/site/auth.php');
+require_once('./inc/site/database.php');
+require_once('./inc/site/session.php');
 ?>
 
 <h1>DOWNLOAD</h1>
+
+<?
+
+$user = get_session_user();
+if ((isset($user)) && (!isset($user['verified']))) {
+	$user_id = $user['id'];
+	$token = auth_find_email_verification_token($user_id);
+	$resend_period = 0;
+	if (isset($token)) {
+		$token_created = $token['created'];
+		$threshold_time = db_current_timestamp('-20 minutes');
+		$resend_period = db_strtotime($token_created) - db_strtotime($threshold_time);
+	}
+	
+	if ($resend_period < 0)
+		$resend_period = 0;
+?>
+
+<div>
+<form id="email_form" action="<?=$SITEROOT?>/actions/verify_email.php" method="POST">
+<p>For full functionality we've sent you verification link on your e-mail. Please follow this link. If you didn't receive the e-mail,
+you can request to send it again.</p>
+
+<input id="email_button" type="submit" value="Send e-mail" name="verification" <?= ($resend_period > 0) ? 'disabled' : '' ?>>
+
+<div id="email_countdown_message" style="display: none;">
+	Re-send available after: <span id="email_countdown"></p>
+</div>
+
+<script type="text/javascript">
+	var countdown = '<?= $resend_period ?>';
+	
+	if (countdown > 0) {
+		var email_timer = setInterval(
+			function() {
+				var button = $("#email_button");
+				var counter_message = $("#email_countdown_message");
+				var counter = $('#email_countdown');
+				if (countdown <= 0) {
+					clearInterval(email_timer);
+					button.removeAttr('disabled');
+					counter_message.hide();
+					return;
+				}
+	
+				button.attr('disabled', 'true');
+				minutes = Math.floor(countdown / 60) + "";
+				seconds = (countdown % 60) + "";
+				if (minutes.length < 2) {
+					minutes = '0' + minutes;
+				}
+				if (seconds.length < 2) {
+					seconds = '0' + seconds;
+				}
+
+				counter_message.show();
+				counter.text(minutes + ":" + seconds);
+				--countdown;
+			},
+			1000);
+	}
+</script>
+
+</form>
+</div>
+
+<?
+}
+
+?>
 
 <p>The LSP project is an open-source project and cares about quality of developed software.</p>
 <p>Still there is no absolute warranty about stability of the software on different platforms, so you're using this software on your own risk.</p>

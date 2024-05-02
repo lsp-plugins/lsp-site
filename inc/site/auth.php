@@ -362,8 +362,47 @@ function auth_create_password_reset_token($session_id, $ip_addr, $email) {
 	return null;
 }
 
-function auth_get_user_token($token_id, $scope) {
-	if (!isset($token_id)) {
+function auth_create_email_verification_token($session_id, $ip_addr, $user_id) {
+	if (!isset($session_id)) {
+		return null;
+	}
+	if (!isset($user_id)) {
+		return null;
+	}
+			
+	$db = null;
+	try {
+		$db = connect_db('customers');
+		if (!isset($db)) {
+			return null;
+		}
+		
+		db_remove_all_user_tokens($db, $user_id, 'email_verification');
+		$token = db_create_user_token($db, $user_id, 'email_verification');
+		if (!isset($token)) {
+			return null;
+		}
+		
+		$log_data = [
+			'ip_addr' => $ip_addr
+		];
+		if (!db_log_user_action($db, $user_id, $session_id, 'email_verification_requested', $log_data))
+			return;
+			
+		mysqli_commit($db);
+		return $token;
+			
+	} catch (mysqli_sql_exception $e) {
+		db_log_exception($e);
+	} finally {
+		db_safe_rollback($db);
+	}
+	
+	return null;
+}
+
+function auth_get_user_token($scope, $options) {
+	if (!isset($options)) {
 		return null;
 	}
 	
@@ -373,7 +412,7 @@ function auth_get_user_token($token_id, $scope) {
 	}
 	
 	try {
-		return db_get_user_token($db, $token_id, $scope);
+		return db_get_user_token($db, $scope, $options);
 	} catch (mysqli_sql_exception $e) {
 		db_log_exception($e);
 	}
@@ -382,7 +421,15 @@ function auth_get_user_token($token_id, $scope) {
 }
 
 function auth_get_password_reset_token($token_id) {
-	return auth_get_user_token($token_id, 'password_reset');
+	return auth_get_user_token('password_reset', [ 'id' => $token_id ]);
+}
+
+function auth_get_email_verification_token($token_id) {
+	return auth_get_user_token('email_verification', [ 'id' => $token_id ]);
+}
+
+function auth_find_email_verification_token($user_id) {
+	return auth_get_user_token('email_verification', [ 'user_id' => $user_id ]);
 }
 
 function auth_change_user_password($session_id, $ip_addr, $user_id, $password) {
@@ -414,6 +461,52 @@ function auth_change_user_password($session_id, $ip_addr, $user_id, $password) {
 			return null;
 		}
 			
+		mysqli_commit($db);
+		return $user;
+	} catch (mysqli_sql_exception $e) {
+		db_log_exception($e);
+	} finally {
+		db_safe_rollback($db);
+	}
+	
+	return null;
+}
+
+function auth_verify_email($session_id, $ip_addr, $token_id) {
+	if (!isset($session_id)) {
+		return false;
+	}
+	if (!isset($token_id)) {
+		return false;
+	}
+	
+	$db = null;
+	try {
+		$db = connect_db('customers');
+		if (!isset($db)) {
+			return false;
+		}
+		
+		$token = db_get_user_token($db, 'email_verification', [ 'token_id' => $token_id ] );
+		if (!isset($token)) {
+			return false;
+		}
+		
+		$user_id = $token['user_id'];
+		db_remove_all_user_tokens($db, $user_id, 'email_verification');
+		
+		$user = db_auth_update_user($db, $user_id, [ 'verified' => db_current_timestamp() ]);
+		if (!isset($user)) {
+			return null;
+		}
+		
+		$log_data = [
+			'ip_addr' => $ip_addr
+		];
+		if (!db_log_user_action($db, $user_id, $session_id, 'verified_email', $log_data)) {
+			return null;
+		}
+		
 		mysqli_commit($db);
 		return $user;
 	} catch (mysqli_sql_exception $e) {

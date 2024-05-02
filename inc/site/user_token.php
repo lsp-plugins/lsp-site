@@ -38,14 +38,40 @@ function db_create_user_token($db, $user_id, $scope, $data = null, $lifetime = '
 	return null;
 }
 
-function db_get_user_token($db, $token, $scope) {
+function db_get_user_token($db, $scope, $options) {
+	if (!isset($options)) {
+		return null;
+	}
+	
+	$field = 'id';
+	$value = $options;
+	$type = 's';
+	
+	if (is_array($options)) {
+		if (array_key_exists('id', $options)) {
+			$field = 'id';
+			$value = $options['id'];
+			$type = 's';
+		} elseif (array_key_exists('token_id', $options)) {
+			$field = 'id';
+			$value = $options['token_id'];
+			$type = 's';
+		} elseif (array_key_exists('user_id', $options)) {
+			$field = 'customer_id';
+			$value = $options['user_id'];
+			$type = 'i';
+		} else {
+			return null;
+		}
+	}
+	
 	$stmt = mysqli_prepare($db,
 		"SELECT id, customer_id, created, expire, scope, data " .
 		"FROM customer_token " .
-		"WHERE (id=?) AND (scope=?) AND " .
+		"WHERE ({$field}=?) AND (scope=?) AND " .
 		"  ((expire IS NULL) OR (expire >= current_timestamp))");
 	try {
-		mysqli_stmt_bind_param($stmt, 'ss', $token, $scope);
+		mysqli_stmt_bind_param($stmt, $type . 's', $value, $scope);
 		if (!mysqli_stmt_execute($stmt))
 			return null;
 			
@@ -57,6 +83,39 @@ function db_get_user_token($db, $token, $scope) {
 		if (!isset($row))
 			return null;
 		
+		$data = (isset($row['data'])) ? json_decode($row['data'], true) : null;
+		
+		return array(
+			'id' => $row['id'],
+			'user_id' => $row['customer_id'],
+			'created' => $row['created'],
+			'expire' => $row['expire'],
+			'data' => $data
+		);
+	} finally {
+		mysqli_stmt_close($stmt);
+	}
+}
+
+function db_find_user_token($db, $user_id, $scope) {
+	$stmt = mysqli_prepare($db,
+		"SELECT id, customer_id, created, expire, scope, data " .
+		"FROM customer_token " .
+		"WHERE (user_id=?) AND (scope=?) AND " .
+		"  ((expire IS NULL) OR (expire >= current_timestamp))");
+	try {
+		mysqli_stmt_bind_param($stmt, 'is', $user_id, $scope);
+		if (!mysqli_stmt_execute($stmt))
+			return null;
+			
+		$result = mysqli_stmt_get_result($stmt);
+		if (!isset($result))
+			return null;
+				
+		$row = mysqli_fetch_array($result);
+		if (!isset($row))
+			return null;
+					
 		$data = (isset($row['data'])) ? json_decode($row['data'], true) : null;
 		
 		return array(
@@ -90,12 +149,12 @@ function db_update_user_token($db, $user_id, $token, $data) {
 	}
 }
 
-function db_remove_user_token($db, $user_id, $token) {
+function db_remove_user_token($db, $user_id, $token_id) {
 	$stmt = mysqli_prepare($db,
 		"DELETE FROM customer_token " .
 		"WHERE (id=?) AND (customer_id=?)");
 	try {
-		mysqli_stmt_bind_param($stmt, 'ss', $token, $user_id);
+		mysqli_stmt_bind_param($stmt, 'ss', $token_id, $user_id);
 		if (!mysqli_stmt_execute($stmt))
 			return false;
 			
