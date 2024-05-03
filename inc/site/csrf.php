@@ -1,46 +1,8 @@
 <?php
-require_once('database.php');
-require_once('session.php');
-require_once('uuid.php');
 
-function db_make_csrf_token($db, $session_id, $scope, $permanent = false) {
-	// Create new token
-	$expire_expr = ($permanent) ? 'NULL' : 'current_timestamp() + interval 1 day';
-	$stmt = mysqli_prepare($db,
-		"INSERT INTO csrf_tokens(id, session_id, scope, expire) " .
-		"VALUES (?, ?, ?, {$expire_expr})");
-	while (true) {
-		try {
-			$id = make_uuid();
-			mysqli_stmt_bind_param($stmt, 'sss', $id, $session_id, $scope);
-			
-			if (!mysqli_stmt_execute($stmt))
-				break;
-				
-			return $id;
-		} catch (mysqli_sql_exception $e) {
-			if (!unique_key_violation($e)) {
-				db_log_exception($e);
-				break;
-			}
-		} finally {
-			mysqli_stmt_close($stmt);
-		}
-	}
-	
-	return null;
-}
-
-function db_remove_csrf_tokens($db, $session_id, $scope) {
-	$stmt = mysqli_prepare($db,
-		"DELETE FROM csrf_tokens " .
-		"WHERE (session_id=?) AND (scope=?)"
-	);
-	
-	mysqli_stmt_bind_param($stmt, 'ss', $session_id, $scope);
-	
-	return mysqli_stmt_execute($stmt);
-}
+require_once('./inc/service/database.php');
+require_once('./inc/dao/csrf.php');
+require_once('./inc/site/session.php');
 
 function make_csrf_token($scope, $permanent = false) {
 	// Ensure that we already have user session
@@ -50,15 +12,22 @@ function make_csrf_token($scope, $permanent = false) {
 	}
 	
 	// Connect to the database
-	$db = connect_db('site');
-	if (!isset($db)) {
-		return "";
-	}
-	
-	$token = db_make_csrf_token($db, $session_id, $scope, $permanent);
-	if (isset($token)) {
+	$db = null;
+	try {
+		$db = connect_db('site');
+		if (!isset($db)) {
+			return "";
+		}
+		
+		$token = dao_make_csrf_token($db, $session_id, $scope, $permanent);
+		if (!isset($token)) {
+			return "";
+		}
+			
 		mysqli_commit($db);
 		return $token;
+	} finally {
+		db_safe_rollback($db);
 	}
 	
 	return "";
@@ -71,40 +40,22 @@ function get_csrf_token($scope, $permanent = false) {
 		return null;
 	}
 	
-	// Connect to the database
-	$db = connect_db('site');
-	if (!isset($db)) {
-		return "";
-	}
-	
-	// Create new token
-	$stmt = mysqli_prepare($db,
-		"SELECT id FROM csrf_tokens " .
-		"WHERE (session_id=?) AND (scope=?) AND " .
-		"  ((expire IS NULL) OR (expire >= current_timestamp))");
+	$db = null;
 	try {
-		mysqli_stmt_bind_param($stmt, 'ss', $session_id, $scope);
-		if (!mysqli_stmt_execute($stmt))
-			return null;
-		
-		$result = mysqli_stmt_get_result($stmt);
-		if (!isset($result))
-			return null;
-		
-		$row = mysqli_fetch_array($result);
-		if (isset($row)) {
-			return $row['id'];
-		} elseif (!$permanent) {
-			return null;
+		// Connect to the database
+		$db = connect_db('site');
+		if (!isset($db)) {
+			return "";
 		}
 		
-		$result = db_make_csrf_token($db, $session_id, $scope, $permanent);
-		if (isset($result))
+		$token = dao_get_csrf_token($db, $session_id, $scope, $permanent);
+		if (isset($token)) {
 			mysqli_commit($db);
+		}
 		
-		return $result;
+		return $token;
 	} finally {
-		mysqli_stmt_close($stmt);
+		db_safe_rollback($db);
 	}
 }
 
@@ -115,28 +66,22 @@ function apply_csrf_token($scope, $token) {
 		return false;
 	}
 	
-	// Connect to the database
-	$db = connect_db('site');
-	if (!isset($db)) {
-		return "";
-	}
-	
-	// Create new token
-	$stmt = mysqli_prepare($db,
-		"DELETE FROM csrf_tokens " .
-		"WHERE (id=?) AND (session_id=?) AND (scope=?) AND " .
-		"  ((expire IS NULL) OR (expire >= current_timestamp))");
+	$db = null;
 	try {
-		mysqli_stmt_bind_param($stmt, 'sss', $token, $session_id, $scope);
-		if (!mysqli_stmt_execute($stmt))
+		// Connect to the database
+		$db = connect_db('site');
+		if (!isset($db)) {
 			return false;
-		
-		if (mysqli_affected_rows($db) > 0) {
-			mysqli_commit($db);
-			return true;
 		}
+	
+		$result = dao_apply_csrf_token($db, $session_id, $scope, $token);
+		if ($result) {
+			mysqli_commit($db);
+		}
+		
+		return $result;
 	} finally {
-		mysqli_stmt_close($stmt);
+		db_safe_rollback($db);
 	}
 	
 	return false;

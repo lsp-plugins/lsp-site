@@ -1,7 +1,8 @@
 <?php
-require_once('database.php');
 
-function db_create_user_token($db, $user_id, $scope, $data = null, $lifetime = '+1 day') {
+require_once('./inc/service/database.php');
+
+function dao_create_user_token($db, $user_id, $scope, $data = null, $lifetime = '+1 day') {
 	// Create new token
 	$json = (isset($data)) ? json_encode($data) : null;
 	$created = db_current_timestamp();
@@ -38,7 +39,7 @@ function db_create_user_token($db, $user_id, $scope, $data = null, $lifetime = '
 	return null;
 }
 
-function db_get_user_token($db, $scope, $options) {
+function dao_get_user_token($db, $scope, $options) {
 	if (!isset($options)) {
 		return null;
 	}
@@ -97,7 +98,7 @@ function db_get_user_token($db, $scope, $options) {
 	}
 }
 
-function db_find_user_token($db, $user_id, $scope) {
+function dao_find_user_token($db, $user_id, $scope) {
 	$stmt = mysqli_prepare($db,
 		"SELECT id, customer_id, created, expire, scope, data " .
 		"FROM customer_token " .
@@ -130,7 +131,7 @@ function db_find_user_token($db, $user_id, $scope) {
 	}
 }
 
-function db_update_user_token($db, $user_id, $token, $data) {
+function dao_update_user_token($db, $user_id, $token, $data) {
 	$json = (isset($data)) ? json_encode($data) : null;
 	
 	$stmt = mysqli_prepare($db,
@@ -149,7 +150,7 @@ function db_update_user_token($db, $user_id, $token, $data) {
 	}
 }
 
-function db_remove_user_token($db, $user_id, $token_id) {
+function dao_remove_user_token($db, $user_id, $token_id) {
 	$stmt = mysqli_prepare($db,
 		"DELETE FROM customer_token " .
 		"WHERE (id=?) AND (customer_id=?)");
@@ -164,7 +165,7 @@ function db_remove_user_token($db, $user_id, $token_id) {
 	}
 }
 
-function db_remove_all_user_tokens($db, $user_id, $scope) {
+function dao_remove_all_user_tokens($db, $user_id, $scope) {
 	$stmt = mysqli_prepare($db,
 		"DELETE FROM customer_token " .
 		"WHERE (customer_id=?) AND (scope=?)");

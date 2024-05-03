@@ -1,7 +1,7 @@
 <?php
 require_once('./inc/files.php');
+require_once('./inc/service/database.php');
 require_once('./inc/site/auth.php');
-require_once('./inc/site/database.php');
 require_once('./inc/site/session.php');
 ?>
 
