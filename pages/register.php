@@ -2,7 +2,7 @@
 	<p style="text-align:center;"><?= htmlspecialchars($message) ?></p>
 	<p style="text-align:center;">Please choose option below and submit your credentials.</p>
 
-	<!-- TODO: add paginator -->	
-	<?php require_once("./pages/auth/forms/auth.php"); ?>
-	<?php require_once("./pages/auth/forms/register.php"); ?>
+	<!-- TODO: add paginator -->
+
+	<?php require_once('./pages/auth/register.php'); ?>
 </div>

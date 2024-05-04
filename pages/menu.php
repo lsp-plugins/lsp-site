@@ -35,7 +35,7 @@
 					if (isset($user)) {
 						$logout_token = get_csrf_token('logout', true);
 						echo "<li class=\"menu-li\">";
-						echo "<a href=\"${SITEROOT}/signout?token={$logout_token}\">Sign out</a>\n";
+						echo "<a href=\"${SITEROOT}/actions/signout?token={$logout_token}\">Sign out</a>\n";
 						echo "</li>\n";
 					} else {
 						echo "<li class=\"menu-li\">";

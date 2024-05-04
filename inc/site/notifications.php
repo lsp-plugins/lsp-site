@@ -28,7 +28,7 @@ function notify_password_reset($email, $token_id) {
 		'password_reset',
 		[
 			'site_url' => "{$SITE_URL}/",
-			'recovery_url' => "{$SITE_URL}/signin?token={$token_id}"
+			'recovery_url' => "{$SITE_URL}/actions/password_reset?token={$token_id}"
 		]);
 }
 
