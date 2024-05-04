@@ -4,6 +4,7 @@ chdir($_SERVER['DOCUMENT_ROOT']);
 
 require_once("./inc/top.php");
 require_once("./inc/site/auth.php");
+require_once("./inc/site/notifications.php");
 require_once("./inc/service/mail.php");
 require_once("./lib/recaptcha/autoload.php");
 
@@ -78,15 +79,7 @@ function process_auth_request(&$user_email, &$password_reset_token) {
 		// Create password reset token
 		$token = auth_create_email_verification_token($session, $ip_addr, $user['id']);
 		if (isset($token)) {
-			send_mail(
-				[ $MAIL_ADDR['noreply'] => 'Email verification service' ],
-				[ $email => 'LSP Customer' ],
-				'LSP Plugins: email verification',
-				'email_verification', 
-				[
-					'site_url' => "{$SITE_URL}/",
-					'recovery_url' => "{$SITE_URL}/actions/verify_email?token={$token['id']}"
-				]);
+			notify_email_verification($email, $token['id']);
 		}
 			
 		// Redirect to download page
@@ -100,15 +93,7 @@ function process_auth_request(&$user_email, &$password_reset_token) {
 		}
 		
 		// Send e-mail
-		$result = send_mail(
-			[ $MAIL_ADDR['noreply'] => 'Password reset service' ],
-			[ $email => 'LSP Customer' ],
-			'LSP Plugins: password reset',
-			'password_reset', 
-			[
-				'site_url' => "{$SITE_URL}/",
-				'recovery_url' => "{$SITE_URL}/signin?token={$token['id']}"
-			]);
+		$result = notify_password_reset($email, $token['id']);
 
 		return ($result) ?
 			"Password reset mail has been sent" :
@@ -179,11 +164,11 @@ function process_reset_request(&$display_page, &$password_reset_token) {
 	}
 	
 	$password_reset_token = $token_id;
-	$display_page = "./pages/reset.php";
+	$display_page = "./pages/auth/reset.php";
 	return null;
 }
 
-$display_page = "./pages/signin.php";
+$display_page = "./pages/auth/signin.php";
 $user_email = null;
 $password_reset_token = "";
 $message = null;

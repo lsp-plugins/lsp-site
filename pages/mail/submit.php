@@ -14,6 +14,6 @@
 			</div>
 		</form>
 		
-		<?php require("./pages/mail/common.php") ?>
+		<?php require("./pages/mail/script.php") ?>
 	</div>
 </div>

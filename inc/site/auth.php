@@ -300,4 +300,22 @@ function auth_verify_email($session_id, $ip_addr, $token_id) {
 	return null;
 }
 
+function get_email_verification_retry_delay() {
+	$user = get_session_user();
+	if ((isset($user)) && (!isset($user['verified']))) {
+		$user_id = $user['id'];
+		$token = auth_find_email_verification_token($user_id);
+		$resend_period = 0;
+		if (isset($token)) {
+			$token_created = $token['created'];
+			$threshold_time = db_current_timestamp('-20 minutes');
+			$resend_period = db_strtotime($token_created) - db_strtotime($threshold_time);
+		}
+		
+		return ($resend_period <= 0) ? 0 : $resend_period;
+	}
+	
+	return null;
+}
+
 ?>

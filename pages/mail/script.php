@@ -1,19 +1,20 @@
 <script type="text/javascript">
 	var frm = $('#fb_form');
 	frm.submit(function (ev) {
+		var form = frm[0];
 		ev.preventDefault();
 		
-		if (!frm[0].elements['name'].value.match(/\S+/)) {
+		if (!form.elements['name'].value.match(/\S+/)) {
 			alert("Please enter correct name.");
 			return;
 		}
 		
-		if (!frm[0].elements['email'].value.match(/^\S+\@\S+\.\w+$/)) {
+		if (!form.elements['email'].value.match(/^\S+\@\S+\.\w+$/)) {
 			alert("Please enter correct e-mail address.");
 			return;
 		}
 		
-		if (!frm[0].elements['text'].value.match(/\S+/)) {
+		if (!form.elements['text'].value.match(/\S+/)) {
 			alert("Please enter at least some words you want to tell us.");
 			return;
 		}
