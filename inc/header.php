@@ -9,6 +9,7 @@
 		<script type="text/javascript" src="<?=$SITEROOT?>/js/jquery-3.5.1.min.js" ></script>
 		<script type="text/javascript" src="<?=$SITEROOT?>/js/jquery.fancybox-3.5.7.min.js"></script>
 		<script type="text/javascript" src="<?=$SITEROOT?>/js/jquery.mob-menu.js"></script>
+		<script type="text/javascript" src="<?=$SITEROOT?>/js/validation.js"></script>
 		<script type="text/javascript" src="https://www.google.com/recaptcha/api.js" async defer></script>
 	</head>
 	<body>
