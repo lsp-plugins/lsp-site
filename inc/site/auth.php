@@ -184,10 +184,28 @@ function auth_create_email_verification_token($session_id, $ip_addr, $user_id) {
 }
 
 function auth_get_user_token($scope, $options) {
-	if (!isset($options)) {
+	// Do not allow malformed string to be passed into database query
+	if (is_string($options)) {
+		if (!verify_uuid($options)) {
+			return false;
+		}
+	} elseif (is_array($options)) {
+		if (isset($options['id'])) {
+			if (!verify_uuid($options['id'])) {
+				return false;
+			}
+		}
+		if (isset($options['token_id'])) {
+			if (!verify_uuid($options['token_id'])) {
+				return false;
+			}
+		}
+	}
+	else {
 		return null;
 	}
 	
+	// Connect to database
 	$db = connect_db('customers');
 	if (!isset($db)) {
 		return null;
@@ -258,7 +276,7 @@ function auth_verify_email($session_id, $ip_addr, $token_id) {
 	if (!isset($session_id)) {
 		return false;
 	}
-	if (!isset($token_id)) {
+	if (!verify_uuid($token_id)) {
 		return false;
 	}
 	

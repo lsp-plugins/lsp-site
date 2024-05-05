@@ -1,5 +1,5 @@
 <div class="auth-div">
-	<form id="auth_form" action="<?=$SITEROOT?>/actions/authenticate" method="POST">
+	<form id="authentication_form" action="<?=$SITEROOT?>/actions/authenticate" method="POST">
 		<input type="hidden" name="token" value="<?= make_csrf_token('auth') ?>">
 		<div class="feedback-submit">
 			<div class="auth-email">Email:<input type="email" name="email" value="<?= htmlspecialchars($user_email) ?>"></div>
@@ -10,5 +10,7 @@
 				<input type="submit" value="Restore" name="restore">
 			</div>
 		</div>
+		
+		<?php require_once("./pages/auth/script/auth.php") ?>
 	</form>
 </div>

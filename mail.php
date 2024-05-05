@@ -2,25 +2,16 @@
 
 require_once("./inc/top.php");
 require_once("./inc/service/captcha.php");
-require_once("./inc/service/verification.php");
+require_once("./inc/service/validation.php");
 require_once("./inc/site/notifications.php");
 
 function verify_request() {
-	$error = verify_isset($_POST, 'name', 'Name');
-	$error = (isset($error)) ?: verify_email($_POST, 'email', 'E-mail');
-	$error = (isset($error)) ?: verify_isset($_POST, 'text', 'Text');
-	if (isset($error)) {
-		return $error; 
-	}
-	
-	if (!apply_csrf_token('feedback', $_POST['token'])) {
-		return "Sorry, your form is outdated.";
-	}
-	
-	$error = verify_captcha();
-	if (isset($error)) {
-		return "Sorry, you have not passed captcha. Please try again. CAPTCHA said: {$error}";
-	}
+	$error = null;
+	$error = verify_isset($error, $_POST, 'name', 'Name');
+	$error = verify_email($error, $_POST, 'email', 'E-mail');
+	$error = verify_isset($error, $_POST, 'text', 'Text');
+	$error = verify_csrf_token($error, $_POST, 'token');
+	$error = verify_captcha($error);
 	
 	return $error;
 }

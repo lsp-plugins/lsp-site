@@ -11,13 +11,14 @@ if (isset($retry_period)) {
 you can request to send it again.</p>
 
 <input id="email_button" type="submit" value="Send e-mail" name="verification" <?= ($resend_period > 0) ? 'disabled' : '' ?>>
+<input type="hidden" name="token" value="<?= make_csrf_token('email_verification') ?>">
 
 <div id="email_countdown_message" style="display: none;">
 	Re-send available after: <span id="email_countdown"></p>
 </div>
 
 <script type="text/javascript">
-	var countdown = '<?= $retry_period ?>';
+	var countdown = '<?= htmlspecialchars($retry_period) ?>';
 
 	function show_counter(counter_seconds) {
 		var button = $("#email_button");

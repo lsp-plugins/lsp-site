@@ -1,6 +1,7 @@
 <?php
 
 require_once('./inc/service/database.php');
+require_once('./inc/service/validation.php');
 require_once('./inc/dao/csrf.php');
 require_once('./inc/site/session.php');
 
@@ -60,6 +61,8 @@ function get_csrf_token($scope, $permanent = false) {
 }
 
 function apply_csrf_token($scope, $token) {
+	error_log("apply_csrf_token scope = $scope, token = $token");
+	
 	// Ensure that user session is present
 	$session_id = user_session_id();
 	if (!isset($session_id)) {
@@ -86,4 +89,28 @@ function apply_csrf_token($scope, $token) {
 	
 	return false;
 }
+
+function verify_csrf_token($error, $scope, $map, $key = null) {
+	if (isset($error)) {
+		return $error;
+	}
+	
+	error_log("verify_csrf_token scope = $scope");
+	
+	$token = $map;
+	if (is_array($map)) {
+		$token = $map[$key];
+	} elseif (!is_string($map)) {
+		return "Invalid token";
+	}
+	
+	if (!verify_uuid($token)) {
+		return "Invalid token";
+	}
+	
+	return (apply_csrf_token($scope, $token)) ?
+		null :
+		"Invalid token";
+}
+
 ?>

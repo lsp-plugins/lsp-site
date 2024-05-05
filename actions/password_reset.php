@@ -5,14 +5,24 @@ chdir($_SERVER['DOCUMENT_ROOT']);
 require_once("./inc/top.php");
 require_once("./inc/site/auth.php");
 
+function validate_reset_request() {
+	$error = null;
+	$error = verify_token_id($error, $_REQUEST, 'token');
+	
+	return $error;
+}
+
 function process_reset_request(&$display_page, &$password_reset_token) {
-	if (!isset($_REQUEST['token']))
-		return null;
-	$token_id = $_REQUEST['token'];
+	$error = validate_reset_request();
+	if (isset($error)) {
+		return $error;
+	}
 	
-	if (!ensure_user_session_is_set())
+	if (!ensure_user_session_is_set()) {
 		return 'HTTP session expired';
+	}
 	
+	$token_id = $_REQUEST['token'];
 	$token = auth_get_password_reset_token($token_id);
 	if (!isset($token)) {
 		return "Invalid password reset token";

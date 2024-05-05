@@ -1,7 +1,7 @@
 <script type="text/javascript">
 	var frm = $('#fb_form');
 
-	function verify_form(form) {
+	function verify_feedback_form(form) {
 		if (!verify_string_isset(form, 'name')) {
 			alert("Please enter correct name.");
 			return false;
@@ -20,10 +20,10 @@
 	}
 	
 	frm.submit(function (ev) {
-		var form = frm[0];
+		var form = ev.currentTarget;
 		ev.preventDefault();
 		
-		if (!verify_form(form)) {
+		if (!verify_feedback_form(form)) {
 			return;
 		}
 	

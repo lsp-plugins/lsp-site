@@ -7,66 +7,99 @@ require_once("./inc/site/auth.php");
 require_once("./inc/site/notifications.php");
 require_once("./lib/recaptcha/autoload.php");
 
+function validate_auth_request() {
+	$error = null;
+	$error = verify_email($error, $_POST, 'email', 'Email');
+	$error = verify_isset($error, $_POST, 'password', 'Password');
+	$error = verify_csrf_token($error, 'auth', $_POST, 'token');
+// 	$error = verify_captcha($error); // TODO
+	
+	return $error;
+}
+
+function validate_restore_request() {
+	$error = null;
+	$error = verify_email($error, $_POST, 'email', 'Email');
+	$error = verify_csrf_token($error, 'auth', $_POST, 'token');
+// 	$error = verify_captcha($error); // TODO
+		
+	return $error;
+}
+
 function process_auth_request(&$user_email, &$password_reset_token) {
-	global $GOOGLE;
+	error_log('process_auth_request');
 	
 	$ip_addr = $_SERVER['REMOTE_ADDR'];
-
+	
 	$session = ensure_user_session_is_set();
-	if (!isset($session))
+	if (!isset($session)) {
 		return 'HTTP session expired';
+	}
 	
 	$user = get_session_user();
-	if (isset($user))
+	if (isset($user)) {
 		return "Already authenticated";
-	
-	$token = $_POST['token'];
-	if (!apply_csrf_token('auth', $token)) {
-		return 'Outdated request';
+	}
+		
+	// Validate form data
+	if (isset($_POST['email'])) {
+		$user_email = $_POST['email'];
+	}
+	$error = validate_auth_request();
+	if (isset($error)) {
+		return $error;
 	}
 	
-	$email = $_POST['email'];
-	if (!isset($email))
-		return 'Email not specified';
-	
-	$user_email = $email;
-	
-	// Verify recaptcha
-	/* TODO: uncomment this when ready
-	$recaptcha = new \ReCaptcha\ReCaptcha($GOOGLE['recaptcha_sec']);
-	$resp = $recaptcha->setExpectedHostname($GOOGLE['recaptcha_host'])
-		->verify($_REQUEST['g-recaptcha-response'], $_SERVER['REMOTE_ADDR']);
-	
-	if (!$resp->isSuccess()) {
-		return "Sorry, you have not passed captcha. Please try again. reCAPTCHA said: " . implode(',', $resp->getErrorCodes());
+	// Authenticate user
+	$user = auth_user($session, $ip_addr, $user_email, $_POST['password']);
+	if (!isset($user)) {
+		return 'Wrong email of password specified';
 	}
-	*/
-		
-	if (isset($_POST['auth'])) {
-		$password = $_POST['password'];
-		if (!isset($password))
-			return 'Password not specified';
-		
-		$user = auth_user($session, $ip_addr, $email, $password);
-		if (!isset($user))
-			return 'Wrong email of password specified';
-			
-		set_session_user($ip_addr, $user);
-			
-		return null;	
-	} elseif (isset($_POST['restore'])) {
-		// Create password reset token
-		$token = auth_create_password_reset_token($session, $ip_addr, $email);
-		if (!isset($token)) {
-			return 'Unknown error occurred when resetting password, please try again.';
-		}
-		
-		// Send e-mail
-		$result = notify_password_reset($email, $token['id']);
 
-		return ($result) ?
-			"Password reset mail has been sent" :
-			"Error while requesting password reset";
+	// Authorize user
+	set_session_user($ip_addr, $user);
+		
+	return null;	
+}
+
+function process_restore_request(&$user_email, &$password_reset_token) {
+	error_log('process_restore_request');
+	
+	$ip_addr = $_SERVER['REMOTE_ADDR'];
+	
+	$session = ensure_user_session_is_set();
+	if (!isset($session)) {
+		return 'HTTP session expired';
+	}
+	
+	// Validate form data
+	if (isset($_POST['email'])) {
+		$user_email = $_POST['email'];
+	}
+	$error = validate_restore_request();
+	if (isset($error)) {
+		return error;
+	}
+	
+	// Create password reset token
+	$token = auth_create_password_reset_token($session, $ip_addr, $user_email);
+	if (!isset($token)) {
+		return 'Unknown error occurred when resetting password, please try again.';
+	}
+	
+	// Send e-mail
+	$result = notify_password_reset($user_email, $token['id']);
+	return ($result) ?
+		"Password reset mail has been sent" :
+		"Error while requesting password reset";
+}
+
+function process_request(&$user_email, &$password_reset_token) {
+	
+	if (isset($_POST['auth'])) {
+		return process_auth_request($user_email, $password_reset_token);
+	} elseif (isset($_POST['restore'])) {
+		return process_restore_request($user_email, $password_reset_token);
 	}
 	
 	return 'Invalid sign-in mode';
@@ -76,7 +109,7 @@ $user_email = null;
 $password_reset_token = "";
 $message = null;
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-	$message = process_auth_request($user_email, $password_reset_token);
+	$message = process_request($user_email, $password_reset_token);
 	if (!isset($message)) {
 		header("Location: {$SITE_URL}/download");
 		exit();
