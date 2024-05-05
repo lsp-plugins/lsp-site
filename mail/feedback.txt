@@ -1,0 +1,3 @@
+Received feedback from %%name%% <%%email%%>:
+
+%%text%%

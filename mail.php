@@ -1,46 +1,52 @@
-<?php require_once("inc/top.php"); ?>
 <?php
-	require_once("./lib/recaptcha/autoload.php");
-	require_once("./vendor/autoload.php");
-	
-	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-		$message = 'Sorry, something went wrong while submitting form. You may try again some amount of time later.';
-		$button = 'Try again';
-		
-		if (apply_csrf_token('feedback', $_POST['token'])) {
-			$recaptcha = new \ReCaptcha\ReCaptcha($GOOGLE['recaptcha_sec']);
-			$resp = $recaptcha->setExpectedHostname($GOOGLE['recaptcha_host'])
-				->verify($_REQUEST['g-recaptcha-response'], $_SERVER['REMOTE_ADDR']);
-	
-			if ($resp->isSuccess()) {
-				$text = "Received feedback from {$_POST['name']} <{$_POST['email']}>:\n\n{$_POST['text']}\n";
-				$transport = new Swift_SmtpTransport($MAIL['host'], $MAIL['port'], $MAIL['auth']);
-				if ($MAIL['auth'] != null) {
-					$transport->setUsername($MAIL['user']);
-					$transport->setPassword($MAIL['password']);
-				}
-	
-				$mailer = new Swift_Mailer($transport);
-				$message = new Swift_Message('LSP Plugins: Received feedback');
-				$message->setFrom(($MAIL['from'] != null) ? $MAIL['from'] : array($_POST['email'] => $_POST['name']));
-				$message->setTo(($MAIL['to'] != null) ? $MAIL['to'] : "{$MAIL['user']}@{$MAIL['domain']}");
-				$message->setBody($text);
-	
-				if ($mailer->send($message)) {
-					$message = 'Thank you for feedback! We will respond to your e-mail as soon as possible.';
-					$button = 'Write more';
-				}
-				else
-					$message .= ' Currently mail transport is not available.';
-			}
-			else
-				$message = "Sorry, you have not passed captcha. Please try again. reCAPTCHA said: " . implode(',', $resp->getErrorCodes());
-		} else
-			$message = "Sorry, your form is outdated.";
-		
-		require("./pages/mail/result.php");
+
+require_once("./inc/top.php");
+require_once("./inc/service/captcha.php");
+require_once("./inc/service/verification.php");
+require_once("./inc/site/notifications.php");
+
+function verify_request() {
+	$error = verify_isset($_POST, 'name', 'Name');
+	$error = (isset($error)) ?: verify_email($_POST, 'email', 'E-mail');
+	$error = (isset($error)) ?: verify_isset($_POST, 'text', 'Text');
+	if (isset($error)) {
+		return $error; 
 	}
-	else {
-		require("./pages/mail/submit.php");
+	
+	if (!apply_csrf_token('feedback', $_POST['token'])) {
+		return "Sorry, your form is outdated.";
 	}
+	
+	$error = verify_captcha();
+	if (isset($error)) {
+		return "Sorry, you have not passed captcha. Please try again. CAPTCHA said: {$error}";
+	}
+	
+	return $error;
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+	$button = 'Try again';
+	
+	$message = verify_request();
+
+	if (!isset($message)) {
+		$result = notify_user_feedback(
+			$_POST['name'],
+			$_POST['email'],
+			$_POST['text']);
+		if ($result) {
+			$message = 'Thank you for feedback! We will respond to your e-mail as soon as possible.';
+			$button = 'Write more';
+		}
+		else {
+			$message = 'Mail transport is not available at this moment.';
+		}
+	}
+	
+	require("./pages/mail/result.php");
+}
+else {
+	require("./pages/mail/submit.php");
+}
 ?>

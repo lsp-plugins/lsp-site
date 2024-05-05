@@ -32,4 +32,19 @@ function notify_password_reset($email, $token_id) {
 		]);
 }
 
+function notify_user_feedback($name, $email, $text) {
+	global $MAIL_ADDR;
+	
+	return send_mail(
+		[ $MAIL_ADDR['feedback'] => 'Feedback service' ],
+		$MAIL_ADDR['admin'],
+		'LSP Plugins: Received feedback',
+		'feedback',
+		[
+			'name' => $name,
+			'email' => $email,
+			'text' => $text
+		]);
+}
+
 ?>
