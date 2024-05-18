@@ -13,6 +13,8 @@ INSERT INTO platform(id, name) VALUES (1, 'linux');
 INSERT INTO platform(id, name) VALUES (2, 'freebsd');
 INSERT INTO platform(id, name) VALUES (3, 'windows');
 INSERT INTO platform(id, name) VALUES (4, 'macos');
+INSERT INTO platform(id, name) VALUES (5, 'source');
+INSERT INTO platform(id, name) VALUES (6, 'doc');
 
 CREATE TABLE architecture
 (
@@ -28,6 +30,7 @@ INSERT INTO architecture(id, name) VALUES (2, 'x86_64');
 INSERT INTO architecture(id, name) VALUES (3, 'armv7a');
 INSERT INTO architecture(id, name) VALUES (4, 'aarch64');
 INSERT INTO architecture(id, name) VALUES (5, 'riscv64');
+INSERT INTO architecture(id, name) VALUES (6, 'noarch');
 
 CREATE TABLE build_type
 (
@@ -42,14 +45,36 @@ INSERT INTO build_type(id, name) VALUES (1, 'minor_update');
 INSERT INTO build_type(id, name) VALUES (2, 'new_features');
 INSERT INTO build_type(id, name) VALUES (3, 'major_update');
 
+CREATE TABLE format
+(
+  id int NOT NULL,
+  name VARCHAR(16) NOT NULL,
+  PRIMARY KEY (id),
+  CONSTRAINT UK_FORMAT_ID UNIQUE KEY (name)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO format(id, name) VALUES (1, 'src');
+INSERT INTO format(id, name) VALUES (2, 'jack');
+INSERT INTO format(id, name) VALUES (3, 'ladspa');
+INSERT INTO format(id, name) VALUES (4, 'lv2');
+INSERT INTO format(id, name) VALUES (5, 'vst2');
+INSERT INTO format(id, name) VALUES (6, 'vst3');
+INSERT INTO format(id, name) VALUES (7, 'clap');
+INSERT INTO format(id, name) VALUES (8, 'gst');
+INSERT INTO format(id, name) VALUES (9, 'au');
+INSERT INTO format(id, name) VALUES (10, 'aax');
+INSERT INTO format(id, name) VALUES (11, 'doc');
+
 CREATE TABLE product
 (
   id int NOT NULL AUTO_INCREMENT,
-  product_id VARCHAR(64) NOT NULL,
+  name VARCHAR(64) NOT NULL,
 
   PRIMARY KEY (id),
-  CONSTRAINT UK_PRODUCT_ID UNIQUE KEY (product_id)
+  CONSTRAINT UK_PRODUCT_NAME UNIQUE KEY (name)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO product(product_id) VALUES ('lsp-plugins');
 
 CREATE TABLE build
 (
@@ -68,18 +93,22 @@ CREATE TABLE build
   CONSTRAINT FK_BUILD_TYPE FOREIGN KEY (type_id) REFERENCES build_type(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE package
+CREATE TABLE artifact
 (
+  id bigint(20) NOT NULL auto_increment,
   build_id int NOT NULL,
   platform_id int NOT NULL,
   architecture_id int NOT NULL,
+  format_id int NOT NULL,
   file_name VARCHAR(1024) NOT NULL,
   
-  PRIMARY KEY (build_id, architecture_id),
-  CONSTRAINT UK_PACKAGE_FILE UNIQUE KEY (file_name),
-  CONSTRAINT FK_PACKAGE_PLAT FOREIGN KEY (platform_id) REFERENCES platform(id),
-  CONSTRAINT FK_PACKAGE_BUILD FOREIGN KEY (build_id) REFERENCES build(id),
-  CONSTRAINT FK_PACKAGE_ARCH FOREIGN KEY (architecture_id) REFERENCES architecture(id)
+  PRIMARY KEY PK_ARTIFACT_ID (id), 
+  CONSTRAINT UK_ARTIFACT_FILE UNIQUE KEY (file_name),
+  CONSTRAINT UK_ARTIFACT_LINK UNIQUE KEY (build_id, platform_id, architecture_id, format_id),
+  CONSTRAINT FK_ARTIFACT_BUILD FOREIGN KEY (build_id) REFERENCES build(id),
+  CONSTRAINT FK_ARTIFACT_PLAT FOREIGN KEY (platform_id) REFERENCES platform(id),
+  CONSTRAINT FK_ARTIFACT_ARCH FOREIGN KEY (architecture_id) REFERENCES architecture(id),
+  CONSTRAINT FK_ARTIFACT_FMT FOREIGN KEY (format_id) REFERENCES format(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE price
@@ -94,5 +123,6 @@ CREATE TABLE price
   CONSTRAINT FK_PRICE_BLD FOREIGN KEY (build_id) REFERENCES build(id),
   CONSTRAINT FK_PRICE_PLAT FOREIGN KEY (platform_id) REFERENCES platform(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 
