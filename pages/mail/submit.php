@@ -3,7 +3,7 @@
 <div id="fb_div" style="display:inline-block; width:100%;">
 	<p style="text-align:center;">If you want to contact to developers, please submit the following form.</p>
 	<div class="fb-div">
-		<form id="fb_form" action="<?=$SITEROOT?>/mail.php" method="POST">
+		<form id="fb_form" action="<?=$SITEROOT?>/actions/send_feedback.php" method="POST">
 			<input type="hidden" name="token" value="<?= make_csrf_token('feedback') ?>">
 			<div class="feedback-submit">
 				<div class="fs-name">Your name:<input type="text" name="name"></div>

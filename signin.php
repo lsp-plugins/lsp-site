@@ -6,6 +6,7 @@ require_once("./inc/top.php");
 
 $user_email = null;
 $message = null;
+$curr_page = 'sign_in';
 
 ?>
 

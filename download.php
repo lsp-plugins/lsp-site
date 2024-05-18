@@ -3,6 +3,8 @@
 chdir($_SERVER['DOCUMENT_ROOT']);
 require_once("./inc/top.php");
 
+$curr_page = 'download';
+
 ?>
 <!DOCTYPE html>
 

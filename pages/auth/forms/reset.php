@@ -8,7 +8,7 @@
 
 			<div class="form-field">New password:<input type="password" name="password" style="width: 180px;"></div>
 			<div class="form-field" style="margin-bottom: 20px;">Confirm password:<input type="password" name="password2" style="width: 180px;"></div>
-			<?php require_once('./pages/parts/captcha.php'); ?>
+			<?php require('./pages/parts/captcha.php'); ?>
 			<div class="form-button">
 				<input type="submit" value="Update password" name="update">
 			</div>

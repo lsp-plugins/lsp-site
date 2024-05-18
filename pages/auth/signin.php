@@ -1,32 +1,26 @@
 <script>
+	var blocks = {
+		'auth1': { 'block': '.auth_block_1', 'trig': '.auth_trig_1' },
+		'auth2': { 'block': '.auth_block_2', 'trig': '.auth_trig_2' },
+		'auth3': { 'block': '.auth_block_3', 'trig': '.auth_trig_3' },
+	};
+
 	$(document).ready(function() {
-		$('.auth_trig_1').click(function() {
-			$('.auth_block_1').slideDown(300);
-			$('.auth_block_2').slideUp(300);
-			$('.auth_block_3').slideUp(300);
-			$('.auth_trig_1').css({color: "#b0d8ff", cursor: "default"});
-			$('.auth_trig_2').css({color: "#7495a2", cursor: "pointer"});
-			$('.auth_trig_3').css({color: "#7495a2", cursor: "pointer"});
-			return false;
-		});
-		$('.auth_trig_2').click(function() {
-			$('.auth_block_1').slideUp(300);
-			$('.auth_block_2').slideDown(300);
-			$('.auth_block_3').slideUp(300);
-			$('.auth_trig_1').css({color: "#7495a2", cursor: "pointer"});
-			$('.auth_trig_2').css({color: "#b0d8ff", cursor: "default"});
-			$('.auth_trig_3').css({color: "#7495a2", cursor: "pointer"});
-			return false;
-		});
-		$('.auth_trig_3').click(function() {
-			$('.auth_block_1').slideUp(300);
-			$('.auth_block_2').slideUp(300);
-			$('.auth_block_3').slideDown(300);
-			$('.auth_trig_1').css({color: "#7495a2", cursor: "pointer"});
-			$('.auth_trig_2').css({color: "#7495a2", cursor: "pointer"});
-			$('.auth_trig_3').css({color: "#b0d8ff", cursor: "default"});
-			return false;
-		});
+		for (var key in blocks) {
+			const id = key;
+			$(blocks[id]['trig']).click(function() {
+				for (var key in blocks) {
+					if (key === id) {
+						$(blocks[key]['block']).slideDown(300);
+						$(blocks[key]['trig']).css({color: "#b0d8ff", cursor: "default"});
+					} else {
+						$(blocks[key]['block']).slideUp(300);
+						$(blocks[key]['trig']).css({color: "#7495a2", cursor: "pointer"});
+					}
+				}
+				return false;
+			});
+		}
 	});
 </script>
 <h1>Authorization</h1>
@@ -42,10 +36,10 @@
 
 	<div style="min-height: 300px;">
 		<div class="auth_block_1" style="display: block;">
-				<?php require_once("./pages/auth/forms/auth.php"); ?>
+			<?php require_once("./pages/auth/forms/auth.php"); ?>
 		</div>
 		<div class="auth_block_2" style="display: none;">
-				<?php require_once("./pages/auth/forms/forgot.php"); ?>
+			<?php require_once("./pages/auth/forms/forgot.php"); ?>
 		</div>
 		<div class="auth_block_3" style="display: none;">
 			<?php require_once("./pages/auth/forms/register.php"); ?>
