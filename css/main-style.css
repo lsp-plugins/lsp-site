@@ -37,8 +37,8 @@ th {
   background-color: #373944;
 }
 
-::-webkit-scrollbar-corner{
-  background:#25272e00;
+::-webkit-scrollbar-corner {
+  background: #25272e00;
 }
 
 ::-webkit-scrollbar-button {
@@ -216,6 +216,26 @@ a img:hover {
   -webkit-transition: all 0.3s ease;
   -moz-transition: all 0.3s ease;
   -ms-transition: all 0.3s ease;
+}
+
+a.link_no_visit, a:hover.link_no_visit, a:visited.link_no_visit, a:visited:hover.link_no_visit {
+  text-decoration: none;
+}
+
+a.link_no_visit, a:visited.link_no_visit, a:hover.link_no_visit {
+  color: #7495a2;
+  transition: all 0.1s ease;
+  -webkit-transition: all 0.1s ease;
+  -moz-transition: all 0.1s ease;
+  -ms-transition: all 0.1s ease;
+}
+
+a:hover.link_no_visit, a:visited:hover.link_no_visit {
+  color: #b0d8ff;
+  transition: all 0.1s ease;
+  -webkit-transition: all 0.1s ease;
+  -moz-transition: all 0.1s ease;
+  -ms-transition: all 0.1s ease;
 }
 
 .lsp-content {
@@ -483,7 +503,6 @@ a img:hover {
   padding-left: 28px;
 }
 
-
 .container {
   width: 100%;
   height: 60px;
@@ -591,7 +610,7 @@ a img:hover {
   text-decoration: none;
 }
 
-.home_class, .about_class, .news_class, .plugins_class, .manuals_class, .video_class, .download_class, .feedback_class, .home_class:hover, .about_class:hover, .news_class:hover, .plugins_class:hover, .manuals_class:hover, .video_class:hover, .download_class:hover, .feedback_class:hover {
+.home_class, .about_class, .news_class, .plugins_class, .manuals_class, .video_class, .download_class, .feedback_class, .signin_class, .signout_class, .home_class:hover, .about_class:hover, .news_class:hover, .plugins_class:hover, .manuals_class:hover, .video_class:hover, .download_class:hover, .feedback_class:hover, .signin_class:hover, .signout_class:hover {
   transition: all 0.3s ease;
   -webkit-transition: all 0.3s ease;
   -moz-transition: all 0.3s ease;
@@ -642,6 +661,18 @@ a img:hover {
 
 .feedback_class {
   background: url(../img/feedback.png) no-repeat top left;
+  background-size: contain;
+  padding-left: 28px !important;
+}
+
+.signin_class {
+  background: url(../img/sign_in.png) no-repeat top left;
+  background-size: contain;
+  padding-left: 28px !important;
+}
+
+.signout_class {
+  background: url(../img/sign_out.png) no-repeat top left;
   background-size: contain;
   padding-left: 28px !important;
 }
@@ -700,6 +731,18 @@ a img:hover {
   background-size: contain;
   padding-left: 28px !important;
   cursor: pointer;
+}
+
+.signin_class:hover {
+  background: url(../img/sign_in_hover.png) no-repeat top left;
+  background-size: contain;
+  padding-left: 28px !important;
+}
+
+.signout_class:hover {
+  background: url(../img/sign_out_hover.png) no-repeat top left;
+  background-size: contain;
+  padding-left: 28px !important;
 }
 
 /* Menu */
@@ -808,25 +851,25 @@ div.plugin_select div {
 }
 
 /* Feedback form */
-.fb-div {
+.fb-div, .form-div {
   width: 304px;
   margin: 0 auto;
   display: block;
 }
 
-.feedback-submit {
+.feedback-submit, .form-cont {
   width: 100%;
   display: inline-block;
 }
 
-.fs-name, .fs-email, .fs-message {
+.fs-name, .fs-email, .fs-message, .form-field {
   float: right;
   display: block;
   width: 100%;
   margin-bottom: 8px;
 }
 
-.fs-send {
+.fs-send, .form-button {
   width: 304px;
   display: grid;
   grid-gap: 5px;
@@ -836,53 +879,9 @@ div.plugin_select div {
   grid-template-rows: repeat(2, auto);
 }
 
-.fs-send>input[type="button"], .fs-send>input[type="submit"] {
+.fs-send>input[type="button"], .fs-send>input[type="submit"], .form-button>input[type="button"], .form-button>input[type="submit"] {
   width: auto;
-  margin-top:5px;
-}
-
-/* Authentication form */
-.auth-div {
-  width: 408px;
-  margin: 0 auto;
-  display: block;
-}
-
-.auth-submit {
-  width: 100%;
-  display: inline-block;
-}
-
-.auth-register {
-  width: 100%;
-  display: inline-block;
-}
-
-.auth-restore {
-  width: 100%;
-  display: inline-block;
-}
-
-.auth-name, .auth-email, .auth_password, .auth-message {
-  float: right;
-  display: block;
-  width: 100%;
-  margin-bottom: 8px;
-}
-
-.auth-send {
-  width: 304px;
-  display: grid;
-  grid-gap: 5px;
-  grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
-  -ms-grid-columns: (23% 2.666%)[3] 23%;
-  -ms-grid-rows: 100% 5px 100%;
-  grid-template-rows: repeat(2, auto);
-}
-
-.auth-send>input[type="button"], .auth-send>input[type="submit"] {
-  width: auto;
-  margin-top:5px;
+  margin-top: 5px;
 }
 
 /* Input elements */
@@ -987,6 +986,7 @@ div.g-recaptcha, div.g-recaptcha div {
   margin: 0 auto;
   margin-bottom: 6px;
   background: #25272e;
+  min-height: 300px;
 }
 
 .main h1 {
@@ -1155,6 +1155,83 @@ tr.stroke {
     /*repeat(auto-fit, minmax(235px, 1fr))*/
   ;
   /*grid-template-rows: repeat(2, 203px);*/
+}
+
+.tile-flex {
+  display: flex;
+  gap: 6px;
+  align-content: stretch;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.tile-flex-inner {
+  height: 75px;
+  width: 250px;
+  background: #5d6177;
+  padding: 10px;
+}
+
+.dwnld-content {
+  width: 65%;
+  float: right;
+}
+
+.dwnld-os {
+  font-size: 20px;
+  color: #25272e;
+  border-bottom: 2px solid #25272e;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.dwnld-desc {
+  font-size: 11px;
+  color: #25272e;
+}
+
+.dwnld-active {
+  background-color: #9da3ca;
+  cursor: default;
+  transition: all 0.1s ease;
+  -webkit-transition: all 0.1s ease;
+  -moz-transition: all 0.1s ease;
+  -ms-transition: all 0.1s ease;
+}
+
+.dwnld-hover {
+  background-color: #868cad;
+  cursor: pointer;
+  transition: all 0.1s ease;
+  -webkit-transition: all 0.1s ease;
+  -moz-transition: all 0.1s ease;
+  -ms-transition: all 0.1s ease;
+}
+
+.dwnld-lin, .dwnld-win, .dwnld-mac, .dwnld-bsd, .dwnld-src {
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: left;
+}
+
+.dwnld-lin {
+  background-image: url(../svg/lin.svg);
+}
+
+.dwnld-win {
+  background-image: url(../svg/win.svg);
+}
+
+.dwnld-mac {
+  background-image: url(../svg/mac.svg);
+}
+
+.dwnld-bsd {
+  background-image: url(../svg/bsd.svg);
+}
+
+.dwnld-src {
+  background-image: url(../svg/src.svg);
 }
 
 .grid-2col {
@@ -2079,7 +2156,7 @@ tr.stroke {
 }
 
 @media only screen and (min-width : 0px) and (max-width : 354px) {
-  .fb-div {
+  .fb-div, .form-div {
     width: 100%;
     text-align: center;
   }

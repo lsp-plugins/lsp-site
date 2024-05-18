@@ -16,7 +16,7 @@ function validate_register_request() {
 		$error = "New password does not match it's confirmation";
 	}
 	$error = verify_csrf_token($error, 'register', $_POST, 'token');
-// 	$error = verify_captcha($error); // TODO
+	// 	$error = verify_captcha($error); // TODO
 	
 	return $error;
 }
