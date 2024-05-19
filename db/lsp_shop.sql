@@ -9,12 +9,12 @@ CREATE TABLE platform
   CONSTRAINT UK_PLATFORM_ID UNIQUE KEY (name)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO platform(id, name) VALUES (1, 'linux');
-INSERT INTO platform(id, name) VALUES (2, 'freebsd');
-INSERT INTO platform(id, name) VALUES (3, 'windows');
-INSERT INTO platform(id, name) VALUES (4, 'macos');
-INSERT INTO platform(id, name) VALUES (5, 'source');
-INSERT INTO platform(id, name) VALUES (6, 'doc');
+INSERT INTO platform(id, name) VALUES (1, 'any');
+INSERT INTO platform(id, name) VALUES (2, 'linux');
+INSERT INTO platform(id, name) VALUES (3, 'freebsd');
+INSERT INTO platform(id, name) VALUES (4, 'windows');
+INSERT INTO platform(id, name) VALUES (5, 'macos');
+INSERT INTO platform(id, name) VALUES (6, 'haiku');
 
 CREATE TABLE architecture
 (
@@ -25,12 +25,12 @@ CREATE TABLE architecture
   CONSTRAINT UK_ARCHITECTURE_ID UNIQUE KEY (name)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO architecture(id, name) VALUES (1, 'i586');
-INSERT INTO architecture(id, name) VALUES (2, 'x86_64');
-INSERT INTO architecture(id, name) VALUES (3, 'armv7a');
-INSERT INTO architecture(id, name) VALUES (4, 'aarch64');
-INSERT INTO architecture(id, name) VALUES (5, 'riscv64');
-INSERT INTO architecture(id, name) VALUES (6, 'noarch');
+INSERT INTO architecture(id, name) VALUES (1, 'noarch');
+INSERT INTO architecture(id, name) VALUES (2, 'i586');
+INSERT INTO architecture(id, name) VALUES (3, 'x86_64');
+INSERT INTO architecture(id, name) VALUES (4, 'armv7a');
+INSERT INTO architecture(id, name) VALUES (5, 'aarch64');
+INSERT INTO architecture(id, name) VALUES (6, 'riscv64');
 
 CREATE TABLE build_type
 (
@@ -41,9 +41,9 @@ CREATE TABLE build_type
   CONSTRAINT UK_BUILD_TYPE_ID UNIQUE KEY (name)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO build_type(id, name) VALUES (1, 'minor_update');
-INSERT INTO build_type(id, name) VALUES (2, 'new_features');
-INSERT INTO build_type(id, name) VALUES (3, 'major_update');
+INSERT INTO build_type(id, name) VALUES (1, 'release');
+INSERT INTO build_type(id, name) VALUES (2, 'update');
+INSERT INTO build_type(id, name) VALUES (3, 'enhancement');
 
 CREATE TABLE format
 (
@@ -54,16 +54,18 @@ CREATE TABLE format
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO format(id, name) VALUES (1, 'src');
-INSERT INTO format(id, name) VALUES (2, 'jack');
-INSERT INTO format(id, name) VALUES (3, 'ladspa');
-INSERT INTO format(id, name) VALUES (4, 'lv2');
-INSERT INTO format(id, name) VALUES (5, 'vst2');
-INSERT INTO format(id, name) VALUES (6, 'vst3');
-INSERT INTO format(id, name) VALUES (7, 'clap');
-INSERT INTO format(id, name) VALUES (8, 'gst');
-INSERT INTO format(id, name) VALUES (9, 'au');
-INSERT INTO format(id, name) VALUES (10, 'aax');
-INSERT INTO format(id, name) VALUES (11, 'doc');
+INSERT INTO format(id, name) VALUES (2, 'doc');
+INSERT INTO format(id, name) VALUES (3, 'jack');
+INSERT INTO format(id, name) VALUES (4, 'pw');
+INSERT INTO format(id, name) VALUES (5, 'ladspa');
+INSERT INTO format(id, name) VALUES (6, 'lv2');
+INSERT INTO format(id, name) VALUES (7, 'vst2');
+INSERT INTO format(id, name) VALUES (8, 'vst3');
+INSERT INTO format(id, name) VALUES (9, 'clap');
+INSERT INTO format(id, name) VALUES (10, 'gst');
+INSERT INTO format(id, name) VALUES (11, 'au');
+INSERT INTO format(id, name) VALUES (12, 'aax');
+INSERT INTO format(id, name) VALUES (13, 'rtas');
 
 CREATE TABLE product
 (
@@ -74,11 +76,11 @@ CREATE TABLE product
   CONSTRAINT UK_PRODUCT_NAME UNIQUE KEY (name)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO product(product_id) VALUES ('lsp-plugins');
+INSERT INTO product(name) VALUES ('lsp-plugins');
 
 CREATE TABLE build
 (
-  id int NOT NULL,
+  id bigint(20) NOT NULL auto_increment,
   product_id int NOT NULL,
   issue_date DATE NOT NULL,
   
@@ -96,7 +98,7 @@ CREATE TABLE build
 CREATE TABLE artifact
 (
   id bigint(20) NOT NULL auto_increment,
-  build_id int NOT NULL,
+  build_id bigint(20) NOT NULL,
   platform_id int NOT NULL,
   architecture_id int NOT NULL,
   format_id int NOT NULL,
@@ -113,7 +115,7 @@ CREATE TABLE artifact
 
 CREATE TABLE price
 (
-  build_id int NOT NULL,
+  build_id bigint(20) NOT NULL,
   platform_id int NOT NULL,
   
   initial_price int,

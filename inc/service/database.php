@@ -6,7 +6,9 @@ function db_log_query($query, $types, $values) {
 }
 
 function db_log_exception($e) {
-	error_log("SQL exception: {$e->getMessage()}\n {$e->getTraceAsString()}");
+	$message = "SQL exception: {$e->getMessage()}\n {$e->getTraceAsString()}";
+	error_log($message);
+	return $message;
 }
 
 function db_safe_close($stmt) {

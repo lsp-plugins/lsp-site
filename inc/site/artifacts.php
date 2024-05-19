@@ -1,5 +1,7 @@
 <?php
 
+require_once("./inc/dao/artifacts.php");
+
 function create_artifacts($file_names, $build_type) {
 	$platform_mapping = [
 		'BSD' => 'freebsd',
@@ -19,12 +21,12 @@ function create_artifacts($file_names, $build_type) {
 	
 	$warnings = [];
 	
-	$archive_pattern='\.(?:tar\.(?:gz|bz)|zip|7z)';
+	$archive_pattern='(?:tar\\.(?:gz|bz)|zip|7z)';
 	$product_pattern='([a-z0-9\\-]+)';
-	$version_pattern='(\d+)\.(\d+)\.(\d+)';
+	$version_pattern='(\\d+)\\.(\d+)\\.(\\d+)';
 	$fmt_pattern='([a-z0-9]+)';
-	$platform_pattern='([a-z0-9]+)';
-	$architecture_pattern='([a-z0-9]+)';
+	$platform_pattern='([a-zA-Z0-9]+)';
+	$architecture_pattern='([a-z0-9_]+)';
 	
 	$db = null;
 	try {
@@ -37,27 +39,27 @@ function create_artifacts($file_names, $build_type) {
 			$matches = [];
 			$result = [];
 			
-			if (preg_match("/^{$product_pattern}-src-{$version_pattern}{$archive_pattern}$/", $file, $matches)) {
+			if (preg_match("/^{$product_pattern}-src-{$version_pattern}\\.{$archive_pattern}$/", $file, $matches)) {
 				// Source code
-				[$product, $major, $minor, $micro] = $matches;
+				[$text, $product, $major, $minor, $micro] = $matches;
 				
 				$result = dao_create_artifact($db,
 					$product, $build_type, 'src',
 					[$major, $minor, $micro],
-					'source', 'noarch', $file);
+					'any', 'noarch', $file);
 				
-			} elseif (preg_match("/^{$product_pattern}-doc-{$version_pattern}{$archive_pattern}$/", $file, $matches)) {
+			} elseif (preg_match("/^{$product_pattern}-doc-{$version_pattern}\\.{$archive_pattern}$/", $file, $matches)) {
 				// Documentation
-				[$product, $major, $minor, $micro] = $matches;
+				[$text, $product, $major, $minor, $micro] = $matches;
 				
 				$result = dao_create_artifact($db,
 					$product, $build_type, 'doc',
 					[$major, $minor, $micro],
-					'doc', 'noarch', $file);
+					'any', 'noarch', $file);
 				
-			} elseif (preg_match("/^{$product_pattern}-{$fmt_pattern}-{$version_pattern}-{$platform_pattern}-{$architecture_pattern}-{$archive_pattern}$/", $file, $matches)) {
+			} elseif (preg_match("/^{$product_pattern}-{$fmt_pattern}-{$version_pattern}-{$platform_pattern}-{$architecture_pattern}\\.{$archive_pattern}$/", $file, $matches)) {
 				// Binary build
-				[$product, $format, $major, $minor, $micro, $platform, $archtecture] = $matches;
+				[$text, $product, $format, $major, $minor, $micro, $platform, $archtecture] = $matches;
 				if (!array_key_exists($platform, $platform_mapping)) {
 					array_push($warnings, "Unknown platform '{$platform}' for artifact '{$file}'");
 					continue;
@@ -81,7 +83,8 @@ function create_artifacts($file_names, $build_type) {
 			
 			[$error] = $result;
 			if (isset($error)) {
-				array_push($warnings, "Error for '{$file}': {$error}");
+				$error = "Error for '{$file}': {$error}";
+				array_push($warnings, $error);
 			}
 		}
 		
@@ -90,13 +93,13 @@ function create_artifacts($file_names, $build_type) {
 		}
 	
 	} catch (mysqli_sql_exception $e) {
-		db_log_exception($e);
+		$error = db_log_exception($e);
+		array_push($warnings, $error);
 	} finally {
 		db_safe_rollback($db);
 	}
 	
 	return (count($warnings) > 0) ? $warnings : null;
-	
 }
 
 ?>
