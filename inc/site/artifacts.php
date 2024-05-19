@@ -14,7 +14,7 @@ function create_artifacts($file_names, $build_type) {
 	$architecture_mapping = [
 		'aarch64' => 'aarch64',
 		'arm32' => 'armv7a',
-		'i586' => 'i586',
+		'i586' => 'x86',
 		'riscv64' => 'riscv64',
 		'x86_64' => 'x86_64'
 	];
@@ -101,5 +101,37 @@ function create_artifacts($file_names, $build_type) {
 	
 	return (count($warnings) > 0) ? $warnings : null;
 }
+
+function get_artifacts($filter) {
+	$db = null;
+	$result = null;
+	
+	try {
+		$db = connect_db('store');
+		if (!isset($db)) {
+			return ["Connection error", null];
+		}
+		
+		$result = dao_get_artifacts($db, $filter);
+				
+	} catch (mysqli_sql_exception $e) {
+		$error = db_log_exception($e);
+		return [$error, ''];
+	} finally {
+		db_safe_rollback($db);
+	}
+	
+	return $result;
+}
+
+function get_latest_free_releases() {
+	global $PACKAGE;
+	
+	return get_artifacts([
+		'product' => 'lsp-plugins',
+		'version' => $PACKAGE['version']
+	]);
+}
+
 
 ?>

@@ -1521,7 +1521,7 @@ tr.stroke {
   height: 18px;
 }
 
-.vst {
+.vst, .vst2 {
   background: url(../img/f-vst.png) no-repeat bottom center;
   background-size: contain;
   width: 31px;
@@ -1857,7 +1857,7 @@ tr.stroke {
     height: 13.5px;
   }
 
-  .vst {
+  .vst, .vst2 {
     width: 23px;
     height: 13.5px;
   }

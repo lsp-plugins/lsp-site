@@ -1,3 +1,28 @@
+<?php
+require_once('./inc/service/utils.php');
+require_once('./inc/site/artifacts.php');
+
+$latest_version = $PACKAGE['version'];
+[$error, $free_artifacts] = get_latest_free_releases();
+$free_artifacts = utl_map_by_field($free_artifacts, 'platform');
+
+$format_names = [
+	'src' => 'Source',
+	'doc' => 'Documentation',
+	'jack' => 'JACK',
+	'pw' => 'PipeWire',
+	'ladspa' => 'LADSPA',
+	'lv2' => 'LV2',
+	'vst2' => 'VST 2.x',
+	'vst3' => 'VST 3',
+	'clap' => 'CLAP',
+	'gst' => 'GStreamer',
+	'au' => 'AU',
+	'aax' => 'AAX',
+	'rtas' => 'RTAS'
+];
+
+?>
 <script>
 	var pages = {
 		"bsd": {

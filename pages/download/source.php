@@ -1,33 +1,19 @@
-<p>The LSP project is an open-source project and cares about quality of developed software.</p>
-<p>Still there is no absolute warranty about stability of the software on different platforms, so you're using this software on your own risk.</p>
-<p>Unless many commercial or proprietary projects, LSP project does not sell license keys or offer technical support for enterprise solutions.</p>
+<?php
 
-<h2>Binary distribution</h2>
+$artifacts = $free_artifacts['any'];
+$artifacts = utl_map_by_field($artifacts, 'format');
 
-<p>You may download the latest release from <a href="<?php echo "${FILE_SHARE}${PACKAGE['version']}"; ?>/">SourceForge.net</a></p>
-
-<p><a href="https://sourceforge.net/projects/lsp-plugins/files/lsp-plugins/<?php echo "${PACKAGE['version']}" ?>/" rel="nofollow"><img alt="Download LSP Plugins" src="https://a.fsdn.com/con/app/sf-download-button"></a></p>
-
-<p>You also may view all previous releases <a href="<?php echo $FILE_SHARE; ?>">here</a>.</p>
+$artifact_file = $artifacts['src'][0]['file'];
+$source_link = htmlspecialchars("{$CODE_REPO}/releases/download/{$latest_version}/{$artifact_file}");
+?>
 
 <h2>Source code</h2>
 
-<p>Source code is accessible from <a href="<?php echo $CODE_REPO; ?>">GIT repository at GitHub.com</a>.</p>
+<p>Source code is available under terms of <a href="https://www.gnu.org/licenses/lgpl-3.0.en.html" alt="GNU LGPLv3">GNU Lesser Public License version 3</a></p>
 
-<p>
-    You may stimulate development of plugins by subscribing or donating the project.
-</p>
-<p>
-    Because project needs regular support, small bounty subscription is much more preferred rather than huge but one-time donation.
-</p>
+<p>You can download source code directly by following link: <a href="<?= $source_link ?>" alt="Source code">Source code</a>.</p> 
+
+<p>The work on the source code is performed on GitHub: <a href="<?= $CODE_REPO; ?>" alt="LSP Plugins Organization">LSP Plugins Organization</a>.</p>
 
 <h2>Building</h2>
-<?php file_content('README.md', 'building'); ?>
-
-<h2>System requirements</h2>
-
-<?php require('./pages/manuals/requirements.php'); ?>
-
-<?php
- // <iframe src="https://streamtip.com/embed/youtube/< ?php echo $STREAMTIP['username']; ? >?theme=dark" width="400" height="200" style="border:none;"></iframe>
-?>
+<?php file_content($README_FILE, 'building'); ?>

@@ -44,6 +44,7 @@ CREATE TABLE build_type
 INSERT INTO build_type(id, name) VALUES (1, 'release');
 INSERT INTO build_type(id, name) VALUES (2, 'update');
 INSERT INTO build_type(id, name) VALUES (3, 'enhancement');
+INSERT INTO build_type(id, name) VALUES (4, 'major');
 
 CREATE TABLE format
 (
@@ -126,5 +127,30 @@ CREATE TABLE price
   CONSTRAINT FK_PRICE_PLAT FOREIGN KEY (platform_id) REFERENCES platform(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+DROP VIEW v_artifacts;
+CREATE VIEW v_artifacts
+AS
+	SELECT
+		p.id product_id, p.name product,
+		a.build_id build_id, b.type_id type_id, bt.name type,
+		a.id artifact_id,
+		b.major version_major, b.minor version_minor, b.micro version_micro,
+		a.platform_id platform_id, pl.name platform,
+		a.architecture_id architecture_id, arch.name architecture,
+		a.format_id format_id, fmt.name format,
+		a.file_name file_name
+	FROM artifact a
+	INNER JOIN build b
+	ON (b.id = a.build_id)
+	INNER JOIN product p
+	ON (p.id = b.product_id)
+	INNER JOIN format fmt
+	ON (fmt.id = a.format_id)
+	INNER JOIN architecture arch
+	ON (arch.id = a.architecture_id)
+	INNER JOIN platform pl
+	ON (pl.id = a.platform_id)
+	INNER JOIN build_type bt
+	ON (bt.id = b.type_id);
 
 
