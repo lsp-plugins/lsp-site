@@ -1,5 +1,37 @@
 <h1>NEWS</h1>
 
+<h3>2024-05-22</h3>
+<p>LSP Plugins 1.2.16 released!</p>
+<ul>
+<li>Implemented Chorus plugin series.</li>
+<li>Implemented advanced internal buffer cleanup algorithm that does not cause high CPU load for Slap-Back Delay plugin.</li>
+<li>Added stereo correlometer to the Spectrum Analyzer plugin series.</li>
+<li>Added feedback to the Slap-Back delay plugin.</li>
+<li>Implemented Dry/Wet balance knob for the following plugin series:</li>
+	<ul>
+	<li>Artistic Delay;</li>
+  	<li>Beat Breather;</li>
+  	<li>Compensation Delay;</li>
+  	<li>Flanger;</li>
+	<li>Impulse Responses;</li>
+  	<li>Impulse Reverb;</li>
+  	<li>Room Builder;</li>
+  	<li>Sampler;</li>
+  	<li>Multisampler;</li>
+  	<li>Slap-Back delay.</li>
+  	</ul>
+<li>Removed 'Amount' knob in Flanger plugin series as it can be fully replaced by Dry/Wet/DryWet knobs.</li>
+<li>Several fixes related to window position of VST3 plugin format.</li>
+<li>Workaround for Bitwig Studio DAW memory leak when VST3 plugins extensively use messaging.</li>
+<li>Fixed bug related to improper loading of RIFF files with 32-bit float sample format.</li>
+<li>Fixed configuration export for LV2 format where plugins exported paths mapped by a DAW instead of real file paths.</li>
+<li>Fixed improper numpad key handling in UI for Windows.</li>
+<li>Fixed Artistic Delay which could generate audio garbage on session startup.</li>
+<li>Improved precision of bilinear transform for filters which could blow up signal when using steep-curved filters.</li>
+<li>Fixed jumping UI controls issues caused by variable widths of diffrent parameters.</li>
+<li>
+</ul>
+
 <h3>2024-03-06</h3>
 <p>LSP Plugins 1.2.15 released!</p>
 <ul>
