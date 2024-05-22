@@ -1191,7 +1191,7 @@ tr.stroke {
 }
 
 .dwnld-active {
-  background-color: #9da3ca;
+  background-color: #a0ea41;
   cursor: default;
   transition: all 0.1s ease;
   -webkit-transition: all 0.1s ease;
@@ -1214,24 +1214,55 @@ tr.stroke {
   background-position: left;
 }
 
+.dwnld-block-lin, .dwnld-block-win, .dwnld-block-mac, .dwnld-block-bsd, .dwnld-block-src {
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position-x: right;
+  background-position-y: top;
+}
+
 .dwnld-lin {
   background-image: url(../svg/lin.svg);
+}
+
+.dwnld-block-lin {
+  background-image: url(../svg/lin_bg.svg);
 }
 
 .dwnld-win {
   background-image: url(../svg/win.svg);
 }
 
+.dwnld-block-win {
+  background-image: url(../svg/win_bg.svg);
+}
+
 .dwnld-mac {
   background-image: url(../svg/mac.svg);
+}
+
+.dwnld-block-mac {
+  background-image: url(../svg/mac_bg.svg);
 }
 
 .dwnld-bsd {
   background-image: url(../svg/bsd.svg);
 }
 
+.dwnld-block-bsd {
+  background-image: url(../svg/bsd_bg.svg);
+}
+
 .dwnld-src {
   background-image: url(../svg/src.svg);
+}
+
+.dwnld-block-bsd {
+  background-image: url(../svg/bsd_bg.svg);
+}
+
+.dwnld-block-src {
+  background-image: url(../svg/src_bg.svg);
 }
 
 .grid-2col {
@@ -1478,6 +1509,14 @@ tr.stroke {
   -ms-transition: all 0.3s ease;
 }
 
+.dwnld-tbl, .dwnld-tbl-tr, .dwnld-tbl-th, .dwnld-tbl-td  {
+  border: 2px solid #373944;
+}
+
+.dwnld-tbl-th  {
+  padding: 4px 6px;
+}
+
 .bundle-box {
   float: left;
   width: 300px;
@@ -1489,57 +1528,118 @@ tr.stroke {
 }
 
 .formats-links {
-  margin-left: 8px;
+  /* margin-left: 8px; */
   display: inline-block;
-  opacity: 0.7;
+  /* opacity: 0.7; */
 }
 
-.formats-links:hover {
+/* .formats-links:hover {
   margin-left: 8px;
   display: inline-block;
   opacity: 1;
+} */
+
+.clap, .ladspa, .lv2, .vst, .vst2 , .vst3, .jack, .clap-dwnld, .ladspa-dwnld, .lv2-dwnld, .vst-dwnld, .vst2-dwnld, .vst3-dwnld, .jack-dwnld {
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 50px;
+  height: 50px;
 }
 
 .clap {
-  background: url(../img/f-clap.png) no-repeat bottom center;
-  background-size: contain;
-  width: 28px;
-  height: 18px;
+  background-image: url(../svg/clap.svg);
+}
+
+.clap:hover {
+  background-image: url(../svg/clap_hover.svg);
 }
 
 .ladspa {
-  background: url(../img/f-ladspa.png) no-repeat bottom center;
-  background-size: contain;
-  width: 60px;
-  height: 18px;
+  background-image: url(../svg/ladspa.svg);
+}
+
+.ladspa:hover {
+  background-image: url(../svg/ladspa_hover.svg);
 }
 
 .lv2 {
-  background: url(../img/f-lv2.png) no-repeat bottom center;
-  background-size: contain;
-  width: 29px;
-  height: 18px;
+  background-image: url(../svg/lv2.svg);
+}
+
+.lv2:hover {
+  background-image: url(../svg/lv2_hover.svg);
 }
 
 .vst, .vst2 {
-  background: url(../img/f-vst.png) no-repeat bottom center;
-  background-size: contain;
-  width: 31px;
-  height: 18px;
+  background-image: url(../svg/vst2.svg);
+}
+
+.vst:hover, .vst2:hover {
+  background-image: url(../svg/vst2_hover.svg);
 }
 
 .vst3 {
-  background: url(../img/f-vst3.png) no-repeat bottom center;
-  background-size: contain;
-  width: 29px;
-  height: 18px;
+  background-image: url(../svg/vst3.svg);
+}
+
+.vst3:hover {
+  background-image: url(../svg/vst3_hover.svg);
 }
 
 .jack {
-  background: url(../img/f-jack.png) no-repeat bottom center;
-  background-size: contain;
-  width: 93px;
-  height: 18px;
+  background-image: url(../svg/jack.svg);
+}
+
+.jack:hover {
+  background-image: url(../svg/jack_hover.svg);
+}
+
+.clap-dwnld {
+  background-image: url(../svg/formats/clap.svg);
+}
+
+.clap-dwnld:hover {
+  background-image: url(../svg/formats/clap_hover.svg);
+}
+
+.ladspa-dwnld {
+  background-image: url(../svg/formats/ladspa.svg);
+}
+
+.ladspa-dwnld:hover {
+  background-image: url(../svg/formats/ladspa_hover.svg);
+}
+
+.lv2-dwnld {
+  background-image: url(../svg/formats/lv2.svg);
+}
+
+.lv2-dwnld:hover {
+  background-image: url(../svg/formats/lv2_hover.svg);
+}
+
+.vst-dwnld, .vst2-dwnld {
+  background-image: url(../svg/formats/vst2.svg);
+}
+
+.vst-dwnld:hover, .vst2-dwnld:hover {
+  background-image: url(../svg/formats/vst2_hover.svg);
+}
+
+.vst3-dwnld {
+  background-image: url(../svg/formats/vst3.svg);
+}
+
+.vst3-dwnld:hover {
+  background-image: url(../svg/formats/vst3_hover.svg);
+}
+
+.jack-dwnld {
+  background-image: url(../svg/formats/jack.svg);
+}
+
+.jack-dwnld:hover {
+  background-image: url(../svg/formats/jack_hover.svg);
 }
 
 @media only screen and (min-width : 769px) and (max-width : 1000px) {
@@ -1847,7 +1947,7 @@ tr.stroke {
     height: 174px;
   }
 
-  .ladspa {
+  /* .ladspa {
     width: 45px;
     height: 13.5px;
   }
@@ -1860,12 +1960,12 @@ tr.stroke {
   .vst, .vst2 {
     width: 23px;
     height: 13.5px;
-  }
+  } */
 
-  .jack {
+  /* .jack {
     width: 70px;
     height: 13.5px;
-  }
+  } */
 
   .ti-box img {
     height: 71px;
