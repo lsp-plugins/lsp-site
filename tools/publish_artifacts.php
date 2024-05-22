@@ -1,11 +1,9 @@
 #!/usr/bin/php
 <?php
 
-$full_path = getcwd() . '/' . $argv[0];
-$cwd = dirname($full_path, 3);
+$full_path = realpath(getcwd() . '/' . $argv[0]);
+$cwd = dirname($full_path, 2);
 chdir($cwd);
-
-echo "CWD = $cwd\n";
 
 require_once('./config/config.php');
 require_once('./inc/site/artifacts.php');
@@ -24,7 +22,7 @@ for ($i=1; $i<count($argv); ++$i) {
 		}
 		$options[$param] = $value;
 	} else {
-		array_push($files, $arg);
+		array_push($files, basename($arg));
 	}
 }
 
