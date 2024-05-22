@@ -1,0 +1,12 @@
+Dear customer!
+
+To proceed full functions you need to verify your email on LSP Plugins site:
+%%site_url%%
+
+Please follow the link below to verify your email:
+%%recovery_url%%
+
+If that were not you, you can just ignore this message.
+
+All the best,
+Linux Studio Plugins Project

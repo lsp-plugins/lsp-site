@@ -1,20 +1,29 @@
 <script type="text/javascript">
 	var frm = $('#fb_form');
+
+	function verify_feedback_form(form) {
+		if (!verify_string_isset(form, 'name')) {
+			alert("Please enter correct name.");
+			return false;
+		}
+		
+		if (!verify_email_isset(form, 'email')) {
+			alert("Please enter correct e-mail address.");
+			return false;
+		}
+		
+		if (!verify_string_isset(form, 'text')) {
+			alert("Please enter at least some words you want to tell us.");
+			return false;
+		}
+		return true;
+	}
+	
 	frm.submit(function (ev) {
+		var form = ev.currentTarget;
 		ev.preventDefault();
 		
-		if (!frm[0].elements['name'].value.match(/\S+/)) {
-			alert("Please enter correct name.");
-			return;
-		}
-		
-		if (!frm[0].elements['email'].value.match(/^\S+\@\S+\.\w+$/)) {
-			alert("Please enter correct e-mail address.");
-			return;
-		}
-		
-		if (!frm[0].elements['text'].value.match(/\S+/)) {
-			alert("Please enter at least some words you want to tell us.");
+		if (!verify_feedback_form(form)) {
 			return;
 		}
 	

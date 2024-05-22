@@ -31,15 +31,32 @@ INSERT INTO customer_type (id, name) VALUES (4, 'tester');
 
 CREATE TABLE customer
 (
-  id bigint(20) NOT NULL,
+  id bigint(20) NOT NULL auto_increment,
+  support_id varchar(36) NOT NULL,
   email varchar(1024) NOT NULL,
   password varchar(64) NOT NULL,
   type int NOT NULL,
-  verified int NOT NULL DEFAULT 0,
+  created TIMESTAMP NOT NULL DEFAULT current_timestamp,
+  verified TIMESTAMP NULL DEFAULT NULL,
+  blocked TIMESTAMP NULL DEFAULT NULL,
   
   PRIMARY KEY (id),
   CONSTRAINT UK_CUSTOMER_EMAIL UNIQUE KEY(email),
-  CONSTRAINT FK_CUSTOMER_TYPE FOREIGN KEY(type) REFERENCES customer_type(id)  
+  CONSTRAINT FK_CUSTOMER_TYPE FOREIGN KEY(type) REFERENCES customer_type(id),
+  CONSTRAINT UK_CUSTOMER_SUPPORT_ID UNIQUE KEY(support_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE customer_token
+(
+  id varchar(36) NOT NULL,
+  customer_id bigint(20) NOT NULL,
+  created TIMESTAMP NOT NULL DEFAULT current_timestamp,
+  expire TIMESTAMP NULL DEFAULT current_timestamp,
+  scope VARCHAR(32) NOT NULL,
+  data TEXT NULL,
+  
+  CONSTRAINT PK_CUSTOMER_TOKEN_ID PRIMARY KEY(id),
+  CONSTRAINT FK_CUSTOMER_TOKEN_CID FOREIGN KEY(customer_id) REFERENCES customer(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE orders
@@ -73,4 +90,16 @@ CREATE TABLE purchase
   CONSTRAINT FK_PURCHASE_CUST FOREIGN KEY (customer_id) REFERENCES customer(id),
   CONSTRAINT FK_PURCHASE_ORD FOREIGN KEY (order_id) REFERENCES orders(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE customer_log
+(
+  time TIMESTAMP NOT NULL,
+  customer_id bigint(20) NOT NULL,
+  session_id varchar(36) NOT NULL,
+  action varchar(64) NOT NULL,
+  data text NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE INDEX IDX_CUSTOMER_LOG_CID ON customer_log(customer_id);
+CREATE INDEX IDX_CUSTOMER_LOG_SID ON customer_log(session_id);
 

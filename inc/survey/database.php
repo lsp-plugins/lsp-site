@@ -1,4 +1,6 @@
 <?php
+	require_once '../site/database.php';
+
 	function save_survey_row($mysql, $survey) {
 		global $_SERVER;
 
@@ -67,23 +69,13 @@
 	}
 
 	function save_survey($survey) {
-		// Estimate connection link
-		global $DATABASES;
-		$link = $DATABASES['surveys'];
-		if (!isset($link)) {
-			return false;
-		}
-		
 		// Connect to the database
-		$mysql = mysqli_connect("{$link['host']}:{$link['port']}", $link['user'], $link['password']);
+		$mysql = connect_db('surveys');
 		if (!isset($mysql)) {
 			return false;
 		}
 		
 		try {
-			mysqli_autocommit($mysql, false);
-			mysqli_select_db($mysql, $link['database']);
-			
 			// Insert all single-value arguments
 			$id = save_survey_row($mysql, $survey);
 			
