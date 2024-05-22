@@ -42,7 +42,7 @@
 		),
 		array(
 			'id' => "chorus",
-			'name' => "Plugin Template",
+			'name' => "Chorus",
 			'group' => "effects",
 			'video' => "SSQaXDN9yXI",
 			'description' => "This plugin allows to simulate the chorus effect"
