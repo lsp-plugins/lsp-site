@@ -47,4 +47,17 @@ function notify_user_feedback($name, $email, $text) {
 		]);
 }
 
+function send_site_report($text) {
+	global $MAIL_ADDR;
+	
+	return send_mail(
+		[ $MAIL_ADDR['reports'] => 'Site report service' ],
+		$MAIL_ADDR['admin'],
+		'LSP Site report',
+		'site_report',
+		[
+			'text' => $text
+		]);
+}
+
 ?>

@@ -146,4 +146,26 @@ function get_session_user() {
 	return $USER_SESSION['user'];
 }
 
+function cleanup_sessions() {
+	$db = null;
+	try {
+		// Connect to the database
+		$db = connect_db('site');
+		if (!isset($db)) {
+			return false;
+		}
+		
+		$result = dao_cleanup_sessions($db);
+		if ($result) {
+			mysqli_commit($db);
+		}
+		
+		return $result;
+	} finally {
+		db_safe_rollback($db);
+	}
+	
+	return false;
+}
+
 ?>

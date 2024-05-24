@@ -336,4 +336,26 @@ function get_email_verification_retry_delay() {
 	return null;
 }
 
+function cleanup_user_tokens() {
+	$db = null;
+	try {
+		// Connect to the database
+		$db = connect_db('customers');
+		if (!isset($db)) {
+			return false;
+		}
+		
+		$result = dao_cleanup_user_tokens($db);
+		if ($result) {
+			mysqli_commit($db);
+		}
+		
+		return $result;
+	} finally {
+		db_safe_rollback($db);
+	}
+	
+	return false;
+}
+
 ?>

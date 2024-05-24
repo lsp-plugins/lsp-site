@@ -104,4 +104,16 @@ function dao_create_session($db)
 	return null;
 }
 
+function dao_cleanup_sessions($db) {
+	$stmt = mysqli_prepare($db,
+		"DELETE FROM sessions " .
+		"WHERE (expire < current_timestamp)");
+	
+	try {
+		return mysqli_stmt_execute($stmt);
+	} finally {
+		mysqli_stmt_close($stmt);
+	}
+}
+
 ?>

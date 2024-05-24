@@ -89,4 +89,17 @@ function dao_apply_csrf_token($db, $session_id, $scope, $token) {
 	
 	return false;
 }
+
+function dao_cleanup_csrf_tokens($db) {
+	$stmt = mysqli_prepare($db,
+		"DELETE FROM csrf_tokens " .
+		"WHERE (expire < current_timestamp)");
+	
+	try {
+		return mysqli_stmt_execute($stmt);
+	} finally {
+		mysqli_stmt_close($stmt);
+	}
+}
+
 ?>

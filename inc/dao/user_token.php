@@ -180,5 +180,17 @@ function dao_remove_all_user_tokens($db, $user_id, $scope) {
 	}
 }
 
+function dao_cleanup_user_tokens($db) {
+	$stmt = mysqli_prepare($db,
+		"DELETE FROM customer_token " .
+		"WHERE (expire < current_timestamp)");
+	
+	try {
+		return mysqli_stmt_execute($stmt);
+	} finally {
+		mysqli_stmt_close($stmt);
+	}
+}
+
 
 ?>

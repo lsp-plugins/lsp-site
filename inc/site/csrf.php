@@ -113,4 +113,27 @@ function verify_csrf_token($error, $scope, $map, $key = null) {
 		"Invalid token";
 }
 
+function cleanup_csrf_tokens() {
+	$db = null;
+	try {
+		// Connect to the database
+		$db = connect_db('site');
+		if (!isset($db)) {
+			return false;
+		}
+		
+		$result = dao_cleanup_csrf_tokens($db);
+		if ($result) {
+			mysqli_commit($db);
+		}
+		
+		return $result;
+	} finally {
+		db_safe_rollback($db);
+	}
+	
+	return false;
+}
+
+
 ?>

@@ -1,7 +1,7 @@
 #!/usr/bin/php
 <?php
 
-$full_path = realpath(getcwd() . '/' . $argv[0]);
+$full_path = realpath($argv[0]);
 $cwd = dirname($full_path, 2);
 chdir($cwd);
 
