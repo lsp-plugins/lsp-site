@@ -1539,7 +1539,8 @@ tr.stroke {
   opacity: 1;
 } */
 
-.clap, .ladspa, .lv2, .vst, .vst2 , .vst3, .jack, .clap-dwnld, .ladspa-dwnld, .lv2-dwnld, .vst-dwnld, .vst2-dwnld, .vst3-dwnld, .jack-dwnld {
+.clap, .gst, .ladspa, .lv2, .vst, .vst2 , .vst3, .jack,
+.clap-dwnld, .gst-dwnld, .ladspa-dwnld, .lv2-dwnld, .vst-dwnld, .vst2-dwnld, .vst3-dwnld, .jack-dwnld {
   background-size: contain;
   background-repeat: no-repeat;
   width: 50px;
@@ -1547,99 +1548,115 @@ tr.stroke {
 }
 
 .clap {
-  background-image: url(../svg/clap.svg);
-}
-
-.clap:hover {
-  background-image: url(../svg/clap_hover.svg);
-}
-
-.ladspa {
-  background-image: url(../svg/ladspa.svg);
-}
-
-.ladspa:hover {
-  background-image: url(../svg/ladspa_hover.svg);
-}
-
-.lv2 {
-  background-image: url(../svg/lv2.svg);
-}
-
-.lv2:hover {
-  background-image: url(../svg/lv2_hover.svg);
-}
-
-.vst, .vst2 {
-  background-image: url(../svg/vst2.svg);
-}
-
-.vst:hover, .vst2:hover {
-  background-image: url(../svg/vst2_hover.svg);
-}
-
-.vst3 {
-  background-image: url(../svg/vst3.svg);
-}
-
-.vst3:hover {
-  background-image: url(../svg/vst3_hover.svg);
-}
-
-.jack {
-  background-image: url(../svg/jack.svg);
-}
-
-.jack:hover {
-  background-image: url(../svg/jack_hover.svg);
-}
-
-.clap-dwnld {
   background-image: url(../svg/formats/clap.svg);
 }
 
-.clap-dwnld:hover {
+.clap:hover {
   background-image: url(../svg/formats/clap_hover.svg);
 }
 
-.ladspa-dwnld {
+.gst {
+  background-image: url(../svg/formats/gst.svg);
+}
+
+.gst:hover {
+  background-image: url(../svg/formats/gst_hover.svg);
+}
+
+.ladspa {
   background-image: url(../svg/formats/ladspa.svg);
 }
 
-.ladspa-dwnld:hover {
+.ladspa:hover {
   background-image: url(../svg/formats/ladspa_hover.svg);
 }
 
-.lv2-dwnld {
+.lv2 {
   background-image: url(../svg/formats/lv2.svg);
 }
 
-.lv2-dwnld:hover {
+.lv2:hover {
   background-image: url(../svg/formats/lv2_hover.svg);
 }
 
-.vst-dwnld, .vst2-dwnld {
+.vst, .vst2 {
   background-image: url(../svg/formats/vst2.svg);
 }
 
-.vst-dwnld:hover, .vst2-dwnld:hover {
+.vst:hover, .vst2:hover {
   background-image: url(../svg/formats/vst2_hover.svg);
 }
 
-.vst3-dwnld {
+.vst3 {
   background-image: url(../svg/formats/vst3.svg);
 }
 
-.vst3-dwnld:hover {
+.vst3:hover {
   background-image: url(../svg/formats/vst3_hover.svg);
 }
 
-.jack-dwnld {
+.jack {
   background-image: url(../svg/formats/jack.svg);
 }
 
-.jack-dwnld:hover {
+.jack:hover {
   background-image: url(../svg/formats/jack_hover.svg);
+}
+
+.clap-dwnld {
+  background-image: url(../svg/downloads/clap.svg);
+}
+
+.clap-dwnld:hover {
+  background-image: url(../svg/downloads/clap_hover.svg);
+}
+
+.gst-dwnld {
+  background-image: url(../svg/downloads/gst.svg);
+}
+
+.gst-dwnld:hover {
+  background-image: url(../svg/downloads/gst_hover.svg);
+}
+
+.ladspa-dwnld {
+  background-image: url(../svg/downloads/ladspa.svg);
+}
+
+.ladspa-dwnld:hover {
+  background-image: url(../svg/downloads/ladspa_hover.svg);
+}
+
+.lv2-dwnld {
+  background-image: url(../svg/downloads/lv2.svg);
+}
+
+.lv2-dwnld:hover {
+  background-image: url(../svg/downloads/lv2_hover.svg);
+}
+
+.vst-dwnld, .vst2-dwnld {
+  background-image: url(../svg/downloads/vst2.svg);
+}
+
+.vst-dwnld:hover, .vst2-dwnld:hover {
+  background-image: url(../svg/downloads/vst2_hover.svg);
+}
+
+.vst3-dwnld {
+  background-image: url(../svg/downloads/vst3.svg);
+}
+
+.vst3-dwnld:hover {
+  background-image: url(../svg/downloads/vst3_hover.svg);
+}
+
+.jack-dwnld {
+  background-image: url(../svg/downloads/jack.svg);
+}
+
+.jack-dwnld:hover {
+  background-image: url(../svg/downloads/jack_hover.svg);
 }
 
 @media only screen and (min-width : 769px) and (max-width : 1000px) {

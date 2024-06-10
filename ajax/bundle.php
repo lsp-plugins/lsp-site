@@ -1,17 +1,23 @@
 <?php
+chdir($_SERVER['DOCUMENT_ROOT']);
+require_once("./inc/top.php");
+?>
+<?php
 	// Include common modules
-	require_once ('../inc/plugins.php');
+	require_once ('./inc/plugins.php');
+	require_once ('./inc/site/preload.php');
 
 	// Include configuration
-	require_once ('../config/plugins.php');
+	require_once ('./config/plugins.php');
 
 	$bundle_id  = isset($_REQUEST['bundle']) ? $_REQUEST['bundle'] : '';
+	$fancybox = isset($_REQUEST['fancybox']) ? $_REQUEST['fancybox'] : false;
 
 	foreach ($BUNDLES as $bundle)
 	{
 		if ($bundle['id'] != $bundle_id)
 			continue;
-
+		
 		// Keep only related to bundle plugins and sort them alphabetically
 		$plug_list = array();
 		$grp_image = '';
@@ -59,10 +65,18 @@
 					allowfullscreen>
 				</iframe>
 			<?php } ?>
+			<?php
+				if ($fancybox) {
+					preload_images('svg/formats');
+				}
+			?>
 			<div class="format-div">
 				<b>Formats:</b><br>
 				<?php if (isset($plug['clap_uid']) && (strlen($plug['clap_uid']) > 0)) { ?>
 					<a href="https://github.com/free-audio/clap/" target="_blank" class="formats-links clap smooth" alt="CLAP"></a>
+				<? } ?>
+				<?php if (isset($plug['gst_uid']) && (strlen($plug['gst_uid']) > 0)) { ?>
+					<a href="https://gstreamer.freedesktop.org/" target="_blank" class="formats-links clap smooth" alt="GST"></a>
 				<? } ?>
 				<?php if (isset($plug['ladspa_label']) && (strlen($plug['ladspa_label']) > 0)) { ?>
 					<a href="https://www.ladspa.org/" target="_blank" class="formats-links ladspa smooth" alt="LADSPA"></a>

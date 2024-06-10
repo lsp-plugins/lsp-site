@@ -92,6 +92,7 @@ $format_names = [
 require_once('./inc/files.php');
 require_once('./inc/service/database.php');
 require_once('./inc/site/auth.php');
+require_once('./inc/site/preload.php');
 require_once('./inc/site/session.php');
 ?>
 
@@ -99,6 +100,8 @@ require_once('./inc/site/session.php');
 
 <?php
 require_once('./pages/parts/user_verification_status.php');
+
+preload_images('svg/downloads');
 ?>
 
 <div class="tile-flex-container">
@@ -122,13 +125,13 @@ require_once('./pages/parts/user_verification_status.php');
 		<?php /*
 		<div class="tile-flex-inner dwnld-mac">
 			<div class="dwnld-content">
-				<div class="dwnld-os">MAC OS</div>
+				<div class="dwnld-os">MacOS</div>
 				<div class="dwnld-desc">UNIX-based operating system by Apple Inc.</div>
 			</div>
 		</div> */ ?>
 		<div class="tile-flex-inner dwnld-bsd">
 			<div class="dwnld-content">
-				<div class="dwnld-os">Free BSD</div>
+				<div class="dwnld-os">FreeBSD</div>
 				<div class="dwnld-desc">Is a free and open-source Unix-like operating system</div>
 			</div>
 		</div>
