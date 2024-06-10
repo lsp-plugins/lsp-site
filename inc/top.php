@@ -2,8 +2,9 @@
 
 require_once("./config/config.php");
 require_once("./config/plugins.php");
-require_once("./inc/site/session.php");
 require_once("./inc/site/csrf.php");
+require_once("./inc/site/preload.php");
+require_once("./inc/site/session.php");
 
 ensure_user_session_is_set();
 

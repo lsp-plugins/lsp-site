@@ -29,6 +29,9 @@
 								<div class="sup-project-text">The best way to support the
 									project :</div>
 								<br>
+								<?php
+									preload_images('svg/funding');
+								?>
 								<div class="sup-container">
 									<div class="lpa">
 										<a href="https://liberapay.com/sadko4u/donate" target="_blank"

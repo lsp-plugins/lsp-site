@@ -420,85 +420,85 @@ a:hover.link_no_visit, a:visited:hover.link_no_visit {
 }
 
 .lpa {
-  background: url(../svg/lpa.png) no-repeat top left;
+  background: url(../svg/funding/lpa.png) no-repeat top left;
   background-size: contain;
   padding-left: 28px;
 }
 
 .bou {
-  background: url(../svg/bou.png) no-repeat top left;
+  background: url(../svg/funding/bou.png) no-repeat top left;
   background-size: contain;
   padding-left: 28px;
 }
 
 .pay {
-  background: url(../svg/pay.png) no-repeat top left;
+  background: url(../svg/funding/pay.png) no-repeat top left;
   background-size: contain;
   padding-left: 25px;
 }
 
 .eth {
-  background: url(../svg/eth.png) no-repeat top left;
+  background: url(../svg/funding/eth.png) no-repeat top left;
   background-size: contain;
   padding-left: 23px;
 }
 
 .ptr {
-  background: url(../svg/ptr.png) no-repeat top left;
+  background: url(../svg/funding/ptr.png) no-repeat top left;
   background-size: contain;
   padding-left: 28px;
 }
 
 .qiwi {
-  background: url(../svg/qiwi.png) no-repeat top left;
+  background: url(../svg/funding/qiwi.png) no-repeat top left;
   background-size: contain;
   padding-left: 28px;
 }
 
 .yoomoney {
-  background: url(../svg/yoomoney.png) no-repeat top left;
+  background: url(../svg/funding/yoomoney.png) no-repeat top left;
   background-size: contain;
   padding-left: 28px;
 }
 
 .lpa:hover {
-  background: url(../svg/lpa_gray.png) no-repeat top left;
+  background: url(../svg/funding/lpa_gray.png) no-repeat top left;
   background-size: contain;
   padding-left: 28px;
 }
 
 .bou:hover {
-  background: url(../svg/bou_gray.png) no-repeat top left;
+  background: url(../svg/funding/bou_gray.png) no-repeat top left;
   background-size: contain;
   padding-left: 28px;
 }
 
 .pay:hover {
-  background: url(../svg/pay_gray.png) no-repeat top left;
+  background: url(../svg/funding/pay_gray.png) no-repeat top left;
   background-size: contain;
   padding-left: 25px;
 }
 
 .eth:hover {
-  background: url(../svg/eth_gray.png) no-repeat top left;
+  background: url(../svg/funding/eth_gray.png) no-repeat top left;
   background-size: contain;
   padding-left: 23px;
 }
 
 .ptr:hover {
-  background: url(../svg/ptr_gray.png) no-repeat top left;
+  background: url(../svg/funding/ptr_gray.png) no-repeat top left;
   background-size: contain;
   padding-left: 28px;
 }
 
 .qiwi:hover {
-  background: url(../svg/qiwi_gray.png) no-repeat top left;
+  background: url(../svg/funding/qiwi_gray.png) no-repeat top left;
   background-size: contain;
   padding-left: 28px;
 }
 
 .yoomoney:hover {
-  background: url(../svg/yoomoney_gray.png) no-repeat top left;
+  background: url(../svg/funding/yoomoney_gray.png) no-repeat top left;
   background-size: contain;
   padding-left: 28px;
 }
