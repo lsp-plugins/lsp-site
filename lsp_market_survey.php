@@ -2,6 +2,7 @@
 
 chdir($_SERVER['DOCUMENT_ROOT']);
 
+require_once("./inc/top.php");
 require_once("./inc/header.php");
 require_once("./inc/survey.php");
 

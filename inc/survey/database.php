@@ -1,5 +1,5 @@
 <?php
-	require_once '../site/database.php';
+	require_once './inc/service/database.php';
 
 	function save_survey_row($mysql, $survey) {
 		global $_SERVER;
