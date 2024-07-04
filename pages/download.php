@@ -2,10 +2,6 @@
 require_once('./inc/service/utils.php');
 require_once('./inc/site/artifacts.php');
 
-$latest_version = $PACKAGE['version'];
-[$error, $free_artifacts] = get_latest_free_releases();
-$free_artifacts = utl_map_by_field($free_artifacts, 'platform');
-
 $format_names = [
 	'src' => 'Source',
 	'doc' => 'Documentation',
@@ -22,31 +18,60 @@ $format_names = [
 	'rtas' => 'RTAS'
 ];
 
+$sections = [
+	'linux' => [
+		'id' => 'lin',
+		'os' => 'Linux',
+		'desc' => 'Open-source, community-developed operating system.',
+		'page' => 'linux.php'
+	],
+/*	'windows' => [
+		'id' => 'win',
+		'os' => 'Windows',
+		'desc' => 'Is a group of several proprietary graphical operating system.',
+		'page' => 'windows.php'
+	],
+	'macos' => [
+		'id' => 'mac',
+		'os' => 'MacOS',
+		'desc' => 'UNIX-based operating system by Apple Inc.',
+		'page' => 'mac.php'
+	], */
+	'freebsd' => [
+		'id' => 'bsd',
+		'os' => 'FreeBSD',
+		'desc' => 'Is a free and open-source Unix-like operating system.',
+		'page' => 'bsd.php'
+	],
+	'source' => [
+		'id' => 'src',
+		'os' => 'Source',
+		'desc' => 'Is a programmer’s instructions - written in a computer programming language',
+		'page' => 'source.php'
+	]
+];
+
+$current_section = $_REQUEST['section'] ?: 'linux';
+if (!array_key_exists($current_section, $sections)) {
+	$current_section = 'linux';
+}
+
+$latest_version = $PACKAGE['version'];
+[$error, $free_artifacts] = get_latest_free_releases();
+$free_artifacts = utl_map_by_field($free_artifacts, 'platform');
+
 ?>
+
 <script>
 	var pages = {
-		"bsd": {
-			"div": ".dwnld-bsd",
-			"block": ".dwnld-block-bsd"
-		},
-		"lin": {
-			"div": ".dwnld-lin",
-			"block": ".dwnld-block-lin"
-		},
-		<?php /*
-		"mac": {
-			"div": ".dwnld-mac",
-			"block": ".dwnld-block-mac"
-		}, */ ?>
-		"src": {
-			"div": ".dwnld-src",
-			"block": ".dwnld-block-src"
-		},
-		<?php /*
-		"win": {
-			"div": ".dwnld-win",
-			"block": ".dwnld-block-win"
-		}, */ ?>
+<?php
+foreach ($sections as $key => $page) {
+	echo "\t\"$key\": {\n";
+	echo "\t\t\"div\": \".dwnld-{$page['id']}\",\n";
+	echo "\t\t\"block\": \".dwnld-block-{$page['id']}\",\n";
+	echo "\t},\n";
+}
+?>
 	};
 
 	$(document).ready(function() {
@@ -55,6 +80,7 @@ $format_names = [
 
 			$(pages[id]["div"]).on({
 				click: function() {
+					var redirect = false;
 					for (var key in pages) {
 						var page = pages[key]; 
 						var div = page["div"];
@@ -63,10 +89,22 @@ $format_names = [
 							$(div).addClass("dwnld-active");
 							$(div).removeClass("dwnld-hover");
 							$(block).slideDown(300);
+
+							var new_string = jQuery.query.set("section", key).toString();
+							if (history) {
+								history.pushState({}, null, new_string);	
+							} else {
+								window.location.search = new_string;
+							}
+							redirect = true;
 						} else {
 							$(div).removeClass("dwnld-active");
 							$(block).slideUp(300);
 						}
+					}
+
+					if (redirect) {
+						return false;
 					}
 				},
 				mouseenter: function() {
@@ -105,62 +143,27 @@ preload_images('svg/downloads');
 ?>
 
 <div class="tile-flex-container">
-
 	<div class="tile-flex" style="margin-bottom:10px;">
 
-		<div class="tile-flex-inner dwnld-lin dwnld-active">
-			<div class="dwnld-content">
-				<div class="dwnld-os">Linux</div>
-				<div class="dwnld-desc">Open-source, community-developed operating system</div>
-			</div>
-		</div>
-		<?php /*
-		<div class="tile-flex-inner dwnld-win">
-			<div class="dwnld-content">
-				<div class="dwnld-os">Windows</div>
-				<div class="dwnld-desc">Is a group of several proprietary graphical operating system</div>
-			</div>
-		</div>
-		*/ ?>
-		<?php /*
-		<div class="tile-flex-inner dwnld-mac">
-			<div class="dwnld-content">
-				<div class="dwnld-os">MacOS</div>
-				<div class="dwnld-desc">UNIX-based operating system by Apple Inc.</div>
-			</div>
-		</div> */ ?>
-		<div class="tile-flex-inner dwnld-bsd">
-			<div class="dwnld-content">
-				<div class="dwnld-os">FreeBSD</div>
-				<div class="dwnld-desc">Is a free and open-source Unix-like operating system</div>
-			</div>
-		</div>
-
-		<div class="tile-flex-inner dwnld-src">
-			<div class="dwnld-content">
-				<div class="dwnld-os">Source</div>
-				<div class="dwnld-desc">Is a programmer’s instructions - written in a computer programming language</div>
-			</div>
-		</div>
-
+<?php
+foreach ($sections as $key => $page) {
+	$style_class = "tile-flex-inner dwnld-{$page['id']}" . (($current_section === $key) ? ' dwnld-active' : '');
+	echo "<div class=\"{$style_class}\">\n";
+	echo "<div class=\"dwnld-content\">\n";
+	echo "<div class=\"dwnld-os\">{$page['os']}</div>\n";
+	echo "<div class=\"dwnld-desc\">{$page['desc']}</div>\n";
+	echo "</div>\n";
+	echo "</div>\n";
+}
+?>
 	</div>
 
-
-	<div class="dwnld-block-lin" style="display: block;">
-		<?php require_once("./pages/download/linux.php"); ?>
-	</div>
-	<?php /*
-	<div class="dwnld-block-win" style="display: none;">
-		<?php require_once("./pages/download/windows.php"); ?>
-	</div> */ ?>
-	<?php /*
-	<div class="dwnld-block-mac" style="display: none;">
-		<?php require_once("./pages/download/mac.php"); ?>
-	</div> */ ?>	
-	<div class="dwnld-block-bsd" style="display: none;">
-		<?php require_once("./pages/download/bsd.php"); ?>
-	</div>
-	<div class="dwnld-block-src" style="display: none;">
-		<?php require_once("./pages/download/source.php"); ?>
-	</div>
+<?php
+foreach ($sections as $key => $page) {
+	$style_class = (($current_section === $key) ? 'display: block;' : 'display: none;');
+	echo "<div class=\"dwnld-block-{$page['id']}\" style=\"{$style_class}\">\n";
+	require_once("./pages/download/{$page['page']}");
+	echo "</div>\n";
+}
+?>
 </div>
