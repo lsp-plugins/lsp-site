@@ -1,6 +1,7 @@
 <?php
 require_once('./inc/service/utils.php');
 require_once('./inc/site/artifacts.php');
+require_once('./inc/site/browser.php');
 
 $format_names = [
 	'src' => 'Source',
@@ -25,13 +26,13 @@ $sections = [
 		'desc' => 'Open-source, community-developed operating system.',
 		'page' => 'linux.php'
 	],
-/*	'windows' => [
+	'windows' => [
 		'id' => 'win',
 		'os' => 'Windows',
 		'desc' => 'Is a group of several proprietary graphical operating system.',
 		'page' => 'windows.php'
 	],
-	'macos' => [
+/*	'macos' => [
 		'id' => 'mac',
 		'os' => 'MacOS',
 		'desc' => 'UNIX-based operating system by Apple Inc.',
@@ -51,11 +52,25 @@ $sections = [
 	]
 ];
 
-$current_section = $_REQUEST['section'] ?: 'linux';
-if (!array_key_exists($current_section, $sections)) {
+# Derermine what section to show
+$current_section = null;
+if (array_key_exists('section', $_REQUEST)) {
+	$current_section = $_REQUEST['section'];
+}
+if (!isset($current_section)) {
+	$browser = browser_info();
+	if ((isset($browser)) && (array_key_exists('platform_family', $browser))) {
+		$current_section = $browser['platform_family'];
+	}
+}
+if (!isset($current_section)) {
+	$current_section = 'linux';
+}
+if ((!isset($current_section)) || (!array_key_exists($current_section, $sections))) {
 	$current_section = 'linux';
 }
 
+# Get latest version and artifacts
 $latest_version = $PACKAGE['version'];
 [$error, $free_artifacts] = get_latest_free_releases();
 $free_artifacts = utl_map_by_field($free_artifacts, 'platform');
