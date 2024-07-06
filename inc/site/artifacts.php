@@ -36,28 +36,29 @@ function create_artifacts($file_names, $build_type) {
 		}
 	
 		foreach ($file_names as $file) {
+			$basename = basename($file);
 			$matches = [];
 			$result = [];
 			
-			if (preg_match("/^{$product_pattern}-src-{$version_pattern}\\.{$archive_pattern}$/", $file, $matches)) {
+			if (preg_match("/^{$product_pattern}-src-{$version_pattern}\\.{$archive_pattern}$/", $basename, $matches)) {
 				// Source code
 				[$text, $product, $major, $minor, $micro] = $matches;
 				
 				$result = dao_create_artifact($db,
 					$product, $build_type, 'src',
 					[$major, $minor, $micro],
-					'any', 'noarch', $file);
+					'any', 'noarch', $basename);
 				
-			} elseif (preg_match("/^{$product_pattern}-doc-{$version_pattern}\\.{$archive_pattern}$/", $file, $matches)) {
+			} elseif (preg_match("/^{$product_pattern}-doc-{$version_pattern}\\.{$archive_pattern}$/", $basename, $matches)) {
 				// Documentation
 				[$text, $product, $major, $minor, $micro] = $matches;
 				
 				$result = dao_create_artifact($db,
 					$product, $build_type, 'doc',
 					[$major, $minor, $micro],
-					'any', 'noarch', $file);
+					'any', 'noarch', $basename);
 				
-			} elseif (preg_match("/^{$product_pattern}-{$fmt_pattern}-{$version_pattern}-{$platform_pattern}-{$architecture_pattern}\\.{$archive_pattern}$/", $file, $matches)) {
+			} elseif (preg_match("/^{$product_pattern}-{$fmt_pattern}-{$version_pattern}-{$platform_pattern}-{$architecture_pattern}\\.{$archive_pattern}$/", $basename, $matches)) {
 				// Binary build
 				[$text, $product, $format, $major, $minor, $micro, $platform, $archtecture] = $matches;
 				if (!array_key_exists($platform, $platform_mapping)) {
@@ -75,10 +76,10 @@ function create_artifacts($file_names, $build_type) {
 				$result = dao_create_artifact($db,
 					$product, $build_type, $format,
 					[$major, $minor, $micro],
-					$platform, $architecture, $file);
+					$platform, $architecture, $basename);
 				
 			} else {
-				$result = [ "Could not parse artifact", null ];
+				$result = [ "Could not parse artifact {$file}", null ];
 			}
 			
 			[$error] = $result;
