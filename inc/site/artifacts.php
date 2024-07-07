@@ -21,7 +21,7 @@ function create_artifacts($file_names, $build_type) {
 	
 	$warnings = [];
 	
-	$archive_pattern='(?:tar\\.(?:gz|bz)|zip|7z)';
+	$archive_pattern='(?:tar\\.(?:gz|bz)|zip|7z|exe)';
 	$product_pattern='([a-z0-9\\-]+)';
 	$version_pattern='(\\d+)\\.(\d+)\\.(\\d+)';
 	$fmt_pattern='([a-z0-9]+)';

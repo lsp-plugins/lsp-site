@@ -67,6 +67,7 @@ INSERT INTO format(id, name) VALUES (10, 'gst');
 INSERT INTO format(id, name) VALUES (11, 'au');
 INSERT INTO format(id, name) VALUES (12, 'aax');
 INSERT INTO format(id, name) VALUES (13, 'rtas');
+INSERT INTO format(id, name) VALUES (14, 'multi');
 
 CREATE TABLE product
 (
