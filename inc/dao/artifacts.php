@@ -1,6 +1,7 @@
 <?php
 
 require_once('./inc/service/database.php');
+require_once('./inc/service/uuid.php');
 
 function dao_create_product($db, $product) {
 	$product_id = id_from_dict($db, 'product', $product);
@@ -61,10 +62,11 @@ function dao_create_build($db, $product_id, $build_type_id, $version) {
 		return $build_id;
 	}
 	
-	$stmt = mysqli_prepare($db, "INSERT INTO build(product_id, issue_date, type_id, major, minor, micro) " .
-		"VALUES (?, current_date, ?, ?, ?, ?)");
+	$stmt = mysqli_prepare($db, "INSERT INTO build(product_id, issue_date, type_id, major, minor, micro, version_raw) " .
+		"VALUES (?, current_date, ?, ?, ?, ?, ?)");
 	try {
-		mysqli_stmt_bind_param($stmt, 'iiiii', $product_id, $build_type_id, $version[0], $version[1], $version[2]);
+		$raw_version = ($version[0] * 1000 + $version[1]) * 1000 + $version[2];
+		mysqli_stmt_bind_param($stmt, 'iiiiii', $product_id, $build_type_id, $version[0], $version[1], $version[2], $raw_version);
 		if (mysqli_stmt_execute($stmt)) {
 			return mysqli_insert_id($db);
 		}
@@ -107,25 +109,30 @@ function dao_create_artifact($db, $product, $build_type, $format, $version, $pla
 	if (!isset($format_id)) {
 		return ["Unknown format '{$format_id}'", null];
 	}
-	
 
-	$stmt = mysqli_prepare($db, "INSERT INTO artifact(build_id, platform_id, architecture_id, format_id, file_name) " .
-		"VALUES (?, ?, ?, ?, ?)");
-	try {
-		mysqli_stmt_bind_param($stmt, 'iiiis', $build_id, $platform_id, $architecture_id, $format_id, $file_name);
-		if (mysqli_stmt_execute($stmt)) {
-			return [null, mysqli_insert_id($db)];
+	while (true) {
+		$artifact_id = make_uuid();
+		$stmt = mysqli_prepare($db, "INSERT INTO artifact(id, build_id, platform_id, architecture_id, format_id, file_name) " .
+			"VALUES (?, ?, ?, ?, ?, ?)");
+		try {
+			mysqli_stmt_bind_param($stmt, 'siiiis', $artifact_id, $build_id, $platform_id, $architecture_id, $format_id, $file_name);
+			if (mysqli_stmt_execute($stmt)) {
+				return [null, mysqli_insert_id($db)];
+			}
+		} catch (mysqli_sql_exception $e) {
+			if (!unique_key_violation($e)) {
+				db_log_exception($e);
+				break;
+			}
+		} finally {
+			mysqli_stmt_close($stmt);
 		}
-	} catch (mysqli_sql_exception $e) {
-		db_log_exception($e);
-	} finally {
-		mysqli_stmt_close($stmt);
 	}
 	
 	return ['Unknown database error', null];
 }
 
-function dao_get_artifacts($db, $filter) {
+function dao_get_artifacts($db, $view, $filter) {
 	$conditions = [];
 	$arguments = [];
 	$types = [];
@@ -170,9 +177,26 @@ function dao_get_artifacts($db, $filter) {
 			$arguments = array_merge($arguments, $version);
 			array_push($types, 'i', 'i', 'i');
 		}
+		if (isset($filter['raw_version'])) {
+			$raw_version = $filter['raw_version'];
+			if (is_string($raw_version)) {
+				$version = explode('.', $version);
+				$version = ($version[0] * 1000 + $version[1]) * 1000 + $version[2];
+			} elseif (is_numeric($version)) {
+				// nothing
+			} elseif (is_array($version)) {
+				$version = ($version[0] * 1000 + $version[1]) * 1000 + $version[2];
+			} else {
+				return ["Invalid argument 'raw_version'", null ];
+			}
+			
+			array_push($conditions, '(version_raw = ?)');
+			$arguments = array_push($arguments, $version);
+			array_push($types, 'i');
+		}
 	}
 	
-	$query = "SELECT * FROM v_artifacts";
+	$query = "SELECT * FROM {$view}";
 	if (count($conditions) > 0) {
 		$query .= " WHERE " . implode(" AND ", $conditions);
 	}
@@ -199,6 +223,7 @@ function dao_get_artifacts($db, $filter) {
 				'type' => $row['type'],
 				'artifact_id' => $row['artifact_id'],
 				'version' => [ $row['version_major'], $row['version_minor'], $row['version_micro'] ],
+				'raw_version' => $row['version_raw'],
 				'platform' => $row['platform'],
 				'architecture' => $row['architecture'],
 				'format' => $row['format'],

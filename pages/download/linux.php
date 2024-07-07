@@ -1,8 +1,6 @@
 <?php
 
-$artifacts = $free_artifacts['linux'];
-
-$artifacts = utl_map_by_field($artifacts, 'architecture');
+$artifacts = utl_map_by_field($latest_artifacts['linux'], 'architecture');
 ksort($artifacts);
 
 // Compute unique keys for all artifacts

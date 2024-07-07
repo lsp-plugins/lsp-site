@@ -1,8 +1,6 @@
 <?php
 
-$artifacts = $free_artifacts['freebsd'];
-
-$artifacts = utl_map_by_field($artifacts, 'architecture');
+$artifacts = utl_map_by_field($latest_artifacts['freebsd'], 'architecture');
 ksort($artifacts);
 
 // Compute unique keys for all artifacts

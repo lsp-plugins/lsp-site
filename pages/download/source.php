@@ -1,7 +1,6 @@
 <?php
 
-$artifacts = $free_artifacts['any'];
-$artifacts = utl_map_by_field($artifacts, 'format');
+$artifacts = utl_map_by_field($latest_artifacts['any'], 'format');
 
 $artifact_file = $artifacts['src'][0]['file'];
 $source_link = htmlspecialchars("{$CODE_REPO}/releases/download/{$latest_version}/{$artifact_file}");

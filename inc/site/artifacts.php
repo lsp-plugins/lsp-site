@@ -103,7 +103,7 @@ function create_artifacts($file_names, $build_type) {
 	return (count($warnings) > 0) ? $warnings : null;
 }
 
-function get_artifacts($filter) {
+function get_filtered_artifacts($view, $filter) {
 	$db = null;
 	$result = null;
 	
@@ -113,7 +113,7 @@ function get_artifacts($filter) {
 			return ["Connection error", null];
 		}
 		
-		$result = dao_get_artifacts($db, $filter);
+		$result = dao_get_artifacts($db, (isset($view)) ? $view : 'v_artifacts', $filter);
 				
 	} catch (mysqli_sql_exception $e) {
 		$error = db_log_exception($e);
@@ -125,14 +125,16 @@ function get_artifacts($filter) {
 	return $result;
 }
 
-function get_latest_free_releases() {
-	global $PACKAGE;
-	
-	return get_artifacts([
-		'product' => 'lsp-plugins',
-		'version' => $PACKAGE['version']
-	]);
+function get_latest_releases() {
+	return get_filtered_artifacts('v_latest_artifacts', []);
 }
 
+function get_product_releases($product_id) {
+	return get_filtered_artifacts(
+		'v_artifacts',
+		[
+			'product_id' => $product_id
+		]);
+}
 
 ?>

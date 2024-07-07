@@ -72,8 +72,9 @@ if ((!isset($current_section)) || (!array_key_exists($current_section, $sections
 
 # Get latest version and artifacts
 $latest_version = $PACKAGE['version'];
-[$error, $free_artifacts] = get_latest_free_releases();
-$free_artifacts = utl_map_by_field($free_artifacts, 'platform');
+[$error, $latest_artifacts] = get_latest_releases();
+
+$latest_artifacts = utl_map_by_field($latest_artifacts, 'platform');
 
 ?>
 
