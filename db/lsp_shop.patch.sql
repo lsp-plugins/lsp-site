@@ -60,6 +60,7 @@ AS
     SELECT
       product_id, max(version_raw) version_raw
     FROM build
+    GROUP BY product_id
   ) bb
   INNER JOIN build b
   ON (b.product_id = bb.product_id) AND (b.version_raw = bb.version_raw)
