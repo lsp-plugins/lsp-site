@@ -78,6 +78,26 @@ function create_artifacts($file_names, $build_type) {
 					[$major, $minor, $micro],
 					$platform, $architecture, $basename);
 				
+			} elseif (preg_match("/^{$product_pattern}-{$version_pattern}-{$platform_pattern}-{$architecture_pattern}\\.{$archive_pattern}$/", $basename, $matches)) {
+				// Binary build
+				[$text, $product, $major, $minor, $micro, $platform, $archtecture] = $matches;
+				if (!array_key_exists($platform, $platform_mapping)) {
+					array_push($warnings, "Unknown platform '{$platform}' for artifact '{$file}'");
+					continue;
+				}
+				$platform = $platform_mapping[$platform];
+				
+				if (!array_key_exists($archtecture, $architecture_mapping)) {
+					array_push($warnings, "Unknown architecture '{$archtecture}' for artifact '{$file}'");
+					continue;
+				}
+				$architecture = $architecture_mapping[$archtecture];
+				
+				$result = dao_create_artifact($db,
+					$product, $build_type, 'multi',
+					[$major, $minor, $micro],
+					$platform, $architecture, $basename);
+				
 			} else {
 				$result = [ "Could not parse artifact {$file}", null ];
 			}
