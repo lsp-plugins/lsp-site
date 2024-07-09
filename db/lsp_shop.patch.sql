@@ -58,16 +58,18 @@ AS
     a.file_name file_name
   FROM (
     SELECT
-      product_id, max(version_raw) version_raw
+      build.product_id, artifact.platform_id, max(version_raw) version_raw
     FROM build
-    GROUP BY product_id
+    INNER JOIN artifact
+    ON (artifact.build_id = build.id)
+    GROUP BY build.product_id, artifact.platform_id
   ) bb
   INNER JOIN build b
   ON (b.product_id = bb.product_id) AND (b.version_raw = bb.version_raw)
   INNER JOIN product p
   ON (p.id = b.product_id)
   INNER JOIN artifact a
-  ON (a.build_id = b.id)
+  ON (a.build_id = b.id) AND (a.platform_id = bb.platform_id)
   INNER JOIN format fmt
   ON (fmt.id = a.format_id)
   INNER JOIN architecture arch

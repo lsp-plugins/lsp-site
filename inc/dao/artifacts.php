@@ -160,7 +160,7 @@ function dao_get_artifacts($db, $view, $filter) {
 		if (isset($filter['format'])) {
 			array_push($conditions, '(format = ?)');
 			array_push($arguments, $filter['format']);
-			array_push($types, 'format');
+			array_push($types, 's');
 		}
 		if (isset($filter['version'])) {
 			$version = $filter['version'];

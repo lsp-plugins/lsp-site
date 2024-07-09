@@ -4,19 +4,20 @@ require_once('./inc/site/artifacts.php');
 require_once('./inc/site/browser.php');
 
 $format_names = [
-	'src' => 'Source',
+	'aax' => 'AAX',
+	'au' => 'AU',
+	'clap' => 'CLAP',
 	'doc' => 'Documentation',
+	'gst' => 'GStreamer',
 	'jack' => 'JACK',
-	'pw' => 'PipeWire',
 	'ladspa' => 'LADSPA',
 	'lv2' => 'LV2',
+	'multi' => 'Multiarchive',
+	'pw' => 'PipeWire',
+	'rtas' => 'RTAS',
+	'src' => 'Source',
 	'vst2' => 'VST 2.x',
 	'vst3' => 'VST 3',
-	'clap' => 'CLAP',
-	'gst' => 'GStreamer',
-	'au' => 'AU',
-	'aax' => 'AAX',
-	'rtas' => 'RTAS'
 ];
 
 $sections = [
@@ -54,13 +55,13 @@ $sections = [
 
 # Derermine what section to show
 $current_section = null;
+$browser_info = browser_info();
 if (array_key_exists('section', $_REQUEST)) {
 	$current_section = $_REQUEST['section'];
 }
 if (!isset($current_section)) {
-	$browser = browser_info();
-	if ((isset($browser)) && (array_key_exists('platform_family', $browser))) {
-		$current_section = $browser['platform_family'];
+	if ((isset($browser_info)) && (array_key_exists('platform_family', $browser_info))) {
+		$current_section = $browser_info['platform_family'];
 	}
 }
 if (!isset($current_section)) {
@@ -71,7 +72,6 @@ if ((!isset($current_section)) || (!array_key_exists($current_section, $sections
 }
 
 # Get latest version and artifacts
-$latest_version = $PACKAGE['version'];
 [$error, $latest_artifacts] = get_latest_releases();
 
 $latest_artifacts = utl_map_by_field($latest_artifacts, 'platform');

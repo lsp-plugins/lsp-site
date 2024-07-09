@@ -15,6 +15,8 @@ function create_artifacts($file_names, $build_type) {
 		'aarch64' => 'aarch64',
 		'arm32' => 'armv7a',
 		'i586' => 'x86',
+		'i686' => 'x86',
+		'riscv32' => 'riscv32',
 		'riscv64' => 'riscv64',
 		'x86_64' => 'x86_64'
 	];
@@ -24,7 +26,7 @@ function create_artifacts($file_names, $build_type) {
 	$archive_pattern='(?:tar\\.(?:gz|bz)|zip|7z|exe)';
 	$product_pattern='([a-z0-9\\-]+)';
 	$version_pattern='(\\d+)\\.(\d+)\\.(\\d+)';
-	$fmt_pattern='([a-z0-9]+)';
+	$fmt_pattern='(clap|gst|jack|ladspa|lv2|vst2|vst3)';
 	$platform_pattern='([a-zA-Z0-9]+)';
 	$architecture_pattern='([a-z0-9_]+)';
 	
@@ -154,6 +156,14 @@ function get_product_releases($product_id) {
 		'v_artifacts',
 		[
 			'product_id' => $product_id
+		]);
+}
+
+function get_lastest_documentation_build() {
+	return get_filtered_artifacts(
+		'v_latest_artifacts',
+		[
+			'format' => 'doc'
 		]);
 }
 

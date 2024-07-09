@@ -1,7 +1,9 @@
 <?php
 
 function browser_info() {
+	$user_agent = $_SERVER['HTTP_USER_AGENT'];
 	
+	# Fill Platform information
 	$windows_platforms = [
 		"Win10",
 		"Win16",
@@ -69,7 +71,7 @@ function browser_info() {
 	];
 	
 	$platform_family = null;
-	$browser = get_browser(null, true);
+	$browser = get_browser($user_agent, true);
 	if (!isset($browser)) {
 		return null;
 	}
@@ -106,6 +108,25 @@ function browser_info() {
 	}
 	
 	$browser['platform_family'] = $platform_family;
+	
+	# Fill Architecture information:
+	$arch_rules = [
+		[ '/(x86_64|amd64|x64)[;\)]/i', 'x86_64' ],
+		[ '/(x86|i\\d86|i\\d86 \\(x86_64\\));/i', 'x86' ],
+		[ '/aarch64|armv8/i', 'aarch64' ],
+		[ '/(arm|arm32|armv7);/i', 'arm32' ],
+		[ '/(rv32|riscv32);/i', 'riscv32' ],
+		[ '/(rv64|riscv64);/i', 'riscv64' ],
+	];
+	
+	$browser['architecture'] = 'other';
+	
+	foreach ($arch_rules as $rule) {
+		if (preg_match($rule[0], $user_agent)) {
+			$browser['architecture'] = $rule[1];
+			break;
+		}
+	}
 	
 	return $browser;
 }

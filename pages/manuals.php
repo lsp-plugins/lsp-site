@@ -2,6 +2,7 @@
 	// Include common modules
 	require_once('./inc/menu.php');
 	require_once('./inc/plugins.php');
+	require_once('./inc/site/artifacts.php');
 	require_once('./inc/files.php');
 
 	// Include configuration
@@ -23,4 +24,23 @@
 ?>
 
 <h1><?php echo htmlspecialchars($HEADER); ?></h1>
-<?php require("./pages/manuals/${FILEPATH}/${FILENAME}.php"); ?>
+<?php
+	if ($FILENAME == 'index') {
+		[$result, $doc_artifacts] = get_lastest_documentation_build();
+		$doc_artifact = (isset($doc_artifacts) && (count($doc_artifacts) > 0)) ? $doc_artifacts[0] : null;
+		if (isset($doc_artifact)) {
+			$latest_version = htmlspecialchars(implode('.', $doc_artifact['version']));
+			$base_url = "{$CODE_REPO}/releases/download/{$latest_version}/";
+			$url = htmlspecialchars("{$base_url}/{$doc_artifact['file']}");
+?>
+	<div>
+		<a href="<?= $url ?>" alt="Offline documentation">
+			Download offline documentation version <?= $latest_version ?>
+		</a>
+	</div>
+<?php
+		}
+	}
+
+	require("./pages/manuals/${FILEPATH}/${FILENAME}.php");
+?>
