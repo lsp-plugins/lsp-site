@@ -8,7 +8,8 @@ require_once('./inc/site/logging.php');
 
 $USER_SESSION = [
 	'id' => null,
-	'user' => null
+	'user' => null,
+	'session' => null
 ];
 
 function user_session_id()
@@ -46,7 +47,8 @@ function user_session_id()
 			mysqli_commit($db);
 			$USER_SESSION = [
 				'id' => $session_id,
-				'user' => $user
+				'user' => $user,
+				'session' => $session
 			];
 			return $session_id;
 		}
@@ -144,6 +146,11 @@ function set_session_user($ip_addr, $user)
 function get_session_user() {
 	global $USER_SESSION;
 	return $USER_SESSION['user'];
+}
+
+function get_session_desc() {
+	global $USER_SESSION;
+	return $USER_SESSION['session'];
 }
 
 function cleanup_sessions() {

@@ -10,7 +10,7 @@ function dao_get_session($db, $session_id)
 		return null;
 	}
 	
-	$stmt = mysqli_prepare($db, "SELECT id, created, expire, user_id FROM sessions WHERE id=? AND (expire >= current_timestamp)");
+	$stmt = mysqli_prepare($db, "SELECT id, created, expire, user_id, private_id FROM sessions WHERE id=? AND (expire >= current_timestamp)");
 	try {
 		mysqli_stmt_bind_param($stmt, 's', $session_id);
 		if (!mysqli_stmt_execute($stmt)) {
@@ -29,7 +29,8 @@ function dao_get_session($db, $session_id)
 			'id' => $session_id,
 			'created' => $row['created'],
 			'expire' => $row['expire'],
-			'user_id' => $row['user_id']
+			'user_id' => $row['user_id'],
+			'private_id' => $row['private_id'],
 		];
 	} finally {
 		mysqli_stmt_close($stmt);
@@ -74,14 +75,16 @@ function dao_update_session($db, $session_id, $options) {
 
 function dao_create_session($db)
 {
-	$stmt = mysqli_prepare($db, "INSERT INTO sessions(id, expire) VALUES (?, ?)");
+	$stmt = mysqli_prepare($db, "INSERT INTO sessions(id, created, expire, private_id) VALUES (?, ?, ?, ?)");
 	
-	$expire = db_current_timestamp("+1 day");
+	$created = db_current_timestamp();
+	$expire = db_add_time_interval($created, "+1 day");
+	$private_id = make_uuid();
 	
 	while (true) {
 		try {
 			$session_id = make_uuid();
-			mysqli_stmt_bind_param($stmt, 'ss', $session_id, $expire);
+			mysqli_stmt_bind_param($stmt, 'ssss', $session_id, $created, $expire, $private_id);
 			
 			if (!mysqli_stmt_execute($stmt)) {
 				return null;
@@ -89,7 +92,14 @@ function dao_create_session($db)
 			
 			return [
 				'id' => $session_id,
-				'user' => null
+				'user' => null,
+				'session' => [
+					'id' => $session_id,
+					'created' => $created,
+					'expire' => $expire,
+					'user_id' => null,
+					'private_id' => $private_id,
+				]
 			];
 			
 		} catch (mysqli_sql_exception $e) {

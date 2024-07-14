@@ -217,8 +217,11 @@ function dao_get_artifacts($db, $view, $filter) {
 		
 		$list = [];
 		while ($row = mysqli_fetch_array($result)) {
+			$product = $row['product'];
+			$description = $row['description'] ?: $product;
 			array_push($list, [
-				'product' => $row['product'],
+				'product' => $product,
+				'description' => $description,
 				'build_id' => $row['build_id'],
 				'type' => $row['type'],
 				'artifact_id' => $row['artifact_id'],

@@ -119,14 +119,24 @@ function browser_info() {
 		[ '/(rv64|riscv64);/i', 'riscv64' ],
 	];
 	
-	$browser['architecture'] = 'other';
+	$architecture = null;
 	
 	foreach ($arch_rules as $rule) {
 		if (preg_match($rule[0], $user_agent)) {
-			$browser['architecture'] = $rule[1];
+			$architecture = $rule[1];
 			break;
 		}
 	}
+	
+	if ((!isset($architecture)) && (array_key_exists('platform_bits', $browser))) {
+		$architecture = ($browser['platform_bits'] == 64) ? 'x86_64' : 'x86';
+	}
+	
+	if ((!isset($architecture)) && (array_key_exists('browser_bits', $browser))) {
+		$architecture = ($browser['browser_bits'] == 64) ? 'x86_64' : 'x86';
+	}
+	
+	$browser['architecture'] = $architecture ?: 'other';
 	
 	return $browser;
 }

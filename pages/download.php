@@ -1,6 +1,8 @@
 <?php
 require_once('./inc/service/utils.php');
 require_once('./inc/site/artifacts.php');
+require_once('./inc/site/download.php');
+require_once('./inc/site/csrf.php');
 require_once('./inc/site/browser.php');
 
 $format_names = [

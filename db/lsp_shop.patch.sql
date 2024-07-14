@@ -14,6 +14,32 @@ ALTER TABLE artifact ADD CONSTRAINT PK_ARTIFACT_ID PRIMARY KEY(id);
 --   minor = ( SELECT b.minor FROM build b WHERE (b.id = a.build_id) ),
 --   micro = ( SELECT b.micro FROM build b WHERE (b.id = a.build_id) );
 
+ALTER TABLE product ADD COLUMN description VARCHAR(128);
+
+UPDATE product set description='LSP Plugins Full Bundle' where name='lsp-plugins';
+UPDATE product set description='A/B Tester' where name='lsp-plugins-ab-tester';
+UPDATE product set description='Artistic Delay' where name='lsp-plugins-art-delay';
+UPDATE product set description='Beat Breather' where name='lsp-plugins-beat-breather';
+UPDATE product set description='Chorus' where name='lsp-plugins-chorus';
+UPDATE product set description='Clipper' where name='lsp-plugins-clipper';
+UPDATE product set description='Compensation Delay' where name='lsp-plugins-comp-delay';
+UPDATE product set description='Filter' where name='lsp-plugins-filter';
+UPDATE product set description='Flanger' where name='lsp-plugins-flanger';
+UPDATE product set description='Impulse Responses' where name='lsp-plugins-impulse-responses';
+UPDATE product set description='Impulse Reverb' where name='lsp-plugins-impulse-reverb';
+UPDATE product set description='Latency Meter' where name='lsp-plugins-latency-meter';
+UPDATE product set description='Loudness Compensator' where name='lsp-plugins-loud-comp';
+UPDATE product set description='Multiband Clipper' where name='lsp-plugins-mb-clipper';
+UPDATE product set description='Mixer' where name='lsp-plugins-mixer';
+UPDATE product set description='Noise Generator' where name='lsp-plugins-noise-generator';
+UPDATE product set description='Oscillator' where name='lsp-plugins-oscillator';
+UPDATE product set description='Oscilloscope' where name='lsp-plugins-oscilloscope';
+UPDATE product set description='Phase Detector' where name='lsp-plugins-phase-detector';
+UPDATE product set description='Profiler' where name='lsp-plugins-profiler';
+UPDATE product set description='Slap-back Delay' where name='lsp-plugins-slap-delay';
+UPDATE product set description='Spectrum Analyzer' where name='lsp-plugins-spectrum-analyzer';
+UPDATE product set description='Surge Filter' where name='lsp-plugins-surge-filter';
+
 ALTER TABLE build ADD COLUMN version_raw int;
 UPDATE build SET version_raw=(major * 1000 + minor) * 1000 + micro;
 ALTER TABLE build MODIFY version_raw int NOT NULL;
@@ -22,7 +48,7 @@ DROP VIEW IF EXISTS v_artifacts;
 CREATE VIEW v_artifacts
 AS
   SELECT
-    p.id product_id, p.name product,
+    p.id product_id, p.name product, p.description description,
     a.build_id build_id, b.type_id type_id, bt.name type,
     a.id artifact_id,
     b.major version_major, b.minor version_minor, b.micro version_micro, b.version_raw version_raw,
@@ -48,7 +74,7 @@ DROP VIEW IF EXISTS v_latest_artifacts;
 CREATE VIEW v_latest_artifacts
 AS
   SELECT
-    p.id product_id, p.name product,
+    p.id product_id, p.name product, p.description description,
     a.build_id build_id, b.type_id type_id, bt.name type,
     a.id artifact_id,
     b.major version_major, b.minor version_minor, b.micro version_micro, b.version_raw version_raw,
