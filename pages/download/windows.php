@@ -7,6 +7,57 @@ ksort($artifacts);
 
 <h2>Latest release for Windows</h2>
 
+<script>
+	var win_arch_pages = {
+<?php
+foreach ($artifacts as $arch => $list) {
+	echo "\t\"$arch\": {\n";
+	echo "\t\t\"div\": \"#dwnld-windows-{$arch}\",\n";
+	echo "\t\t\"block\": \"#dwnld-block-windows-{$arch}\",\n";
+	echo "\t},\n";
+}
+?>
+	};
+
+	$(document).ready(function() {
+		for (var key in win_arch_pages) {
+			const id = key;
+
+			$(win_arch_pages[id]["div"]).on({
+				click: function() {
+					for (var key in win_arch_pages) {
+						var page = win_arch_pages[key]; 
+						var div = page["div"];
+						var block = page["block"];
+						if (key === id) {
+							$(div).addClass("dwnld-active");
+							$(div).removeClass("dwnld-hover");
+							$(block).slideDown(300);
+						} else {
+							$(div).removeClass("dwnld-active");
+							$(block).slideUp(300);
+						}
+					}
+				},
+				mouseenter: function() {
+					var div = win_arch_pages[id]["div"];
+					var obj = $(div);
+					if (!obj.hasClass("dwnld-active")) {
+						obj.addClass("dwnld-hover");
+					}
+				},
+				mouseleave: function() {
+					var div = win_arch_pages[id]["div"];
+					var obj = $(div);
+					obj.removeClass("dwnld-hover");
+				},
+			});
+		}
+	});
+
+</script>
+
+
 <p>Select architecture:</p>
 <?php
 
@@ -16,8 +67,8 @@ if (!array_key_exists($architecture, $artifacts)) {
 }
 
 foreach ($artifacts as $arch => $list) {
-	$style_class = "tile-flex-inner dwnld-windows-{$arch}" . (($architecture === $arch) ? ' dwnld-active' : '');
-	echo "<div class=\"{$style_class}\">\n";
+	$style_class = "tile-flex-inner" . (($architecture === $arch) ? ' dwnld-active' : '');
+	echo "<div id=\"dwnld-windows-{$arch}\" class=\"{$style_class}\">\n";
 	echo "<div>\n";
 	echo "{$arch}\n";
 	echo "</div>\n";
@@ -35,7 +86,8 @@ foreach ($artifacts as $arch => $list) {
 		return $a['product'] <=> $b['product'];
 	});
 	
-	echo "<div id=\"dwnld-windows-{$arch}\">\n";
+	$style_class = (($architecture === $arch) ? 'display: block;' : 'display: none;');
+	echo "<div id=\"dwnld-block-windows-{$arch}\" style=\"{$style_class}\">\n";
 	foreach ($list as $artifact) {
 		$description = htmlspecialchars($artifact['description']);
 		echo "<div>\n";
@@ -55,11 +107,4 @@ foreach ($artifacts as $arch => $list) {
 	echo "</div>\n";
 }
 
-?>
-
-
-
-
-<?php
-	var_dump($artifacts);
 ?>
