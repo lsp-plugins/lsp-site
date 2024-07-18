@@ -13,7 +13,8 @@ $source_link = htmlspecialchars("{$CODE_REPO}/releases/download/{$latest_version
 
 <p>Source code is available under terms of <a href="https://www.gnu.org/licenses/lgpl-3.0.en.html" alt="GNU LGPLv3">GNU Lesser Public License version 3</a></p>
 
-<p>You can download source code directly by following link: <a href="<?= $source_link ?>" alt="Source code">Source code</a>.</p> 
+<p>You can download source code directly by following link: </p>
+<p> <a class="download-text-button" href="<?= $source_link ?>" alt="Source code" target="_blank">Source code</a></p> 
 
 <p>The work on the source code is performed on GitHub: <a href="<?= $CODE_REPO; ?>" alt="LSP Plugins Organization">LSP Plugins Organization</a>.</p>
 

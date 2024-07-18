@@ -33,9 +33,9 @@
 			$base_url = "{$CODE_REPO}/releases/download/{$latest_version}/";
 			$url = htmlspecialchars("{$base_url}/{$doc_artifact['file']}");
 ?>
-	<div>
-		<a href="<?= $url ?>" alt="Offline documentation">
-			Download offline documentation version <?= $latest_version ?>
+	<div style="padding-bottom: 10px;">
+		<a class="download-text-button" href="<?= $url ?>" alt="Offline documentation">
+			Offline documentation version <?= $latest_version ?>
 		</a>
 	</div>
 <?php

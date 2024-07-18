@@ -38,57 +38,49 @@ $base_url = "{$CODE_REPO}/releases/download/{$latest_version}/";
 
 if (isset($best_artifact)) {
 	$url = htmlspecialchars($base_url . $best_artifact['file']);
-	echo "<a href=\"$url\"" .
+	echo "<a class=\"download-text-button\" href=\"$url\"" .
 		" alt=\"Download latest build for {$best_artifact['platform']} {$best_artifact['architecture']}\"" .
 		">";
-	echo "Download latest build for {$best_artifact['platform']} {$best_artifact['architecture']}";
+	echo "Latest build for {$best_artifact['platform']} {$best_artifact['architecture']}";
 	echo "</a>\n";
-	
-	echo "<p>All supported architectures:</p>\n";
+
+	echo "<p><pseudo_link id=\"show-hide-lin\" href=\"#\" >Click to see all supported architectures.</pseudo_link></p>\n";
 	echo "<div>\n";
 }
 ?>
 
-<table class="dwnld-tbl">
-<tr class="dwnld-tbl-tr">
-	<th class="dwnld-tbl-th" >Architecture</th>
-	<th class="dwnld-tbl-th" >Package</th>
-	<th class="dwnld-tbl-th" >Files</th>
-</tr>
-
+<div id="show-hide-arch-lin" style="display: none">
 <?php
-// Emit artifacts
 foreach ($artifacts as $architecture => $files) {
 	$arch = htmlspecialchars($architecture);
-	echo "<tr class=\"dwnld-tbl-tr\">\n";
-	echo "<td class=\"dwnld-tbl-td\">{$arch}</td>\n";
-	echo "<td class=\"dwnld-tbl-td\">lsp-plugins</td>\n";
-	echo "<td class=\"dwnld-tbl-td\">\n";
-	
 	$fmt_mapping = [];
 	foreach ($files as $file) {
 		$fmt_mapping[$file['format']] = $file;
 	}
-
 	foreach ($all_keys as $key) {
 		if (array_key_exists($key, $fmt_mapping)) {
 			$file= $fmt_mapping[$key];
 			$url = htmlspecialchars($base_url . $file['file']);
 			$fmt = htmlspecialchars($file['format']);
 			$alt = htmlspecialchars($format_names[$file['format']]);
-	
-			echo "<a href=\"{$url}\" class=\"formats-links {$fmt}-dwnld\" alt=\"{$alt}\"></a>\n";
+
+			echo "<a class=\"download-text-button lin-arch\" href=\"{$url}\" class=\"formats-links {$fmt}-dwnld\" alt=\"{$alt}\">{$arch}</a>\n";
 		} else {
-			echo "<a href=\"#\" class=\"formats-links-inactive {$fmt}-dwnld\" alt=\"\"></a>\n";
+			echo "<a class=\"download-text-button lin-arch\" href=\"#\" class=\"formats-links-inactive {$fmt}-dwnld\" alt=\"\">{$arch}</a>\n";
 		}
 	}
-
-	echo "</td>\n";
-	echo "</tr>\n";
 }
 ?>
+</div>
 
-</table>
+<script>
+$( "#show-hide-lin" ).on( "click", function() {
+  $( "#show-hide-arch-lin" ).toggle( "slow", function() {
+    // Animation complete.
+  });
+});
+</script>
+
 
 <?php
 if (isset($best_artifact)) {
@@ -99,8 +91,11 @@ if (isset($best_artifact)) {
 <h2>Archive</h2>
 
 <p>You also can download previous releases from our SourceForge page:</p>
-<p>
+<!-- <p>
 	<a href="https://sourceforge.net/projects/lsp-plugins/files/lsp-plugins/" rel="nofollow">
 		<img alt="Browse archive builds" src="https://a.fsdn.com/con/app/sf-download-button">
 	</a>
+</p> -->
+<p>
+	<a class="download-text-button" href="https://sourceforge.net/projects/lsp-plugins/files/lsp-plugins/" rel="nofollow" alt="Download previous releases" target="_blank">Previous releases</a>
 </p>

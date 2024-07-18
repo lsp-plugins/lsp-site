@@ -26,7 +26,7 @@ foreach ($artifacts as $arch => $list) {
 			$(win_arch_pages[id]["div"]).on({
 				click: function() {
 					for (var key in win_arch_pages) {
-						var page = win_arch_pages[key]; 
+						var page = win_arch_pages[key];
 						var div = page["div"];
 						var block = page["block"];
 						if (key === id) {
@@ -59,6 +59,7 @@ foreach ($artifacts as $arch => $list) {
 
 
 <p>Select architecture:</p>
+
 <?php
 
 $architecture = $browser_info['architecture'];
@@ -66,14 +67,18 @@ if (!array_key_exists($architecture, $artifacts)) {
 	$architecture = array_key_first($artifacts);
 }
 
+echo "<div class=\"sel-arch\">\n";
+
 foreach ($artifacts as $arch => $list) {
-	$style_class = "tile-flex-inner" . (($architecture === $arch) ? ' dwnld-active' : '');
+	$style_class = "arch-text-selector" . (($architecture === $arch) ? ' dwnld-active' : '');
 	echo "<div id=\"dwnld-windows-{$arch}\" class=\"{$style_class}\">\n";
 	echo "<div>\n";
 	echo "{$arch}\n";
 	echo "</div>\n";
 	echo "</div>\n";
 }
+
+echo "</div>\n";
 
 $user = get_session_user();
 $user_purchases = null;
@@ -85,12 +90,13 @@ foreach ($artifacts as $arch => $list) {
 	usort($list, function($a, $b) {
 		return $a['product'] <=> $b['product'];
 	});
-	
+
 	$style_class = (($architecture === $arch) ? 'display: block;' : 'display: none;');
 	echo "<div id=\"dwnld-block-windows-{$arch}\" style=\"{$style_class}\">\n";
+	echo "<div class=\"tile-win-container\">\n";
 	foreach ($list as $artifact) {
 		$description = htmlspecialchars($artifact['description']);
-		echo "<div>\n";
+		echo "<div class=\"tile-win-inner\">\n";
 		echo "<div>{$description}</div>\n";
 		if (isset($user)) {
 			// TODO: analyze purchases
@@ -103,7 +109,7 @@ foreach ($artifacts as $arch => $list) {
 		}
 		echo "</div>\n";
 	}
-	
+	echo "</div>\n";
 	echo "</div>\n";
 }
 

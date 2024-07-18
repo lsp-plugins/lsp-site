@@ -37,16 +37,18 @@ $base_url = "{$CODE_REPO}/releases/download/{$latest_version}/";
 
 if (isset($best_artifact)) {
 	$url = htmlspecialchars($base_url . $best_artifact['file']);
-	echo "<a href=\"$url\"" .
+	echo "<a class=\"download-text-button\" href=\"$url\"" .
 		" alt=\"Download latest build for {$best_artifact['platform']} {$best_artifact['architecture']}\"" .
 		">";
 	echo "Download latest build for {$best_artifact['platform']} {$best_artifact['architecture']}";
 	echo "</a>\n";
-	
-	echo "<p>All supported architectures:</p>\n";
+
+	echo "<p><pseudo_link id=\"show-hide-bsd\" href=\"#\" >Click to see all supported architectures.</pseudo_link></p>\n";
 	echo "<div>\n";
 }
 ?>
+
+<div id="show-hide-arch-bsd" style="display: none">
 
 <table class="dwnld-tbl">
 <tr class="dwnld-tbl-tr">
@@ -63,7 +65,7 @@ foreach ($artifacts as $architecture => $files) {
 	echo "<td class=\"dwnld-tbl-td\">{$arch}</td>\n";
 	echo "<td class=\"dwnld-tbl-td\">lsp-plugins</td>\n";
 	echo "<td class=\"dwnld-tbl-td\">\n";
-	
+
 	$fmt_mapping = [];
 	foreach ($files as $file) {
 		$fmt_mapping[$file['format']] = $file;
@@ -75,7 +77,7 @@ foreach ($artifacts as $architecture => $files) {
 			$url = htmlspecialchars($base_url . $file['file']);
 			$fmt = htmlspecialchars($file['format']);
 			$alt = htmlspecialchars($format_names[$file['format']]);
-	
+
 			echo "<a href=\"{$url}\" class=\"formats-links {$fmt}-dwnld\" alt=\"{$alt}\"></a>\n";
 		} else {
 			echo "<a href=\"#\" class=\"formats-links-inactive {$fmt}-dwnld\" alt=\"\"></a>\n";
@@ -88,6 +90,15 @@ foreach ($artifacts as $architecture => $files) {
 ?>
 
 </table>
+</div>
+
+<script>
+$( "#show-hide-bsd" ).on( "click", function() {
+  $( "#show-hide-arch-bsd" ).toggle( "slow", function() {
+    // Animation complete.
+  });
+});
+</script>
 
 <?php
 if (isset($best_artifact)) {
@@ -99,7 +110,5 @@ if (isset($best_artifact)) {
 
 <p>You also can download previous releases from our SourceForge page:</p>
 <p>
-	<a href="https://sourceforge.net/projects/lsp-plugins/files/lsp-plugins/" rel="nofollow">
-		<img alt="Browse archive builds" src="https://a.fsdn.com/con/app/sf-download-button">
-	</a>
+	<a class="download-text-button" href="https://sourceforge.net/projects/lsp-plugins/files/lsp-plugins/" rel="nofollow" alt="Download previous releases" target="_blank">Previous releases</a>
 </p>

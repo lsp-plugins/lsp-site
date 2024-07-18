@@ -26,13 +26,13 @@ $sections = [
 	'linux' => [
 		'id' => 'lin',
 		'os' => 'Linux',
-		'desc' => 'Open-source, community-developed operating system.',
+		'desc' => 'Open-source operating system.',
 		'page' => 'linux.php'
 	],
 	'windows' => [
 		'id' => 'win',
 		'os' => 'Windows',
-		'desc' => 'Is a group of several proprietary graphical operating system.',
+		'desc' => 'Proprietary operating system.',
 		'page' => 'windows.php'
 	],
 /*	'macos' => [
@@ -44,13 +44,13 @@ $sections = [
 	'freebsd' => [
 		'id' => 'bsd',
 		'os' => 'FreeBSD',
-		'desc' => 'Is a free and open-source Unix-like operating system.',
+		'desc' => 'Unix-like operating system.',
 		'page' => 'bsd.php'
 	],
 	'source' => [
 		'id' => 'src',
 		'os' => 'Source',
-		'desc' => 'Is a programmer’s instructions - written in a computer programming language',
+		'desc' => 'Is a programmer’s instructions.',
 		'page' => 'source.php'
 	]
 ];
@@ -100,7 +100,7 @@ foreach ($sections as $key => $page) {
 				click: function() {
 					var redirect = false;
 					for (var key in pages) {
-						var page = pages[key]; 
+						var page = pages[key];
 						var div = page["div"];
 						var block = page["block"];
 						if (key === id) {
@@ -110,7 +110,7 @@ foreach ($sections as $key => $page) {
 
 							var new_string = jQuery.query.set("section", key).toString();
 							if (history) {
-								history.pushState({}, null, new_string);	
+								history.pushState({}, null, new_string);
 							} else {
 								window.location.search = new_string;
 							}
