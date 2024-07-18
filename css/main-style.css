@@ -242,6 +242,12 @@ a:hover.link_no_visit, a:visited:hover.link_no_visit {
   -ms-transition: all 0.1s ease;
 }
 
+.manual_plugin_list {
+  columns: 3;
+  -webkit-columns: 3;
+  -moz-columns: 3;
+}
+
 .lsp-content {
   max-width: 950px;
   margin: 0 auto;
