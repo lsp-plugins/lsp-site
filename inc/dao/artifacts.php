@@ -221,6 +221,7 @@ function dao_get_artifacts($db, $view, $filter) {
 			$description = $row['description'] ?: $product;
 			array_push($list, [
 				'product' => $product,
+				'product_id' => $row['product_id'],
 				'description' => $description,
 				'build_id' => $row['build_id'],
 				'type' => $row['type'],

@@ -31,7 +31,7 @@
 						echo "</li>\n";
 					}
 
-					if (isset($SITE_FEATURES['signin']) && ($SITE_FEATURES['signin'])) {
+					if (check_site_feature('signin')) {
 						$user = get_session_user();
 						if (isset($user)) {
 							$logout_token = get_csrf_token('logout', true);
@@ -76,7 +76,7 @@
 							echo "</li>\n";
 						}
 
-						if (isset($SITE_FEATURES['signin']) && ($SITE_FEATURES['signin'])) {
+						if (check_site_feature('signin')) {
 							$user = get_session_user();
 							if (isset($user)) {
 								$logout_token = get_csrf_token('logout', true);

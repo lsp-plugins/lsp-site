@@ -22,7 +22,8 @@ $ETHER_WALLET = '0x079b24da78d78302cd3cfbb80c728cd554606cc6';
 $DONATIONS_URL = 'https://salt.bountysource.com/teams/lsp-plugins/supporters';
 $README_FILE = './config/README.md';
 $SITE_FEATURES = [
-	'signin' => true
+	'signin' => true,
+	'windows' => true,
 ];
 
 ?>

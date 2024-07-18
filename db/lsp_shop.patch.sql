@@ -15,6 +15,8 @@ ALTER TABLE artifact ADD CONSTRAINT PK_ARTIFACT_ID PRIMARY KEY(id);
 --   micro = ( SELECT b.micro FROM build b WHERE (b.id = a.build_id) );
 
 ALTER TABLE product ADD COLUMN description VARCHAR(128);
+ALTER TABLE product ADD COLUMN price BIGINT(20);
+ALTER TABLE build ADD COLUMN price BIGINT(20);
 
 UPDATE product set description='LSP Plugins Full Bundle' where name='lsp-plugins';
 UPDATE product set description='A/B Tester' where name='lsp-plugins-ab-tester';
@@ -43,6 +45,8 @@ UPDATE product set description='Surge Filter' where name='lsp-plugins-surge-filt
 ALTER TABLE build ADD COLUMN version_raw int;
 UPDATE build SET version_raw=(major * 1000 + minor) * 1000 + micro;
 ALTER TABLE build MODIFY version_raw int NOT NULL;
+
+DROP TABLE price;
 
 DROP VIEW IF EXISTS v_artifacts;
 CREATE VIEW v_artifacts
@@ -104,7 +108,6 @@ AS
   ON (pl.id = a.platform_id)
   INNER JOIN build_type bt
   ON (bt.id = b.type_id);
-    
-    
+
     
     

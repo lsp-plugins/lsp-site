@@ -1,9 +1,15 @@
 <?php
+require_once('./inc/files.php');
+require_once('./inc/service/database.php');
 require_once('./inc/service/utils.php');
 require_once('./inc/site/artifacts.php');
-require_once('./inc/site/download.php');
-require_once('./inc/site/csrf.php');
+require_once('./inc/site/auth.php');
 require_once('./inc/site/browser.php');
+require_once('./inc/site/csrf.php');
+require_once('./inc/site/download.php');
+require_once('./inc/site/preload.php');
+require_once('./inc/site/purchases.php');
+require_once('./inc/site/session.php');
 
 $format_names = [
 	'aax' => 'AAX',
@@ -35,12 +41,12 @@ $sections = [
 		'desc' => 'Proprietary operating system.',
 		'page' => 'windows.php'
 	],
-/*	'macos' => [
+	'macos' => [
 		'id' => 'mac',
 		'os' => 'MacOS',
 		'desc' => 'UNIX-based operating system by Apple Inc.',
 		'page' => 'mac.php'
-	], */
+	],
 	'freebsd' => [
 		'id' => 'bsd',
 		'os' => 'FreeBSD',
@@ -55,7 +61,15 @@ $sections = [
 	]
 ];
 
-# Derermine what section to show
+// Disable several pages by flag
+if (!check_site_feature('windows')) {
+	unset($sections['windows']);
+}
+if (!check_site_feature('macos')) {
+	unset($sections['macos']);
+}
+
+// Determine what section to show
 $current_section = null;
 $browser_info = browser_info();
 if (array_key_exists('section', $_REQUEST)) {
@@ -73,7 +87,7 @@ if ((!isset($current_section)) || (!array_key_exists($current_section, $sections
 	$current_section = 'linux';
 }
 
-# Get latest version and artifacts
+// Get latest version and artifacts
 [$error, $latest_artifacts] = get_latest_releases();
 
 $latest_artifacts = utl_map_by_field($latest_artifacts, 'platform');
@@ -142,15 +156,6 @@ foreach ($sections as $key => $page) {
 	});
 
 </script>
-
-
-<?php
-require_once('./inc/files.php');
-require_once('./inc/service/database.php');
-require_once('./inc/site/auth.php');
-require_once('./inc/site/preload.php');
-require_once('./inc/site/session.php');
-?>
 
 <h1>DOWNLOAD</h1>
 

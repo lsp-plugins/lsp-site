@@ -59,37 +59,27 @@ CREATE TABLE customer_token
   CONSTRAINT FK_CUSTOMER_TOKEN_CID FOREIGN KEY(customer_id) REFERENCES customer(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+DROP TABLE orders;
+
 CREATE TABLE orders
 (
-  id bigint(20) NOT NULL,
-  submit_time TIMESTAMP NOT NULL,
+  id varchar(36) NOT NULL,
+  remote_id varchar(128),
   customer_id bigint(20) NOT NULL,
-  build_id int NOT NULL,
+  product_id int NOT NULL,
+  version_raw int NOT NULL,
+  submit_time TIMESTAMP NOT NULL,
   refund_time TIMESTAMP,
   complete_time TIMESTAMP,
   status int NOT NULL,
-  amount int NOT NULL,
-    
+  amount bigint(20) NOT NULL,
+
   PRIMARY KEY (id),
   CONSTRAINT FK_ORDER_CUST FOREIGN KEY (customer_id) REFERENCES customer(id),
   CONSTRAINT UK_ORDER_STATUS FOREIGN KEY (status) REFERENCES order_status(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE INDEX IDX_ORDERS_TIME ON orders(submit_time);
-
-CREATE TABLE purchase
-(
-  id bigint(20) NOT NULL,
-  customer_id bigint(20) NOT NULL,
-  build_id int NOT NULL,
-  purchase_date TIMESTAMP NOT NULL,
-  order_id bigint(20) NOT NULL,
-  
-  PRIMARY KEY (id),
-  CONSTRAINT UK_PURCHASE_BLD UNIQUE KEY (customer_id, build_id),
-  CONSTRAINT FK_PURCHASE_CUST FOREIGN KEY (customer_id) REFERENCES customer(id),
-  CONSTRAINT FK_PURCHASE_ORD FOREIGN KEY (order_id) REFERENCES orders(id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE customer_log
 (
@@ -102,4 +92,19 @@ CREATE TABLE customer_log
 
 CREATE INDEX IDX_CUSTOMER_LOG_CID ON customer_log(customer_id);
 CREATE INDEX IDX_CUSTOMER_LOG_SID ON customer_log(session_id);
+
+CREATE VIEW v_latest_orders
+AS
+  SELECT
+  	o.customer_id customer_id,
+  	o.product_id product_id,
+  	max(o.version_raw) version_raw
+  FROM orders o
+  INNER JOIN order_status os
+  ON (os.id = o.status)
+  WHERE
+    os.name in ('paid', 'verified')
+  GROUP BY
+    o.customer_id,
+    o.product_id;
 

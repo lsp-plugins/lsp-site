@@ -3,6 +3,7 @@
 require_once("./config/config.php");
 require_once("./config/plugins.php");
 require_once("./inc/site/csrf.php");
+require_once("./inc/site/features.php");
 require_once("./inc/site/preload.php");
 require_once("./inc/site/session.php");
 
