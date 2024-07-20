@@ -1,5 +1,8 @@
 <?php
 
+require_once("./pages/download/parts/cart.php");
+require_once("./pages/download/parts/product.php");
+
 $windows_artifacts = $latest_artifacts['windows'];
 $artifacts = utl_map_by_field($windows_artifacts, 'architecture');
 ksort($artifacts);
@@ -63,6 +66,26 @@ foreach ($artifacts as $arch => $list) {
 
 <?php
 
+$user = get_session_user();
+$user_purchases = null;
+$user_cart = null;
+
+if (isset($user)) {
+	$customer_id = $user['id'];
+	$product_ids = utl_unique_field($windows_artifacts, 'product_id');
+	[$error, $user_purchases] = user_purchase_prices($customer_id, $product_ids);
+	if (!isset($error)) {
+		[$error, $user_cart] = user_cart($customer_id);
+		if (!isset($error)) {
+			show_user_cart($user_cart, $user_purchases);
+		} else {
+			error_log("Error getting user cart: {$error}");
+		}
+	} else {
+		error_log("Error getting user purchases: {$error}");
+	} 
+}
+
 $architecture = $browser_info['architecture'];
 if (!array_key_exists($architecture, $artifacts)) {
 	$architecture = array_key_first($artifacts);
@@ -81,13 +104,6 @@ foreach ($artifacts as $arch => $list) {
 
 echo "</div>\n";
 
-$user = get_session_user();
-$user_purchases = null;
-if (isset($user)) {
-	$product_ids = utl_unique_field($windows_artifacts, 'product_id');
-	[$result, $user_purchases] = user_purchase_prices($user, $product_ids);
-}
-
 foreach ($artifacts as $arch => $list) {
 	usort($list, function($a, $b) {
 		return $a['product'] <=> $b['product'];
@@ -97,52 +113,7 @@ foreach ($artifacts as $arch => $list) {
 	echo "<div id=\"dwnld-block-windows-{$arch}\" style=\"{$style_class}\">\n";
 	echo "<div class=\"tile-win-container\">\n";
 	foreach ($list as $artifact) {
-		$description = htmlspecialchars($artifact['description']);
-		echo "<div class=\"tile-win-inner\">\n";
-		echo "<div>{$description}</div>\n";
-		$product = $artifact['product'];
-		
-		if (isset($user_purchases)) {
-			$build_price = $user_purchases[$artifact['product_id']];
-			if (isset($build_price)) {
-				$cost = sprintf("%.2f", $build_price['price'] / 100000.0);
-				
-				if ($cost > 0) {
-					if ($build_price['download_raw']) {
-						$download_id = make_download_id($artifact['artifact_id']);
-						$download_version = implode('.',  $build_price['download']);
-						echo "<div>\n";
-						echo "<a href=\"/get?id={$download_id}\">Download {$download_version}</a>\n";
-						echo "</div>\n";
-					}
-					
-					if ($build_price['purchase_raw']) {
-						$purchase_raw = $build_price['purchase_raw'];
-						$purchase_version = implode('.', $build_price['purchase']);
-						
-						echo "<div>\n";
-						if ($build_price['download_raw']) {
-							echo "<a href=\"/purchase?product={$product}&amp;version={$purchase_raw}\">Upgrade to {$purchase_version} ({$cost} USD)</a>\n";
-						} else {
-							echo "<a href=\"/purchase?product={$product}&amp;version={$purchase_raw}\">Purchase {$purchase_version} ({$cost} USD)</a>\n";
-						}
-						echo "</div>\n";
-					}
-				} else {
-					$download_version = implode('.', $artifact['version']);
-					$download_id = make_download_id($artifact['artifact_id']);
-					echo "<div>\n";
-					echo "<a href=\"/get?id={$download_id}\">Download {$download_version}</a>\n";
-					echo "</div>\n";
-				}
-			} else {
-				echo "<div>Unavailable</div>\n";
-			}
-		} else {
-			$download_version = implode('.', $artifact['version']);
-			echo "<div><a href=\"/signin\">Download {$download_version}</a></div>\n";
-		}
-		echo "</div>\n";
+		show_product($artifact, $user_purchases, $user_cart);
 	}
 	echo "</div>\n";
 	echo "</div>\n";

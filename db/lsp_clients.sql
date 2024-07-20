@@ -66,8 +66,6 @@ CREATE TABLE orders
   id varchar(36) NOT NULL,
   remote_id varchar(128),
   customer_id bigint(20) NOT NULL,
-  product_id int NOT NULL,
-  version_raw int NOT NULL,
   submit_time TIMESTAMP NOT NULL,
   refund_time TIMESTAMP,
   complete_time TIMESTAMP,
@@ -76,10 +74,35 @@ CREATE TABLE orders
 
   PRIMARY KEY (id),
   CONSTRAINT FK_ORDER_CUST FOREIGN KEY (customer_id) REFERENCES customer(id),
-  CONSTRAINT UK_ORDER_STATUS FOREIGN KEY (status) REFERENCES order_status(id)
+  CONSTRAINT FK_ORDER_STATUS FOREIGN KEY (status) REFERENCES order_status(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE order_item
+(
+  id bigint(20) NOT NULL auto_increment,
+  order_id varchar(36) NOT NULL,
+  product_id int NOT NULL,
+  version_raw int NOT NULL,
+  amount bigint(20) NOT NULL,
+
+  CONSTRAINT PK_ORDER_ITEM PRIMARY KEY(id),
+  CONSTRAINT FK_ORDER_ITEM_OID FOREIGN KEY (order_id) REFERENCES orders(id),
+  CONSTRAINT UK_ORDER_ITEM_POS UNIQUE KEY (order_id, product_id, version_raw)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE INDEX IDX_ORDERS_TIME ON orders(submit_time);
+
+CREATE TABLE cart
+(
+  id bigint(20) NOT NULL auto_increment,
+  customer_id bigint(20) NOT NULL,
+  product_id int NOT NULL,
+  
+  CONSTRAINT PK_CART_ID PRIMARY KEY(id),
+  CONSTRAINT UK_CART_ITEM UNIQUE(customer_id, product_id),
+  CONSTRAINT FK_CART_CID FOREIGN KEY (customer_id) references customer(id) ON DELETE CASCADE  
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 CREATE TABLE customer_log
 (
@@ -97,14 +120,16 @@ CREATE VIEW v_latest_orders
 AS
   SELECT
   	o.customer_id customer_id,
-  	o.product_id product_id,
-  	max(o.version_raw) version_raw
+  	oi.product_id product_id,
+  	max(oi.version_raw) version_raw
   FROM orders o
+  INNER JOIN order_item oi
+  ON (oi.order_id = o.id)
   INNER JOIN order_status os
   ON (os.id = o.status)
   WHERE
     os.name in ('paid', 'verified')
   GROUP BY
     o.customer_id,
-    o.product_id;
+    oi.product_id;
 

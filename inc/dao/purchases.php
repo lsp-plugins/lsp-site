@@ -16,8 +16,9 @@ function dao_user_latest_orders($db, $customer_id)
 		}
 			
 		$result = mysqli_stmt_get_result($stmt);
-		if (!isset($result))
+		if (!isset($result)) {
 			return ["Database error (get_result)", null];
+		}
 
 		$list = [];
 		while ($row = mysqli_fetch_array($result)) {
@@ -40,6 +41,40 @@ function dao_user_latest_orders($db, $customer_id)
 	}
 }
 
+function dao_user_cart($db, $customer_id) {
+	$stmt = mysqli_prepare($db,
+		"SELECT id, customer_id, product_id " .
+		"FROM cart " .
+		"WHERE (customer_id = ?)");
+	try {
+		mysqli_stmt_bind_param($stmt, 'i', $customer_id);
+		if (!mysqli_stmt_execute($stmt)) {
+			return ["Database error (execute)", null];
+		}
+		
+		$result = mysqli_stmt_get_result($stmt);
+		if (!isset($result)) {
+			return ["Database error (get_result)", null];
+		}
+			
+		$list = [];
+		while ($row = mysqli_fetch_array($result)) {
+			array_push($list, [
+				'id' => $row['id'],
+				'customer_id' => $row['customer_id'],
+				'product_id' => $row['product_id'],
+			]);
+		}
+		
+		return [null, $list];
+	} catch (mysqli_sql_exception $e) {
+		$error = db_log_exception($e);
+		return [$error, null];
+	} finally {
+		mysqli_stmt_close($stmt);
+	}
+}
+
 function dao_build_prices($db, $product_ids, $latest_orders)
 {
 	if (!is_array($product_ids)) {
@@ -47,6 +82,7 @@ function dao_build_prices($db, $product_ids, $latest_orders)
 	}
 	
 	$order_mapping = utl_map_by_field($latest_orders, 'product_id');
+	error_log("order_mapping = " . var_export($order_mapping, true));
 
 	$stmt_upgrade = null;
 	$stmt_purchase = null;
@@ -58,6 +94,12 @@ function dao_build_prices($db, $product_ids, $latest_orders)
 			$data = null;
 			
 			if (array_key_exists($product_id, $order_mapping) && isset($order_mapping[$product_id])) {
+				$order_info = $order_mapping[$product_id][0];
+				
+				error_log("product_id = {$product_id}, order_info = " . var_export($order_info, true));
+				
+				$mapping_version = $order_info['raw_version'];
+				
 				// Upgrade logic. We need to fetch the latest version available for free download
 				// and compute price for the upgrade
 				if ($stmt_upgrade == null) {
@@ -72,7 +114,7 @@ function dao_build_prices($db, $product_ids, $latest_orders)
 						"ORDER BY version_raw");
 				}
 				
-				mysqli_stmt_bind_param($stmt_upgrade, 'ii', $product_id, $order_mapping[$product_id]);
+				mysqli_stmt_bind_param($stmt_upgrade, 'ii', $product_id, $mapping_version);
 				if (!mysqli_stmt_execute($stmt_upgrade)) {
 					return [ "Database error (execute)", null ];
 				}
@@ -82,48 +124,53 @@ function dao_build_prices($db, $product_ids, $latest_orders)
 					return [ "Database error (result)", null ];
 				}
 				
-				// First row contains information about purchased data
-				$row = mysqli_fetch_array($result);
-				if (isset($row)) {
+				$version_raw = $mapping_version;
+				$download_raw = $version_raw;
+				$purchase_raw = null;
+				$major_update = false;
+				$order_price = null;
+				$price = 0;
+				
+				// Process other rows
+				while ($row = mysqli_fetch_array($result)) {
+					$build_type = $row['build_type'];
+					$update_price = $row['upd_price'];
 					$version_raw = $row['version_raw'];
-					$download_raw = $version_raw;
-					$purchase_raw = null;
-					$major_update = false;
-					$order_price = $row['price'];
-					$price = 0;
 					
-					// Process other rows
-					while ($row = mysqli_fetch_array($result)) {
-						$build_type = $row['build_type'];
-						$update_price = $row['upd_price'];
-						$version_raw = $row['version_raw'];
-						
-						if ($build_type === 'major') {
-							$major_update = true;
+					// First row?
+					if (!isset($order_price)) {
+						$order_price = $row['price'];
+						if ($version_raw !== $mapping_version) {
 							$price = $order_price;
-						} else if (isset($update_price)) {
-							if (!$major_update) {
-								// We don't take more than 80% price for upgrades
-								$price = max($price + $update_price, intval($order_price * 0.8));
-							}
-						}
-						
-						// If price is set, then we turned into paid options
-						if ($price > 0) {
-							$download_raw = $version_raw;
-						} else {
-							$purchase_raw = $version_raw;
 						}
 					}
 					
-					$data = [
-						'download_raw' => $download_raw,
-						'download' => raw_to_version($download_raw),
-						'purchase_raw' => $purchase_raw,
-						'purchase' => raw_to_version($purchase_raw),
-						'price' => $price
-					];
+					// Check current state
+					if ($build_type === 'major') {
+						$major_update = true;
+						$price = $order_price;
+					} else if (isset($update_price)) {
+						if (!$major_update) {
+							// We don't take more than 80% price for upgrades
+							$price = max($price + $update_price, intval($order_price * 0.8));
+						}
+					}
+					
+					// If price is set, then we turned into paid options
+					if ($price > 0) {
+						$purchase_raw = $version_raw;
+					} else {
+						$download_raw = $version_raw;
+					}
 				}
+				
+				$data = [
+					'download_raw' => $download_raw,
+					'download' => raw_to_version($download_raw),
+					'purchase_raw' => $purchase_raw,
+					'purchase' => raw_to_version($purchase_raw),
+					'price' => $price
+				];
 			} else {
 				// Purchase logic
 				if ($stmt_purchase == null) {

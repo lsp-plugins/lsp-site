@@ -9,7 +9,7 @@
 function utl_unique_field($array, $field) {
 	return array_unique(
 		array_map(
-			function ($record) use($field) {
+			function ($record) use ($field) {
 				return $record[$field];
 			},
 			$array
@@ -36,6 +36,51 @@ function utl_map_by_field($array, $field) {
 	
 	return $result;
 };
+
+/**
+ * Search among the records in array for match the specific value
+ * @param array $array array of structures
+ * @param scalar $field name of the field to search
+ * @param mixed $value the value to search
+ * @return array of structure elements that match
+ */
+function utl_find_equal($array, $field, $value) {
+	$result = [];
+	foreach ($array as $record) {
+		if (!array_key_exists($field, $record)) {
+			continue;
+		}
+		
+		$field_value = $record[$field];
+		if ($value === $field_value) {
+			array_push($result, $record);
+		}
+	}
+	
+	return $result;
+}
+
+/**
+ * Search among the records in array and return the first record that matches the specific value
+ * @param array $array array of structures
+ * @param scalar $field name of the field to search
+ * @param mixed $value the value to search
+ * @return array of structure elements that match
+ */
+function utl_find_first($array, $field, $value) {
+	foreach ($array as $record) {
+		if (!array_key_exists($field, $record)) {
+			continue;
+		}
+		
+		$field_value = $record[$field];
+		if ($value === $field_value) {
+			return $record;
+		}
+	}
+	
+	return null;
+}
 
 /**
  * Convert version representation as array to integral version
