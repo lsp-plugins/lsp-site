@@ -3,9 +3,11 @@
 function show_product($artifact, $user_purchases, $user_cart) {
 	$product = $artifact['product'];
 	$product_id = $artifact['product_id'];
+	$arch = $artifact['architecture'];
+	$platform = $artifact['platform'];
 	$description = htmlspecialchars($artifact['description']);
 	
-	echo "<div class=\"tile-win-inner\" id=\"product-{$product}\">\n";
+	echo "<div class=\"tile-win-inner\" id=\"product-{$product}-{$platform}-{$arch}\">\n";
 	echo "<div>{$description}</div>\n";
 	echo "<div>\n";
 	
@@ -27,13 +29,13 @@ function show_product($artifact, $user_purchases, $user_cart) {
 					$purchase_version = implode('.', $build_price['purchase']);
 					
 					if (isset($cart_item)) {
-						echo "In cart version {$purchase_version} ({$cost} USD) <a href=\"/ajax/remove_from_cart?product_id={$product_id}\">Remove</a>\n";
+						echo "In cart version {$purchase_version} ({$cost} USD) <a href=\"javascript:ajax_post('remove_from_cart', { 'product_id': {$product_id} });\">Remove</a>\n";
 					} else {
 						$text = ($build_price['download_raw']) ?
 							"Upgrade to {$purchase_version} ({$cost} USD)" :
 							"Purchase {$purchase_version} ({$cost} USD)";
 						
-						echo "<a href=\"/ajax/add_to_cart?product_id={$product_id}\">{$text}</a>\n";
+						echo "<a href=\"javascript:ajax_post('add_to_cart', { 'product_id': {$product_id} });\">{$text}</a>\n";
 					}
 				}
 			} else {

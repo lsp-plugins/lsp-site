@@ -142,6 +142,11 @@ function dao_get_artifacts($db, $view, $filter) {
 			array_push($arguments, $filter['product']);
 			array_push($types, 's');
 		}
+		if (isset($filter['product_id'])) {
+			array_push($conditions, '(product_id = ?)');
+			array_push($arguments, $filter['product_id']);
+			array_push($types, 'i');
+		}
 		if (isset($filter['arch'])) {
 			array_push($conditions, '(architecture = ?)');
 			array_push($arguments, $filter['arch']);

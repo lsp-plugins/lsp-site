@@ -51,6 +51,20 @@ function verify_token_id($error, $map, $key = null) {
 	return (verify_uuid($map, $key)) ? $error : "Invalid token";
 }
 
+function verify_int($error, $map, $key, $field) {
+	if (isset($error)) {
+		return $error;
+	}
+	
+	$message = verify_isset($error, $map, $key, $field);
+	if (isset($message)) {
+		return $message;
+	}
+	
+	$value = $map[$key];
+	return (is_numeric($value)) ? $error : "Parameter '{$field}' should be numeric";
+}
+
 function verify_strong_password($error, $map, $key, $field) {
 	if (isset($error)) {
 		return $error;

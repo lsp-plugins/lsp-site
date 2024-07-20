@@ -11,6 +11,7 @@
 		<script type="text/javascript" src="<?=$SITEROOT?>/js/jquery.mob-menu.js"></script>
 		<script type="text/javascript" src="<?=$SITEROOT?>/js/jquery.query-object.js"></script>
 		<script type="text/javascript" src="<?=$SITEROOT?>/js/validation.js"></script>
+		<script type="text/javascript" src="<?=$SITEROOT?>/js/ajax.js" ></script>
 		<script type="text/javascript" src="https://www.google.com/recaptcha/api.js" async defer></script>
 	</head>
 	<body>

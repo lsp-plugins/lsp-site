@@ -151,6 +151,12 @@ function get_latest_releases() {
 	return get_filtered_artifacts('v_latest_artifacts', []);
 }
 
+function get_latest_artifact($filter) {
+	return get_filtered_artifacts(
+		'v_latest_artifacts',
+		$filter);
+}
+
 function get_product_releases($product_id) {
 	return get_filtered_artifacts(
 		'v_artifacts',
