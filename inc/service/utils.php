@@ -7,13 +7,14 @@
  * @return array of unique values of the specific field of data structures stored in original array
  */
 function utl_unique_field($array, $field) {
-	return array_unique(
-		array_map(
-			function ($record) use ($field) {
-				return $record[$field];
-			},
-			$array
-		));
+	return array_values(
+		array_unique(
+			array_map(
+				function ($record) use ($field) {
+					return $record[$field];
+				},
+				$array
+			)));
 }
 
 /**
@@ -36,6 +37,20 @@ function utl_map_by_field($array, $field) {
 	
 	return $result;
 };
+
+/**
+ * Remove elements from array if they meet specific condition.
+ */
+function utl_remove_if(&$array, $condition) {
+	$result = [];
+	foreach ($array as $key => $value) {
+		$value = $array[$key];
+		if (!call_user_func($condition, $value)) {
+			array_push($result, $value);
+		}
+	}
+	$array = $result;
+}
 
 /**
  * Search among the records in array for match the specific value

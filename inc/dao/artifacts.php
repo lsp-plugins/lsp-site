@@ -25,6 +25,34 @@ function dao_create_product($db, $product) {
 	return null;
 }
 
+function dao_all_product_ids($db) {
+	$stmt = mysqli_prepare($db, "SELECT DISTINCT id FROM product");
+	try {
+		if (!mysqli_stmt_execute($stmt)) {
+			return null;
+		}
+		
+		$result = mysqli_stmt_get_result($stmt);
+		if (!isset($result)) {
+			return null;
+		}
+		
+		$product_ids = [];
+		
+		while ($row = mysqli_fetch_array($result)) {
+			array_push($result, $row['id']);
+		}
+		
+		return [ null, $product_ids ];
+	} catch (mysqli_sql_exception $e) {
+		db_log_exception($e);
+	} finally {
+		mysqli_stmt_close($stmt);
+	}
+	
+	return null;
+}
+
 function dao_get_build($db, $product_id, $build_type_id, $version) {
 	
 	$stmt = mysqli_prepare($db, "SELECT id FROM build WHERE " .
@@ -143,9 +171,17 @@ function dao_get_artifacts($db, $view, $filter) {
 			array_push($types, 's');
 		}
 		if (isset($filter['product_id'])) {
-			array_push($conditions, '(product_id = ?)');
-			array_push($arguments, $filter['product_id']);
-			array_push($types, 'i');
+			$product_id = $filter['product_id'];
+			if (is_array($product_id)) {
+				$condition = '(product_id in (' . implode(', ', array_fill(0, count($product_id), '?')) . '))';
+				array_push($conditions, $condition);
+				$arguments = array_merge($arguments, $product_id);
+				array_push($types, str_repeat('i', count($product_id)));
+			} else {
+				array_push($conditions, '(product_id = ?)');
+				array_push($arguments, $filter['product_id']);
+				array_push($types, 'i');
+			}
 		}
 		if (isset($filter['arch'])) {
 			array_push($conditions, '(architecture = ?)');

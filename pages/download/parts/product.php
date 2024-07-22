@@ -1,6 +1,6 @@
 <?php
 
-function show_product($artifact, $user_purchases, $user_cart) {
+function show_product(&$csrf_tokens, $artifact, $user_purchases, $user_cart) {
 	$product = $artifact['product'];
 	$product_id = $artifact['product_id'];
 	$arch = $artifact['architecture'];
@@ -27,15 +27,21 @@ function show_product($artifact, $user_purchases, $user_cart) {
 				
 				if ($build_price['purchase_raw']) {
 					$purchase_version = implode('.', $build_price['purchase']);
+					if (!array_key_exists($product_id, $csrf_tokens)) {
+						$csrf_token = make_csrf_token('cart');
+						$csrf_tokens[$product_id] = $csrf_token;
+						error_log("Generated CSRF={$csrf_token} for product_id={$product_id}");
+					}
+					$csrf_token = $csrf_tokens[$product_id];
 					
 					if (isset($cart_item)) {
-						echo "In cart version {$purchase_version} ({$cost} USD) <a href=\"javascript:ajax_post('remove_from_cart', { 'product_id': {$product_id} });\">Remove</a>\n";
+						echo "{$purchase_version} in <a href=\"/checkout\">cart</a> ({$cost} USD) <a href=\"javascript:ajax_post('remove_from_cart', { 'product_id': {$product_id}, 'token': '{$csrf_token}' });\">Remove</a>\n";
 					} else {
 						$text = ($build_price['download_raw']) ?
 							"Upgrade to {$purchase_version} ({$cost} USD)" :
 							"Purchase {$purchase_version} ({$cost} USD)";
 						
-						echo "<a href=\"javascript:ajax_post('add_to_cart', { 'product_id': {$product_id} });\">{$text}</a>\n";
+						echo "<a href=\"javascript:ajax_post('add_to_cart', { 'product_id': {$product_id}, 'token': '{$csrf_token}' });\">{$text}</a>\n";
 					}
 				}
 			} else {

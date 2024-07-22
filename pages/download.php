@@ -61,6 +61,8 @@ $sections = [
 	]
 ];
 
+$product_csrf_tokens = [];
+
 // Disable several pages by flag
 if (!check_site_feature('windows')) {
 	unset($sections['windows']);

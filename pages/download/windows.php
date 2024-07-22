@@ -113,7 +113,7 @@ foreach ($artifacts as $arch => $list) {
 	echo "<div id=\"dwnld-block-windows-{$arch}\" style=\"{$style_class}\">\n";
 	echo "<div class=\"tile-win-container\">\n";
 	foreach ($list as $artifact) {
-		show_product($artifact, $user_purchases, $user_cart);
+		show_product($product_csrf_tokens, $artifact, $user_purchases, $user_cart);
 	}
 	echo "</div>\n";
 	echo "</div>\n";

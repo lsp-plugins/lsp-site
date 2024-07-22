@@ -75,6 +75,27 @@ function dao_user_cart($db, $customer_id) {
 	}
 }
 
+function dao_clear_user_cart($db, $customer_id) {
+	$stmt = mysqli_prepare($db,
+		"DELETE FROM cart " .
+		"WHERE (customer_id = ?)");
+	try {
+		mysqli_stmt_bind_param($stmt, 'i', $customer_id);
+		if (!mysqli_stmt_execute($stmt)) {
+			return ["Database error (execute)", null];
+		}
+		
+		$affected = mysqli_affected_rows($db);
+		
+		return [null, $affected];
+	} catch (mysqli_sql_exception $e) {
+		$error = db_log_exception($e);
+		return [$error, null];
+	} finally {
+		mysqli_stmt_close($stmt);
+	}
+}
+
 function dao_build_prices($db, $product_ids, $latest_orders)
 {
 	if (!is_array($product_ids)) {
@@ -216,6 +237,49 @@ function dao_build_prices($db, $product_ids, $latest_orders)
 	} finally {
 		db_safe_close($stmt_upgrade);
 		db_safe_close($stmt_purchase);
+	}
+}
+
+function dao_add_to_cart($db, $customer_id, $product_id)
+{
+	$stmt = mysqli_prepare($db,
+		"INSERT INTO cart(customer_id, product_id) " .
+		"VALUES (?, ?) ON DUPLICATE KEY UPDATE product_id = product_id");
+	try {
+		mysqli_stmt_bind_param($stmt, 'ii', $customer_id, $product_id);
+		if (!mysqli_stmt_execute($stmt)) {
+			return ["Database error (execute)", null];
+		}
+		
+		$insert_id = mysqli_insert_id($db);
+		return [null, $insert_id];
+	} catch (mysqli_sql_exception $e) {
+		$error = db_log_exception($e);
+		return [$error, null];
+	} finally {
+		mysqli_stmt_close($stmt);
+	}
+}
+
+function dao_remove_from_cart($db, $customer_id, $product_id)
+{
+	$stmt = mysqli_prepare($db,
+		"DELETE FROM cart " .
+		"WHERE (customer_id = ?) AND (product_id = ?)");
+	try {
+		mysqli_stmt_bind_param($stmt, 'ii', $customer_id, $product_id);
+		if (!mysqli_stmt_execute($stmt)) {
+			return ["Database error (execute)", null];
+		}
+		
+		$affected = mysqli_affected_rows($db);
+		
+		return [null, $affected];
+	} catch (mysqli_sql_exception $e) {
+		$error = db_log_exception($e);
+		return [$error, null];
+	} finally {
+		mysqli_stmt_close($stmt);
 	}
 }
 
