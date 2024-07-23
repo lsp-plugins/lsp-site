@@ -1,6 +1,7 @@
 <?php
 
 require_once("./inc/dao/artifacts.php");
+require_once("./inc/site/download.php");
 
 function create_artifacts($file_names, $build_type) {
 	$platform_mapping = [
@@ -23,7 +24,7 @@ function create_artifacts($file_names, $build_type) {
 	
 	$warnings = [];
 	
-	$archive_pattern='(?:tar\\.(?:gz|bz)|zip|7z|exe)';
+	$archive_pattern='(?:tar\\.(?:gz|bz|bz2)|zip|7z|exe)';
 	$product_pattern='([a-z0-9\\-]+)';
 	$version_pattern='(\\d+)\\.(\d+)\\.(\\d+)';
 	$fmt_pattern='(clap|gst|jack|ladspa|lv2|vst2|vst3)';
@@ -171,6 +172,48 @@ function get_lastest_documentation_build() {
 		[
 			'format' => 'doc'
 		]);
+}
+
+function get_download_id($product_id, $format, $platform, $architecture, $version)
+{
+	[$error, $artifacts] = get_filtered_artifacts(
+		'v_artifacts',
+		[
+			'product_id' => $product_id,
+			'architecture' => $architecture,
+			'platform' => $platform,
+			'version' => $version,
+			'format' => $format
+		]);
+	
+	if (isset($error)) {
+		return [ $error, null ];
+	}
+	
+	if (count($artifacts) <= 0) {
+		return [ 'Not found', null ];
+	}
+	
+	$artifact = $artifacts[0];
+	return make_download_id($artifact['artifact_id']);
+}
+
+function find_artifact($artifact_id) {
+	[$error, $artifacts] = get_filtered_artifacts(
+		'v_artifacts',
+		[
+			'artifact_id' => $artifact_id
+		]);
+	
+	if (isset($error)) {
+		return [ $error, null ];
+	}
+	
+	if (count($artifacts) <= 0) {
+		return [ 'Not found', null ];
+	}
+	
+	return [null, $artifacts[0]];
 }
 
 ?>

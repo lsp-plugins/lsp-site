@@ -20,9 +20,17 @@ function show_product(&$csrf_tokens, $artifact, $user_purchases, $user_cart) {
 				$cart_item = utl_find_first($user_cart, 'product_id', $product_id);
 				
 				if ($build_price['download_raw']) {
-					$download_id = make_download_id($artifact['artifact_id']);
-					$download_version = implode('.',  $build_price['download']);
-					echo "<a href=\"/get?id={$download_id}\">Download {$download_version}</a>\n";
+					$download_version = $build_price['download'];
+					
+					$download_id = get_download_id(
+						$artifact['product_id'],
+						$artifact['format'],
+						$artifact['platform'],
+						$artifact['architecture'],
+						$download_version);
+					
+					$download_version_str = implode('.', $download_version);
+					echo "<a href=\"/actions/download?id={$download_id}\">Download {$download_version_str}</a>\n";
 				}
 				
 				if ($build_price['purchase_raw']) {
@@ -47,7 +55,7 @@ function show_product(&$csrf_tokens, $artifact, $user_purchases, $user_cart) {
 			} else {
 				$download_version = implode('.', $artifact['version']);
 				$download_id = make_download_id($artifact['artifact_id']);
-				echo "<a href=\"/get?id={$download_id}\">Download {$download_version}</a>\n";
+				echo "<a href=\"/actions/download?id={$download_id}\">Download {$download_version}</a>\n";
 			}
 		} else {
 			echo "Unavailable\n";

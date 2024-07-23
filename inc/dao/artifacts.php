@@ -165,6 +165,11 @@ function dao_get_artifacts($db, $view, $filter) {
 	$arguments = [];
 	$types = [];
 	if (isset($filter)) {
+		if (isset($filter['artifact_id'])) {
+			array_push($conditions, '(artifact_id = ?)');
+			array_push($arguments, $filter['artifact_id']);
+			array_push($types, 's');
+		}
 		if (isset($filter['product'])) {
 			array_push($conditions, '(product = ?)');
 			array_push($arguments, $filter['product']);
@@ -207,6 +212,8 @@ function dao_get_artifacts($db, $view, $filter) {
 			$version = $filter['version'];
 			if (is_string($version)) {
 				$version = explode('.', $version);
+			} elseif (is_numeric($version)) {
+				$version = raw_to_version($version);
 			} elseif (!is_array($version)) {
 				return ["Invalid argument 'version'", null ];
 			}
@@ -222,11 +229,11 @@ function dao_get_artifacts($db, $view, $filter) {
 			$raw_version = $filter['raw_version'];
 			if (is_string($raw_version)) {
 				$version = explode('.', $version);
-				$version = ($version[0] * 1000 + $version[1]) * 1000 + $version[2];
+				$version = version_to_raw($version);
 			} elseif (is_numeric($version)) {
 				// nothing
 			} elseif (is_array($version)) {
-				$version = ($version[0] * 1000 + $version[1]) * 1000 + $version[2];
+				$version = version_to_raw($version);
 			} else {
 				return ["Invalid argument 'raw_version'", null ];
 			}

@@ -25,11 +25,13 @@ function user_session_id()
 	try {
 		$db = connect_db('site');
 		if (!isset($db)) {
+			error_log("Not connected to database");
 			return null;
 		}
 			
 		// Read the cookie
 		if (!isset($_COOKIE['session_id'])) {
+			error_log("Not set session_id in cookies");
 			return null;
 		}
 		
@@ -37,6 +39,7 @@ function user_session_id()
 		$session_id = $_COOKIE['session_id'];
 		$session = dao_get_session($db, $session_id);
 		if (!isset($session)) {
+			error_log("Session not found");
 			return null;
 		}
 		
