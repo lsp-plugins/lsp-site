@@ -23,8 +23,11 @@ function show_user_cart($user_cart, $user_purchases) {
 		$csrf_token = make_csrf_token('cart');
 		
 		echo "<div>\n";
-		echo "<a href=\"/checkout\">Checkout</a>\n";
-		echo "<a href=\"javascript:ajax_post('empty_cart', { 'token': '{$csrf_token}' });\">Empty</a>\n";
+		echo "<form action=\"{$SITEROOT}/actions/checkout\" method=\"POST\">\n";
+		echo "<input type=\"hidden\" value=\"$csrf_token\">\n";
+		echo "<input type=\"submit\" value=\"Checkout\" name=\"checkout\">\n";
+		echo "<input type=\"button\" value=\"Empty\" name=\"empty\" onclick=\"javascript:ajax_post('empty_cart', { 'token': '{$csrf_token}' });\">\n";
+		echo "</form>\n";
 		echo "</div>\n";
 	}
 	echo "</div>\n";

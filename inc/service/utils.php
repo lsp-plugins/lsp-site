@@ -22,7 +22,7 @@ function utl_unique_field($array, $field) {
  * stored in a specific field of data structures stored in array.
  * @param array $array array of structures
  * @param scalar $field name of the field of structure that is used to fetch unique values
- * @return array of unique field value associated with a sub-array of recods with the same field value.
+ * @return array of unique field value associated with a sub-array of records with the same field value.
  */
 function utl_map_by_field($array, $field) {
 	$result = [];
@@ -33,6 +33,22 @@ function utl_map_by_field($array, $field) {
 		} else {
 			array_push($result[$value], $record);
 		}
+	}
+	
+	return $result;
+};
+
+/**
+ * Perform unique mapping of array structures by field identifier
+ * @param array $array array of structures
+ * @param scalar $field name of the field of structure that is used to fetch unique values
+ * @return array of unique field value associated with a record
+ */
+function utl_map_unique_by_field($array, $field) {
+	$result = [];
+	foreach ($array as $record) {
+		$value = $record[$field];
+		$result[$value] = $record;
 	}
 	
 	return $result;

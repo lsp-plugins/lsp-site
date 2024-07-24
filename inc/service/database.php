@@ -11,7 +11,7 @@ function db_log_exception($e) {
 	return $message;
 }
 
-function db_safe_close($stmt) {
+function db_safe_close(&$stmt) {
 	if (!isset($stmt)) {
 		return;
 	}
@@ -20,6 +20,8 @@ function db_safe_close($stmt) {
 		mysqli_stmt_close($stmt);
 	} catch (Exception $e) {
 		/* nothing */
+	} finally {
+		$stmt = null;
 	}
 }
 

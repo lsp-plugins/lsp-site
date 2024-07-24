@@ -43,10 +43,12 @@ function process_sign_out_request() {
 }
 
 // Sign-out and redirect
-if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-	process_sign_out_request();
-	header("Location: {$SITE_URL}/");
+if ($_SERVER['REQUEST_METHOD'] != 'GET') {
+	http_response_code(401);
 	exit;
 }
+
+process_sign_out_request();
+header("Location: {$SITE_URL}/");
 
 ?>

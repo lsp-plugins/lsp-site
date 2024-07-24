@@ -1,4 +1,4 @@
-<html lang="en-gb" dir="ltr" vocab="http://schema.org/">
+<html lang="en-us" dir="ltr" vocab="http://schema.org/">
 	<head>
 		<title>Linux Studio Plugins Project</title>
 		<meta content="text/html; charset=utf-8" http-equiv="Content-Type">

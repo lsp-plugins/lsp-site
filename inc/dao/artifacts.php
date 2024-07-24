@@ -10,8 +10,10 @@ function dao_create_product($db, $product) {
 		return $product_id;
 	}
 	
-	$stmt = mysqli_prepare($db, "INSERT INTO product(name) VALUES (?)");
+	$stmt = null;
 	try {
+		$stmt = mysqli_prepare($db, "INSERT INTO product(name) VALUES (?)");
+		
 		mysqli_stmt_bind_param($stmt, 's', $product);
 		if (mysqli_stmt_execute($stmt)) {
 			return mysqli_insert_id($db);
@@ -19,15 +21,17 @@ function dao_create_product($db, $product) {
 	} catch (mysqli_sql_exception $e) {
 		db_log_exception($e);
 	} finally {
-		mysqli_stmt_close($stmt);
+		db_safe_close($stmt);
 	}
 	
 	return null;
 }
 
 function dao_all_product_ids($db) {
-	$stmt = mysqli_prepare($db, "SELECT DISTINCT id FROM product");
+	$stmt = null;
 	try {
+		$stmt = mysqli_prepare($db, "SELECT DISTINCT id FROM product");
+		
 		if (!mysqli_stmt_execute($stmt)) {
 			return null;
 		}
@@ -47,17 +51,107 @@ function dao_all_product_ids($db) {
 	} catch (mysqli_sql_exception $e) {
 		db_log_exception($e);
 	} finally {
-		mysqli_stmt_close($stmt);
+		db_safe_close($stmt);
 	}
 	
 	return null;
 }
 
+function dao_get_products($db, $filter = null) {
+	$stmt = null;
+	$conditions = [];
+	$arguments = [];
+	$types = [];
+	
+	if (isset($filter)) {
+		if (isset($filter['product_id'])) {
+			$product_id = $filter['product_id'];
+			if (is_array($product_id)) {
+				$condition = '(id in (' . implode(', ', array_fill(0, count($product_id), '?')) . '))';
+				array_push($conditions, $condition);
+				$arguments = array_merge($arguments, $product_id);
+				array_push($types, str_repeat('i', count($product_id)));
+			} else {
+				array_push($conditions, '(id = ?)');
+				array_push($arguments, $product_id);
+				array_push($types, 'i');
+			}
+		}
+		if (isset($filter['id'])) {
+			$product_id = $filter['id'];
+			if (is_array($product_id)) {
+				$condition = '(id in (' . implode(', ', array_fill(0, count($product_id), '?')) . '))';
+				array_push($conditions, $condition);
+				$arguments = array_merge($arguments, $product_id);
+				array_push($types, str_repeat('i', count($product_id)));
+			} else {
+				array_push($conditions, '(id = ?)');
+				array_push($arguments, $product_id);
+				array_push($types, 'i');
+			}
+		}
+		if (isset($filter['name'])) {
+			$product_name = $filter['name'];
+			if (is_array($product_name)) {
+				$condition = '(name in (' . implode(', ', array_fill(0, count($product_name), '?')) . '))';
+				array_push($conditions, $condition);
+				$arguments = array_merge($arguments, $product_name);
+				array_push($types, str_repeat('s', count($product_name)));
+			} else {
+				array_push($conditions, '(name = ?)');
+				array_push($arguments, $product_name);
+				array_push($types, 's');
+			}
+		}
+	}
+	
+	$query = "SELECT id, name, description, price FROM product";
+	if (count($conditions) > 0) {
+		$query .= " WHERE " . implode(" AND ", $conditions);
+	}
+
+	try {
+		$stmt = mysqli_prepare($db, $query);
+		if (count($arguments) > 0) {
+			mysqli_stmt_bind_param($stmt, implode('', $types), ...$arguments);
+		}
+		if (!mysqli_stmt_execute($stmt)) {
+			return ["Failed query", null];
+		}
+		
+		$result = mysqli_stmt_get_result($stmt);
+		if (!isset($result)) {
+			return null;
+		}
+		
+		$list = [];
+		
+		while ($row = mysqli_fetch_array($result)) {
+			array_push($list,
+				[
+					'id' => $row['id'],
+					'name' => $row['name'],
+					'description' => $row['description'],
+					'price' => $row['price']
+				]);
+		}
+		
+		return [ null, $list ];
+	} catch (mysqli_sql_exception $e) {
+		$error = db_log_exception($e);
+		return [$error, null];
+	} finally {
+		db_safe_close($stmt);
+	}
+}
+
 function dao_get_build($db, $product_id, $build_type_id, $version) {
 	
-	$stmt = mysqli_prepare($db, "SELECT id FROM build WHERE " .
-		"(product_id = ?) AND (type_id = ?) AND (major = ?) AND (minor = ?) AND (micro = ?)");
+	$stmt = null;
 	try {
+		$stmt = mysqli_prepare($db, "SELECT id FROM build WHERE " .
+			"(product_id = ?) AND (type_id = ?) AND (major = ?) AND (minor = ?) AND (micro = ?)");
+		
 		mysqli_stmt_bind_param($stmt, 'iiiii', $product_id, $build_type_id, $version[0], $version[1], $version[2]);
 		if (!mysqli_stmt_execute($stmt)) {
 			return null;
@@ -77,7 +171,7 @@ function dao_get_build($db, $product_id, $build_type_id, $version) {
 	} catch (mysqli_sql_exception $e) {
 		db_log_exception($e);
 	} finally {
-		mysqli_stmt_close($stmt);
+		db_safe_close($stmt);
 	}
 	
 	return null;
@@ -90,9 +184,11 @@ function dao_create_build($db, $product_id, $build_type_id, $version) {
 		return $build_id;
 	}
 	
-	$stmt = mysqli_prepare($db, "INSERT INTO build(product_id, issue_date, type_id, major, minor, micro, version_raw) " .
-		"VALUES (?, current_date, ?, ?, ?, ?, ?)");
+	$stmt = null;
 	try {
+		$stmt = mysqli_prepare($db, "INSERT INTO build(product_id, issue_date, type_id, major, minor, micro, version_raw) " .
+			"VALUES (?, current_date, ?, ?, ?, ?, ?)");
+		
 		$raw_version = ($version[0] * 1000 + $version[1]) * 1000 + $version[2];
 		mysqli_stmt_bind_param($stmt, 'iiiiii', $product_id, $build_type_id, $version[0], $version[1], $version[2], $raw_version);
 		if (mysqli_stmt_execute($stmt)) {
@@ -101,7 +197,7 @@ function dao_create_build($db, $product_id, $build_type_id, $version) {
 	} catch (mysqli_sql_exception $e) {
 		db_log_exception($e);
 	} finally {
-		mysqli_stmt_close($stmt);
+		db_safe_close($stmt);
 	}
 	
 	return null;
@@ -138,23 +234,31 @@ function dao_create_artifact($db, $product, $build_type, $format, $version, $pla
 		return ["Unknown format '{$format_id}'", null];
 	}
 
-	while (true) {
-		$artifact_id = make_uuid();
-		$stmt = mysqli_prepare($db, "INSERT INTO artifact(id, build_id, platform_id, architecture_id, format_id, file_name) " .
+	$stmt = null;
+	try {
+		$stmt = mysqli_prepare($db,
+			"INSERT INTO artifact(id, build_id, platform_id, architecture_id, format_id, file_name) " .
 			"VALUES (?, ?, ?, ?, ?, ?)");
-		try {
-			mysqli_stmt_bind_param($stmt, 'siiiis', $artifact_id, $build_id, $platform_id, $architecture_id, $format_id, $file_name);
-			if (mysqli_stmt_execute($stmt)) {
-				return [null, mysqli_insert_id($db)];
+
+		while (true) {
+			$artifact_id = make_uuid();
+	
+			try {
+				mysqli_stmt_bind_param($stmt, 'siiiis', $artifact_id, $build_id, $platform_id, $architecture_id, $format_id, $file_name);
+				if (mysqli_stmt_execute($stmt)) {
+					return [null, mysqli_insert_id($db)];
+				}
+			} catch (mysqli_sql_exception $e) {
+				if (!unique_key_violation($e)) {
+					throw $e;
+				}
 			}
-		} catch (mysqli_sql_exception $e) {
-			if (!unique_key_violation($e)) {
-				db_log_exception($e);
-				break;
-			}
-		} finally {
-			mysqli_stmt_close($stmt);
 		}
+	} catch (mysqli_sql_exception $e) {
+		$error = db_log_exception($e);
+		return [$error, null];
+	} finally {
+		mysqli_stmt_close($stmt);
 	}
 	
 	return ['Unknown database error', null];
@@ -184,7 +288,7 @@ function dao_get_artifacts($db, $view, $filter) {
 				array_push($types, str_repeat('i', count($product_id)));
 			} else {
 				array_push($conditions, '(product_id = ?)');
-				array_push($arguments, $filter['product_id']);
+				array_push($arguments, $product_id);
 				array_push($types, 'i');
 			}
 		}
@@ -249,8 +353,10 @@ function dao_get_artifacts($db, $view, $filter) {
 		$query .= " WHERE " . implode(" AND ", $conditions);
 	}
 	
-	$stmt = mysqli_prepare($db, $query);
+	$stmt = null;
 	try {
+		$stmt = mysqli_prepare($db, $query);
+		
 		if (count($arguments) > 0) {
 			mysqli_stmt_bind_param($stmt, implode('', $types), ...$arguments);
 		}
@@ -288,7 +394,7 @@ function dao_get_artifacts($db, $view, $filter) {
 		$error = db_log_exception($e);
 		return [$error, null];
 	} finally {
-		mysqli_stmt_close($stmt);
+		db_safe_close($stmt);
 	}
 	
 	return ["Unknown error", null];

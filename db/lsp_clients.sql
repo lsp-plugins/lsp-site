@@ -14,6 +14,7 @@ INSERT INTO order_status (id, name) VALUES (2, 'paid');
 INSERT INTO order_status (id, name) VALUES (3, 'verified');
 INSERT INTO order_status (id, name) VALUES (4, 'cancelled');
 INSERT INTO order_status (id, name) VALUES (5, 'refunded');
+INSERT INTO order_status (id, name) VALUES (6, 'draft');
 
 CREATE TABLE customer_type
 (
@@ -66,9 +67,11 @@ CREATE TABLE orders
   id varchar(36) NOT NULL,
   remote_id varchar(128),
   customer_id bigint(20) NOT NULL,
-  submit_time TIMESTAMP NOT NULL,
-  refund_time TIMESTAMP,
-  complete_time TIMESTAMP,
+  created_time TIMESTAMP NOT NULL,
+  submit_time TIMESTAMP NULL,
+  refund_time TIMESTAMP NULL,
+  complete_time TIMESTAMP NULL,
+  verify_time TIMESTAMP NULL,
   status int NOT NULL,
   amount bigint(20) NOT NULL,
 
@@ -77,6 +80,8 @@ CREATE TABLE orders
   CONSTRAINT FK_ORDER_STATUS FOREIGN KEY (status) REFERENCES order_status(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE INDEX IDX_ORDERS_TIME ON orders(created_time);
+
 CREATE TABLE order_item
 (
   id bigint(20) NOT NULL auto_increment,
@@ -84,13 +89,14 @@ CREATE TABLE order_item
   product_id int NOT NULL,
   version_raw int NOT NULL,
   amount bigint(20) NOT NULL,
+  upgrade tinyint NOT NULL DEFAULT 0,
 
   CONSTRAINT PK_ORDER_ITEM PRIMARY KEY(id),
-  CONSTRAINT FK_ORDER_ITEM_OID FOREIGN KEY (order_id) REFERENCES orders(id),
+  CONSTRAINT FK_ORDER_ITEM_OID FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
   CONSTRAINT UK_ORDER_ITEM_POS UNIQUE KEY (order_id, product_id, version_raw)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE INDEX IDX_ORDERS_TIME ON orders(submit_time);
+ALTER TABLE order_item ADD CONSTRAINT UK_ORDER_ITEM_DATA UNIQUE KEY (order_id, product_id);
 
 CREATE TABLE cart
 (

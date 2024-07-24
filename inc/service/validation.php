@@ -31,12 +31,10 @@ function verify_uuid($map, $key = null) {
 	$value = $map;
 	if (is_array($value)) {
 		if (!array_key_exists($key, $value)) {
-			error_log('!array_key_exists($key, $value)');
 			return false;
 		}
 		$value = $value[$key];
 	} elseif (!is_string($value)) {
-		error_log('!is_string($value)');
 		return false;
 	}
 	

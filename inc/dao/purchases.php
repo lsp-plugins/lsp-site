@@ -2,14 +2,18 @@
 
 require_once('./inc/service/database.php');
 require_once('./inc/service/utils.php');
+require_once('./inc/service/uuid.php');
 
 function dao_user_latest_orders($db, $customer_id)
 {
-	$stmt = mysqli_prepare($db,
-		"SELECT customer_id, product_id, version_raw " .
-		"FROM v_latest_orders " .
-		"WHERE (customer_id = ?)");
+	$stmt = null;
+
 	try {
+		$stmt = mysqli_prepare($db,
+			"SELECT customer_id, product_id, version_raw " .
+			"FROM v_latest_orders " .
+			"WHERE (customer_id = ?)");
+		
 		mysqli_stmt_bind_param($stmt, 'i', $customer_id);
 		if (!mysqli_stmt_execute($stmt)) {
 			return ["Database error (execute)", null];
@@ -37,16 +41,18 @@ function dao_user_latest_orders($db, $customer_id)
 		$error = db_log_exception($e);
 		return [$error, null];
 	} finally {
-		mysqli_stmt_close($stmt);
+		db_safe_close($stmt);
 	}
 }
 
 function dao_user_cart($db, $customer_id) {
-	$stmt = mysqli_prepare($db,
-		"SELECT id, customer_id, product_id " .
-		"FROM cart " .
-		"WHERE (customer_id = ?)");
+	$stmt = null;
 	try {
+		$stmt = mysqli_prepare($db,
+			"SELECT id, customer_id, product_id " .
+			"FROM cart " .
+			"WHERE (customer_id = ?)");
+		
 		mysqli_stmt_bind_param($stmt, 'i', $customer_id);
 		if (!mysqli_stmt_execute($stmt)) {
 			return ["Database error (execute)", null];
@@ -71,15 +77,17 @@ function dao_user_cart($db, $customer_id) {
 		$error = db_log_exception($e);
 		return [$error, null];
 	} finally {
-		mysqli_stmt_close($stmt);
+		db_safe_close($stmt);
 	}
 }
 
 function dao_clear_user_cart($db, $customer_id) {
-	$stmt = mysqli_prepare($db,
-		"DELETE FROM cart " .
-		"WHERE (customer_id = ?)");
+	$stmt = null;
 	try {
+		$stmt = mysqli_prepare($db,
+			"DELETE FROM cart " .
+			"WHERE (customer_id = ?)");
+		
 		mysqli_stmt_bind_param($stmt, 'i', $customer_id);
 		if (!mysqli_stmt_execute($stmt)) {
 			return ["Database error (execute)", null];
@@ -92,7 +100,7 @@ function dao_clear_user_cart($db, $customer_id) {
 		$error = db_log_exception($e);
 		return [$error, null];
 	} finally {
-		mysqli_stmt_close($stmt);
+		db_safe_close($stmt);
 	}
 }
 
@@ -242,10 +250,12 @@ function dao_build_prices($db, $product_ids, $latest_orders)
 
 function dao_add_to_cart($db, $customer_id, $product_id)
 {
-	$stmt = mysqli_prepare($db,
-		"INSERT INTO cart(customer_id, product_id) " .
-		"VALUES (?, ?) ON DUPLICATE KEY UPDATE product_id = product_id");
+	$stmt = null;
 	try {
+		$stmt = mysqli_prepare($db,
+			"INSERT INTO cart(customer_id, product_id) " .
+			"VALUES (?, ?) ON DUPLICATE KEY UPDATE product_id = product_id");
+		
 		mysqli_stmt_bind_param($stmt, 'ii', $customer_id, $product_id);
 		if (!mysqli_stmt_execute($stmt)) {
 			return ["Database error (execute)", null];
@@ -257,16 +267,18 @@ function dao_add_to_cart($db, $customer_id, $product_id)
 		$error = db_log_exception($e);
 		return [$error, null];
 	} finally {
-		mysqli_stmt_close($stmt);
+		db_safe_close($stmt);
 	}
 }
 
 function dao_remove_from_cart($db, $customer_id, $product_id)
 {
-	$stmt = mysqli_prepare($db,
-		"DELETE FROM cart " .
-		"WHERE (customer_id = ?) AND (product_id = ?)");
+	$stmt = null;
 	try {
+		$stmt = mysqli_prepare($db,
+			"DELETE FROM cart " .
+			"WHERE (customer_id = ?) AND (product_id = ?)");
+		
 		mysqli_stmt_bind_param($stmt, 'ii', $customer_id, $product_id);
 		if (!mysqli_stmt_execute($stmt)) {
 			return ["Database error (execute)", null];
@@ -279,7 +291,180 @@ function dao_remove_from_cart($db, $customer_id, $product_id)
 		$error = db_log_exception($e);
 		return [$error, null];
 	} finally {
-		mysqli_stmt_close($stmt);
+		db_safe_close($stmt);
+	}
+}
+
+function dao_create_order($db, $customer_id, $positions)
+{
+	$stmt = null;
+	$order_price = 0;
+	$status = 'draft';
+
+	foreach ($positions as $item) {
+		if (!isset($item['product_id'])) {
+			return [ 'Not set product_id', null ];
+		}
+		if ((!isset($item['version'])) && (!isset($item['raw_version']))) {
+			return [ 'Not set version nor raw_version', null ];
+		}
+		if (!isset($item['upgrade'])) {
+			return [ 'Not set upgrade', null ];
+		}
+		if (!isset($item['price'])) {
+			return [ 'Not set price', null ];
+		}
+		$order_price += $item['price'];
+	}
+	
+	try {
+		$order_id = null;
+		
+		// Create new order draft
+		while (true) {
+			$order_id = make_uuid();
+			$created = db_current_timestamp();
+			
+			try {
+				$stmt = mysqli_prepare($db,
+					"INSERT INTO orders (id, customer_id, created_time, amount, status)" .
+					"VALUES (?, ?, ?, ?, (SELECT id FROM order_status WHERE name=?))");
+				
+				mysqli_stmt_bind_param($stmt, 'sisis', $order_id, $customer_id, $created, $order_price, $status);
+				if (!mysqli_stmt_execute($stmt)) {
+					return ["Database error (create order)", null];
+				}
+				
+				break;
+			} catch (mysqli_sql_exception $e) {
+				if (!unique_key_violation($e)) {
+					throw $e;
+				}
+			}
+		}
+		
+		// Fill order entries
+		db_safe_close($stmt);
+		$stmt = mysqli_prepare($db,
+			"INSERT INTO order_item (order_id, product_id, version_raw, upgrade, amount)" .
+			"VALUES (?, ?, ?, ?, ?)");
+		
+		foreach ($positions as $item) {
+			$product_id = $item['product_id'];
+			$version = (isset($item['raw_version'])) ? $item['raw_version'] : version_to_raw($item['version']);
+			$upgrade = ($item['upgrade']) ? 1 : 0;
+			$price = $item['price'];
+			
+			mysqli_stmt_bind_param($stmt, 'siiii', $order_id, $product_id, $version, $upgrade, $price);
+			if (!mysqli_stmt_execute($stmt)) {
+				return ["Database error (create order item)", null];
+			}
+			
+			$id = mysqli_insert_id($db);
+			if (!isset($id)) {
+				return ["Database error (no order item id)", null];
+			}
+		}
+		
+		return [null, $order_id];
+	} catch (mysqli_sql_exception $e) {
+		$error = db_log_exception($e);
+		return [$error, null];
+	} finally {
+		db_safe_close($stmt);
+	}
+}
+
+function dao_find_order($db, $customer_id, $order_id)
+{
+	if ((!isset($customer_id)) || (!isset($order_id))) {
+		return ['Invalid parameters', null];
+	}
+	
+	$order = null;
+	$stmt = null;
+	
+	try {
+		// Fetch order
+		$stmt = mysqli_prepare($db,
+			"SELECT " .
+			"o.id order_id, o.remote_id remote_id, o.customer_id customer_id, " .
+			"o.created_time created_time, o.submit_time submit_time, o.refund_time refund_time, " .
+			"o.complete_time complete_time, o.verify_time verify_time, " .
+			"o.status status_id, os.name status, o.amount amount " .
+			"FROM orders o " .
+			"INNER JOIN order_status os " .
+			"ON (os.id = o.status)" .
+			"WHERE (o.customer_id = ?) AND (o.id = ?)");
+		
+		mysqli_stmt_bind_param($stmt, 'is', $customer_id, $order_id);
+		
+		if (!mysqli_stmt_execute($stmt)) {
+			return ["Database error (fetch order)", null];
+		}
+		
+		$result = mysqli_stmt_get_result($stmt);
+		if (!isset($result)) {
+			return ["Database error (get order)", null];
+		}
+		
+		$row = mysqli_fetch_array($result);
+		if (!isset($row)) {
+			return ['Not found', null];
+		}
+		
+		$order = [
+			'order_id' => $row['order_id'],
+			'remote_id' => $row['remote_id'],
+			'customer_id' => $row['customer_id'],
+			'created' => $row['created_time'],
+			'submitted' => $row['submit_time'],
+			'refunded' => $row['refund_time'],
+			'completed' => $row['complete_time'],
+			'verified' => $row['verify_time'],
+			'status_id' => $row['status_id'],
+			'status' => $row['status'],
+			'amount' => $row['amount']
+		];
+		
+		// Fetch order items
+		db_safe_close($stmt);
+		$items = [];
+		
+		$stmt = mysqli_prepare($db,
+			"SELECT * from order_item " .
+			"WHERE (order_id = ?)");
+		
+		mysqli_stmt_bind_param($stmt, 's', $order_id);
+		
+		if (!mysqli_stmt_execute($stmt)) {
+			return ["Database error (fetch items)", null];
+		}
+		
+		$result = mysqli_stmt_get_result($stmt);
+		if (!isset($result)) {
+			return ["Database error (get items)", null];
+		}
+		
+		while ($row = mysqli_fetch_array($result)) {
+			array_push($items, [
+				'order_id' => $order_id,
+				'order_item_id' => $row['id'],
+				'product_id' => $row['product_id'],
+				'raw_version' => $row['version_raw'],
+				'upgrade' => $row['upgrade'] != 0,
+				'price' => $row['amount']
+			]);
+		}
+		
+		$order['items'] = $items;
+		
+		return [null, $order];
+	} catch (mysqli_sql_exception $e) {
+		$error = db_log_exception($e);
+		return [$error, null];
+	} finally {
+		db_safe_close($stmt);
 	}
 }
 
