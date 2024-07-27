@@ -60,4 +60,22 @@ function send_site_report($text) {
 		]);
 }
 
+function notify_submit_order($email, $order_id, $order_data, $order_url, $payment_url) {
+	global $MAIL_ADDR;
+	global $SITE_URL;
+	
+	return send_mail(
+		[ $MAIL_ADDR['noreply'] => 'Product purchase service' ],
+		[ $email => 'LSP Customer' ],
+		'LSP Plugins: information about your order',
+		'order_info',
+		[
+			'site_url' => "{$SITE_URL}/",
+			'order_id' => $order_id,
+			'order_data' => $order_data,
+			'order_url' => $order_url,
+			'payment_url' => $payment_url
+		]);
+}
+
 ?>

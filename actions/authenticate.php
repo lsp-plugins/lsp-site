@@ -12,7 +12,7 @@ function validate_auth_request() {
 	$error = verify_email($error, $_POST, 'email', 'Email');
 	$error = verify_isset($error, $_POST, 'password', 'Password');
 	$error = verify_csrf_token($error, 'auth', $_POST, 'token');
-	$error = verify_captcha($error); // TODO
+	$error = verify_captcha($error);
 
 	return $error;
 }
@@ -21,7 +21,7 @@ function validate_restore_request() {
 	$error = null;
 	$error = verify_email($error, $_POST, 'email', 'Email');
 	$error = verify_csrf_token($error, 'auth', $_POST, 'token');
-	$error = verify_captcha($error); // TODO
+	$error = verify_captcha($error);
 
 	return $error;
 }

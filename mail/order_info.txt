@@ -1,0 +1,20 @@
+Dear customer!
+
+We're sending to you information about your order on LSP Plugins site:
+%%site_url%%
+
+Your order contents are the following:
+-------------------------------------------------------------------------------
+ORDER ID: %%order_id%%
+
+%%order_data%%
+-------------------------------------------------------------------------------
+
+You can view your order here:
+%%order_url%%
+
+You also can proceed payment by following this URL:
+%%payment_url%%
+
+All the best,
+Linux Studio Plugins Project

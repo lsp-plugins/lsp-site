@@ -4,8 +4,6 @@ chdir($_SERVER['DOCUMENT_ROOT']);
 
 require_once("./inc/top.php");
 require_once("./inc/service/validation.php");
-require_once("./inc/site/artifacts.php");
-require_once("./inc/site/download.php");
 require_once("./inc/site/purchases.php");
 
 function validate_checkout_request() {

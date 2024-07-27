@@ -1,6 +1,7 @@
 <?php
 
 require_once("./inc/dao/artifacts.php");
+require_once('./inc/dao/logging.php');
 require_once("./inc/dao/purchases.php");
 require_once("./inc/site/session.php");
 
@@ -240,38 +241,13 @@ function create_order() {
 	}
 }
 
-function find_order($order_id) {
-	$session = ensure_user_session_is_set();
-	if (!isset($session)) {
-		return ['HTTP session expired', null];
-	}
-	$session_user = get_session_user();
-	$customer_id = $session_user['id'];
-	error_log("customer_id: {$customer_id}");
-	
-	$customer_db = null;
+function enrich_order($order) {
 	$store_db = null;
-	
 	try {
-		// Fetch order
-		$order = null;
-		try {
-			$customer_db = connect_db('customers');
-			[$error, $order] = dao_find_order($customer_db, $customer_id, $order_id);
-			if (isset($error)) {
-				return [$error, null];
-			}
-			
-			error_log("order: " . var_export($order, true));
-		} catch (mysqli_sql_exception $e) {
-			$error = db_log_exception($e);
-			return [$error, null];
-		}
-		
 		// Fetch related products
 		$items = &$order['items'];
 		$product_ids = utl_unique_field($items, 'product_id');
-		$products = null;		
+		$products = null;
 		try {
 			$store_db = connect_db('store');
 			[$error, $products] = dao_get_products($store_db, [ 'product_id' => $product_ids ]);
@@ -303,8 +279,41 @@ function find_order($order_id) {
 		
 		return [null, $order];
 	} finally {
-		db_safe_rollback($customer_db);
 		db_safe_rollback($store_db);
+	}
+}
+
+function find_order($order_id) {
+	$session = ensure_user_session_is_set();
+	if (!isset($session)) {
+		return ['HTTP session expired', null];
+	}
+	$session_user = get_session_user();
+	$customer_id = $session_user['id'];
+	error_log("customer_id: {$customer_id}");
+	
+	$customer_db = null;
+	
+	try {
+		// Fetch order
+		$order = null;
+		try {
+			$customer_db = connect_db('customers');
+			[$error, $order] = dao_find_order($customer_db, $customer_id, $order_id);
+			if (isset($error)) {
+				return [$error, null];
+			}
+			
+			error_log("order: " . var_export($order, true));
+		} catch (mysqli_sql_exception $e) {
+			$error = db_log_exception($e);
+			return [$error, null];
+		}
+		
+		// Enrich order information
+		return enrich_order($order);
+	} finally {
+		db_safe_rollback($customer_db);
 	}
 }
 
@@ -318,6 +327,47 @@ function remove_item_from_order($customer_id, $order_id, $product_id) {
 		}
 		
 		return [$error, $affected];
+	} catch (mysqli_sql_exception $e) {
+		$error = db_log_exception($e);
+		return [$error, null];
+	} finally {
+		db_safe_rollback($db);
+	}
+}
+
+function submit_order($customer_id, $order_id, $remote_id, $price) {
+	$session_id = user_session_id();
+	$db = null;
+	
+	try {
+		$db = connect_db('customers');
+		[$error, $affected] = dao_update_order($db, $order_id, [
+				'status' => 'created',
+				'remote_id' => $remote_id,
+				'price' => $price
+			]);
+		if (isset($error)) {
+			return [$error, null];
+		} else if ($affected <= 0) {
+			return ['No order updated', null];
+		}
+		
+		[$error, $order] = dao_find_order($db, $customer_id, $order_id);
+		if (isset($error)) {
+			return [$error, null];
+		}
+		
+		dao_log_user_action($db, $customer_id, $session_id, 'submit_order', $order);
+		
+		// Enrich order information
+		[$error, $order] = enrich_order($order);
+		if (isset($error)) {
+			return [ $error, null ];
+		}
+		
+		// Commit information
+		mysqli_commit($db);
+		return [null, $order];
 	} catch (mysqli_sql_exception $e) {
 		$error = db_log_exception($e);
 		return [$error, null];

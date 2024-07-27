@@ -508,4 +508,61 @@ function dao_remove_item_from_order($db, $customer_id, $order_id, $product_id)
 	}
 }
 
+function dao_update_order($db, $order_id, $fields) {
+	if ((!isset($order_id)) || (!isset($fields))) {
+		return ['Invalid parameters', null];
+	}
+	
+	$conditions = [ ];
+	$arguments = [ ];
+	$types = [ ];
+	$stmt = null;
+	
+	try {
+		// Update order
+		if (isset($fields['status'])) {
+			array_push($conditions, 'status = (SELECT id FROM order_status WHERE name=?)');
+			array_push($arguments, $fields['status']);
+			array_push($types, 's');
+		}
+		if (isset($fields['price'])) {
+			array_push($conditions, 'amount = ?');
+			array_push($arguments, $fields['price']);
+			array_push($types, 'i');
+		}
+		if (isset($fields['remote_id'])) {
+			array_push($conditions, 'remote_id = ?');
+			array_push($arguments, $fields['remote_id']);
+			array_push($types, 's');
+		}
+		
+		// Form the query
+		$query = "UPDATE orders SET " .
+			implode(', ', $conditions) .
+			" WHERE (id = ?) ";
+		array_push($arguments, $order_id);
+		array_push($types, 's');
+		
+		error_log($query);
+		
+		$stmt = mysqli_prepare($db, $query);
+		if (count($arguments) > 0) {
+			mysqli_stmt_bind_param($stmt, implode('', $types), ...$arguments);
+		}
+		
+		if (!mysqli_stmt_execute($stmt)) {
+			return ["Database error (update order)", null];
+		}
+		
+		$affected = mysqli_affected_rows($db);
+		
+		return [null, $affected];
+	} catch (mysqli_sql_exception $e) {
+		$error = db_log_exception($e);
+		return [$error, null];
+	} finally {
+		db_safe_close($stmt);
+	}
+}
+
 ?>
