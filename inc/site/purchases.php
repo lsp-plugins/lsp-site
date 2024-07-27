@@ -308,4 +308,22 @@ function find_order($order_id) {
 	}
 }
 
+function remove_item_from_order($customer_id, $order_id, $product_id) {
+	$db = null;
+	try {
+		$db = connect_db('customers');
+		[$error, $affected] = dao_remove_item_from_order($db, $customer_id, $order_id, $product_id);
+		if ((!isset($error)) && ($affected > 0)) {
+			mysqli_commit($db);
+		}
+		
+		return [$error, $affected];
+	} catch (mysqli_sql_exception $e) {
+		$error = db_log_exception($e);
+		return [$error, null];
+	} finally {
+		db_safe_rollback($db);
+	}
+}
+
 ?>

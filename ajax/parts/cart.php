@@ -11,10 +11,15 @@ require_once("./pages/download/parts/product.php");
 
 function modify_cart($action)
 {
+	if ($_SERVER['REQUEST_METHOD'] != 'POST') {
+		http_response_code(401);
+		return;
+	}
+	
 	$json = file_get_contents('php://input');
 	if (!isset($json)) {
 		http_response_code(400);
-		exit();
+		return;
 	}
 	
 	error_log("Script input: " . var_export($json, true));
@@ -22,7 +27,7 @@ function modify_cart($action)
 	$json = json_decode($json, true);
 	if (!isset($json)) {
 		http_response_code(400);
-		exit();
+		return;
 	}
 	
 	error_log("Decoded JSON: " . var_export($json, true));
@@ -34,14 +39,14 @@ function modify_cart($action)
 	$error = verify_csrf_token($error, 'cart', $json, 'token');
 	if (isset($error)) {
 		http_response_code(400);
-		exit();
+		return;
 	}
 	
 	// Get user
 	$user = get_session_user();
 	if (!isset($user)) {
 		http_response_code(401);
-		exit();
+		return;
 	}
 	
 	$customer_id = $user['id'];

@@ -142,4 +142,25 @@ function raw_to_version($version_raw) {
 	return [$major, $minor, $micro];
 }
 
+function get_post_json() {
+	if ($_SERVER['REQUEST_METHOD'] != 'POST') {
+		return null;
+	}
+	
+	$json = file_get_contents('php://input');
+	if (!isset($json)) {
+		return null;
+	}
+	
+	error_log("Script input: " . var_export($json, true));
+	
+	$json = json_decode($json, true);
+	if (!isset($json)) {
+		return null;
+	}
+	
+	error_log("Decoded JSON: " . var_export($json, true));
+	return $json;
+}
+
 ?>

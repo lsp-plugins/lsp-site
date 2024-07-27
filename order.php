@@ -5,6 +5,7 @@ require_once("./inc/top.php");
 require_once("./inc/service/validation.php");
 require_once("./inc/site/purchases.php");
 require_once("./inc/site/session.php");
+require_once("./pages/download/order.php");
 
 $curr_page = 'order';
 
@@ -23,7 +24,13 @@ if (!verify_uuid($order_id)) {
 
 [$error, $order] = find_order($order_id);
 
-require("./pages/download/order.php");
+if (!isset($error)) {
+	error_log("Order: " . var_export($order, true));
+	show_order($order);
+} else {
+	error_log("Error searching order: {$error}");
+}
+
 require_once("./inc/footer.php");
 
 ?>

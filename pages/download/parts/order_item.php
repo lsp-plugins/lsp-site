@@ -11,7 +11,7 @@ function show_order_item($order, $item) {
 	
 	echo "<div class=\"order-item\" id=\"order-product-{$name}\">\n";
 	echo "<div>{$description}</div>\n";
-	echo "<div><a href=\"javascript:ajax_post('remove_order_item', { 'order_id': '{$order_id}', 'id': {$product_id}, token: '{$csrf_token}'})\">Remove</a></div>\n";
+	echo "<div><a href=\"javascript:ajax_post('remove_from_order', { 'order_id': '{$order_id}', 'product_id': {$product_id}, token: '{$csrf_token}'})\">Remove</a></div>\n";
 	echo "<div>{$price}</div>\n";
 	echo "</div>\n";
 }

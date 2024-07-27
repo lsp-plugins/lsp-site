@@ -468,4 +468,44 @@ function dao_find_order($db, $customer_id, $order_id)
 	}
 }
 
+function dao_remove_item_from_order($db, $customer_id, $order_id, $product_id)
+{
+	if ((!isset($order_id)) || (!isset($product_id)) || (!isset($customer_id))) {
+		return ['Invalid parameters', null];
+	}
+	
+	$stmt = null;
+	
+	try {
+		// Fetch order
+		$query = "DELETE FROM order_item " .
+			"WHERE (product_id = ?) " .
+			"  AND (order_id IN (" .
+			"    SELECT o.id FROM orders o " .
+			"    INNER JOIN order_status os " .
+			"    ON (os.id = o.status)" .
+			"    WHERE (o.id = ?) AND (o.customer_id = ?) AND (os.name = ?)" .
+			"  ))";
+		error_log($query);
+		
+		$stmt = mysqli_prepare($db, $query);
+		$status = 'draft';
+		
+		mysqli_stmt_bind_param($stmt, 'isis', $product_id, $order_id, $customer_id, $status);
+		
+		if (!mysqli_stmt_execute($stmt)) {
+			return ["Database error (remove order item)", null];
+		}
+		
+		$affected = mysqli_affected_rows($db);
+		
+		return [null, $affected];
+	} catch (mysqli_sql_exception $e) {
+		$error = db_log_exception($e);
+		return [$error, null];
+	} finally {
+		db_safe_close($stmt);
+	}
+}
+
 ?>

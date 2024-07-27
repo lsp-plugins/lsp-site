@@ -1,40 +1,36 @@
 <?php
 chdir($_SERVER['DOCUMENT_ROOT']);
+
 require_once("./inc/top.php");
-?>
-<?php
-	// Include common modules
-	require_once ('./inc/plugins.php');
-	require_once ('./inc/site/preload.php');
+require_once ('./inc/plugins.php');
+require_once ('./inc/site/preload.php');
+require_once ('./config/plugins.php');
 
-	// Include configuration
-	require_once ('./config/plugins.php');
+$bundle_id  = isset($_REQUEST['bundle']) ? $_REQUEST['bundle'] : '';
+$fancybox = isset($_REQUEST['fancybox']) ? $_REQUEST['fancybox'] : false;
 
-	$bundle_id  = isset($_REQUEST['bundle']) ? $_REQUEST['bundle'] : '';
-	$fancybox = isset($_REQUEST['fancybox']) ? $_REQUEST['fancybox'] : false;
-
-	foreach ($BUNDLES as $bundle)
-	{
-		if ($bundle['id'] != $bundle_id)
+foreach ($BUNDLES as $bundle)
+{
+	if ($bundle['id'] != $bundle_id)
+		continue;
+	
+	// Keep only related to bundle plugins and sort them alphabetically
+	$plug_list = array();
+	$grp_image = '';
+	foreach ($PLUGINS as $plugin) {
+		if ($plugin['bundle'] != $bundle['id'])
 			continue;
-		
-		// Keep only related to bundle plugins and sort them alphabetically
-		$plug_list = array();
-		$grp_image = '';
-		foreach ($PLUGINS as $plugin) {
-			if ($plugin['bundle'] != $bundle['id'])
-				continue;
 
-			array_push($plug_list, $plugin);
+		array_push($plug_list, $plugin);
 
-			if ((strpos($plugin['id'], '_stereo') > 0) ||
-				(strpos($plugin['id'], '_x2') > 0) ||
-				(strlen($grp_image) <= 0))
-				$grp_image = "/img/plugins/${plugin['id']}.png";
-		}
-		usort($plug_list, 'plugin_cmp');
-		$plug=$plug_list[0];
-		$extra_style=(count($plug_list) > 1) ? 'plug-multiple' : 'plug-alone';
+		if ((strpos($plugin['id'], '_stereo') > 0) ||
+			(strpos($plugin['id'], '_x2') > 0) ||
+			(strlen($grp_image) <= 0))
+			$grp_image = "/img/plugins/${plugin['id']}.png";
+	}
+	usort($plug_list, 'plugin_cmp');
+	$plug=$plug_list[0];
+	$extra_style=(count($plug_list) > 1) ? 'plug-multiple' : 'plug-alone';
 ?>
 
 <!-- start preview of group plugins -->
@@ -117,5 +113,7 @@ require_once("./inc/top.php");
 </div>
 <!-- end inside fancybox tile -->
 
-<?php } /* foreach bundle */ ?>
+<?php
+} /* foreach bundle */
+?>
 

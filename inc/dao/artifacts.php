@@ -67,10 +67,12 @@ function dao_get_products($db, $filter = null) {
 		if (isset($filter['product_id'])) {
 			$product_id = $filter['product_id'];
 			if (is_array($product_id)) {
-				$condition = '(id in (' . implode(', ', array_fill(0, count($product_id), '?')) . '))';
-				array_push($conditions, $condition);
-				$arguments = array_merge($arguments, $product_id);
-				array_push($types, str_repeat('i', count($product_id)));
+				if (count($product_id) > 0) {
+					$condition = '(id in (' . implode(', ', array_fill(0, count($product_id), '?')) . '))';
+					array_push($conditions, $condition);
+					$arguments = array_merge($arguments, $product_id);
+					array_push($types, str_repeat('i', count($product_id)));
+				}
 			} else {
 				array_push($conditions, '(id = ?)');
 				array_push($arguments, $product_id);
@@ -80,10 +82,12 @@ function dao_get_products($db, $filter = null) {
 		if (isset($filter['id'])) {
 			$product_id = $filter['id'];
 			if (is_array($product_id)) {
-				$condition = '(id in (' . implode(', ', array_fill(0, count($product_id), '?')) . '))';
-				array_push($conditions, $condition);
-				$arguments = array_merge($arguments, $product_id);
-				array_push($types, str_repeat('i', count($product_id)));
+				if (count($product_id) > 0) {
+					$condition = '(id in (' . implode(', ', array_fill(0, count($product_id), '?')) . '))';
+					array_push($conditions, $condition);
+					$arguments = array_merge($arguments, $product_id);
+					array_push($types, str_repeat('i', count($product_id)));
+				}
 			} else {
 				array_push($conditions, '(id = ?)');
 				array_push($arguments, $product_id);
@@ -93,10 +97,12 @@ function dao_get_products($db, $filter = null) {
 		if (isset($filter['name'])) {
 			$product_name = $filter['name'];
 			if (is_array($product_name)) {
-				$condition = '(name in (' . implode(', ', array_fill(0, count($product_name), '?')) . '))';
-				array_push($conditions, $condition);
-				$arguments = array_merge($arguments, $product_name);
-				array_push($types, str_repeat('s', count($product_name)));
+				if ((count($product_name)) > 0) {
+					$condition = '(name in (' . implode(', ', array_fill(0, count($product_name), '?')) . '))';
+					array_push($conditions, $condition);
+					$arguments = array_merge($arguments, $product_name);
+					array_push($types, str_repeat('s', count($product_name)));
+				}
 			} else {
 				array_push($conditions, '(name = ?)');
 				array_push($arguments, $product_name);
@@ -111,6 +117,8 @@ function dao_get_products($db, $filter = null) {
 	}
 
 	try {
+		error_log($query);
+		
 		$stmt = mysqli_prepare($db, $query);
 		if (count($arguments) > 0) {
 			mysqli_stmt_bind_param($stmt, implode('', $types), ...$arguments);
@@ -282,10 +290,12 @@ function dao_get_artifacts($db, $view, $filter) {
 		if (isset($filter['product_id'])) {
 			$product_id = $filter['product_id'];
 			if (is_array($product_id)) {
-				$condition = '(product_id in (' . implode(', ', array_fill(0, count($product_id), '?')) . '))';
-				array_push($conditions, $condition);
-				$arguments = array_merge($arguments, $product_id);
-				array_push($types, str_repeat('i', count($product_id)));
+				if (count($product_id) > 0) {
+					$condition = '(product_id in (' . implode(', ', array_fill(0, count($product_id), '?')) . '))';
+					array_push($conditions, $condition);
+					$arguments = array_merge($arguments, $product_id);
+					array_push($types, str_repeat('i', count($product_id)));
+				}
 			} else {
 				array_push($conditions, '(product_id = ?)');
 				array_push($arguments, $product_id);
