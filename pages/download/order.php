@@ -54,7 +54,12 @@ function show_email_order($order) {
 	$positions = [];
 	$max_data_len = 10;
 	foreach ($order['items'] as $item) {
-		$product_desc = $item['product_desc'];
+		$version = raw_to_version_str($item['raw_version']);
+		$product_desc = $item['product_desc'] . ' ' . $version;
+		if ($item['is_upgrade']) {
+			$product_desc .= ' (upgrade)';
+		}
+		
 		$price = sprintf("%.2f USD", $item['price'] / 100000.0 );
 		$max_data_len = max(
 			$max_data_len,

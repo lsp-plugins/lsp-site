@@ -195,7 +195,7 @@ function get_download_id($product_id, $format, $platform, $architecture, $versio
 	}
 	
 	$artifact = $artifacts[0];
-	return make_download_id($artifact['artifact_id']);
+	return [null, make_download_id($artifact['artifact_id'])];
 }
 
 function find_artifact($artifact_id) {

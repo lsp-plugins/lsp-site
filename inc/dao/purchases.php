@@ -122,7 +122,7 @@ function dao_build_prices($db, $product_ids, $latest_orders)
 		foreach ($product_ids as $product_id) {
 			$data = null;
 			
-			if (array_key_exists($product_id, $order_mapping) && isset($order_mapping[$product_id])) {
+			if (isset($order_mapping[$product_id])) {
 				$order_info = $order_mapping[$product_id][0];
 				
 				error_log("product_id = {$product_id}, order_info = " . var_export($order_info, true));
@@ -193,11 +193,14 @@ function dao_build_prices($db, $product_ids, $latest_orders)
 					}
 				}
 				
+				$is_upgrade = isset($download_raw) && isset($purchase_raw);
+				
 				$data = [
 					'download_raw' => $download_raw,
 					'download' => raw_to_version($download_raw),
 					'purchase_raw' => $purchase_raw,
 					'purchase' => raw_to_version($purchase_raw),
+					'is_upgrade' => $is_upgrade,
 					'price' => $price
 				];
 			} else {
@@ -230,6 +233,7 @@ function dao_build_prices($db, $product_ids, $latest_orders)
 						'download' => null,
 						'purchase_raw' => $version_raw,
 						'purchase' => raw_to_version($version_raw),
+						'is_upgrade' => false,
 						'price' => $row['price']
 					];
 				}
@@ -308,7 +312,7 @@ function dao_create_order($db, $customer_id, $positions)
 		if ((!isset($item['version'])) && (!isset($item['raw_version']))) {
 			return [ 'Not set version nor raw_version', null ];
 		}
-		if (!isset($item['upgrade'])) {
+		if (!isset($item['is_upgrade'])) {
 			return [ 'Not set upgrade', null ];
 		}
 		if (!isset($item['price'])) {
@@ -352,7 +356,7 @@ function dao_create_order($db, $customer_id, $positions)
 		foreach ($positions as $item) {
 			$product_id = $item['product_id'];
 			$version = (isset($item['raw_version'])) ? $item['raw_version'] : version_to_raw($item['version']);
-			$upgrade = ($item['upgrade']) ? 1 : 0;
+			$upgrade = ($item['is_upgrade']) ? 1 : 0;
 			$price = $item['price'];
 			
 			mysqli_stmt_bind_param($stmt, 'siiii', $order_id, $product_id, $version, $upgrade, $price);
@@ -452,7 +456,7 @@ function dao_find_order($db, $order_id)
 				'order_item_id' => $row['id'],
 				'product_id' => $row['product_id'],
 				'raw_version' => $row['version_raw'],
-				'upgrade' => $row['upgrade'] != 0,
+				'is_upgrade' => $row['upgrade'] != 0,
 				'price' => $row['amount']
 			]);
 		}

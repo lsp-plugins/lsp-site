@@ -1,12 +1,21 @@
 <?php
 
+require_once('./inc/service/utils.php');
+
 function show_order_item($order, $item) {
 	$order_id = $order['order_id'];
 	$order_draft = $order['status'] == 'draft';
 	$product_id = $item['product_id'];
 	$name = htmlspecialchars($item['product_name']);
-	$description = htmlspecialchars($item['product_name']);
+	
+	$version = raw_to_version_str($item['raw_version']);
+	$description = $item['product_desc'] . ' ' . $version;
+	if ($item['is_upgrade']) {
+		$description .= ' (upgrade)';
+	}
+	
 	$price = sprintf("%.2f", $item['price'] / 100000.0 );
+	$description = htmlspecialchars($description);
 	
 	$csrf_token = make_csrf_token('order_item');
 	

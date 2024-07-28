@@ -142,6 +142,10 @@ function raw_to_version($version_raw) {
 	return [$major, $minor, $micro];
 }
 
+function raw_to_version_str($version_raw) {
+	return implode('.', raw_to_version($version_raw));
+}
+
 function get_post_json() {
 	if ($_SERVER['REQUEST_METHOD'] != 'POST') {
 		return null;

@@ -3,6 +3,8 @@
 require_once('./inc/site/csrf.php');
 
 function show_user_cart($user_cart, $user_purchases) {
+	global $SITEROOT;
+	
 	$total = 0;
 	$items = count($user_cart);
 	

@@ -214,7 +214,7 @@ function create_order() {
 			$product = $prices[$product_id];
 			$item['price'] = $product['price'];
 			$item['raw_version'] = $product['purchase_raw'];
-			$item['upgrade'] = isset($product['download_raw']);
+			$item['is_upgrade'] = isset($product['download_raw']);
 		}
 
 		error_log('cart: ' . var_export($cart, true));
