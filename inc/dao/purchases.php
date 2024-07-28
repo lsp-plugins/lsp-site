@@ -375,9 +375,9 @@ function dao_create_order($db, $customer_id, $positions)
 	}
 }
 
-function dao_find_order($db, $customer_id, $order_id)
+function dao_find_order($db, $order_id)
 {
-	if ((!isset($customer_id)) || (!isset($order_id))) {
+	if (!isset($order_id)) {
 		return ['Invalid parameters', null];
 	}
 	
@@ -395,9 +395,9 @@ function dao_find_order($db, $customer_id, $order_id)
 			"FROM orders o " .
 			"INNER JOIN order_status os " .
 			"ON (os.id = o.status)" .
-			"WHERE (o.customer_id = ?) AND (o.id = ?)");
+			"WHERE (o.id = ?)");
 		
-		mysqli_stmt_bind_param($stmt, 'is', $customer_id, $order_id);
+		mysqli_stmt_bind_param($stmt, 's', $order_id);
 		
 		if (!mysqli_stmt_execute($stmt)) {
 			return ["Database error (fetch order)", null];

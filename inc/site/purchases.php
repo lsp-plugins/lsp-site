@@ -284,14 +284,6 @@ function enrich_order($order) {
 }
 
 function find_order($order_id) {
-	$session = ensure_user_session_is_set();
-	if (!isset($session)) {
-		return ['HTTP session expired', null];
-	}
-	$session_user = get_session_user();
-	$customer_id = $session_user['id'];
-	error_log("customer_id: {$customer_id}");
-	
 	$customer_db = null;
 	
 	try {
@@ -299,7 +291,7 @@ function find_order($order_id) {
 		$order = null;
 		try {
 			$customer_db = connect_db('customers');
-			[$error, $order] = dao_find_order($customer_db, $customer_id, $order_id);
+			[$error, $order] = dao_find_order($customer_db, $order_id);
 			if (isset($error)) {
 				return [$error, null];
 			}
@@ -347,17 +339,20 @@ function submit_order($customer_id, $order_id, $remote_id, $price) {
 				'price' => $price
 			]);
 		if (isset($error)) {
+			error_log("Order update error: {$error}");
 			return [$error, null];
 		} else if ($affected <= 0) {
 			return ['No order updated', null];
 		}
 		
-		[$error, $order] = dao_find_order($db, $customer_id, $order_id);
+		[$error, $order] = dao_find_order($db, $order_id);
 		if (isset($error)) {
+			error_log("Not found order: {$error}");
 			return [$error, null];
 		}
 		
 		dao_log_user_action($db, $customer_id, $session_id, 'submit_order', $order);
+		dao_clear_user_cart($db, $customer_id);
 		
 		// Enrich order information
 		[$error, $order] = enrich_order($order);
