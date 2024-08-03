@@ -64,9 +64,9 @@ foreach ($artifacts as $architecture => $files) {
 			$fmt = htmlspecialchars($file['format']);
 			$alt = htmlspecialchars($format_names[$file['format']]);
 
-			echo "<a class=\"download-text-button bsd-arch\" href=\"{$url}\" class=\"formats-links {$fmt}-dwnld\" alt=\"{$alt}\">{$arch}</a>\n";
+			echo "<a class=\"download-text-button bsd-arch formats-links {$fmt}-dwnld\" href=\"{$url}\" alt=\"{$alt}\">{$arch}</a>\n";
 		} else {
-			echo "<a class=\"download-text-button bsd-arch\" href=\"#\" class=\"formats-links-inactive {$fmt}-dwnld\" alt=\"\">{$arch}</a>\n";
+			echo "<a class=\"download-text-button bsd-arch formats-links-inactive {$fmt}-dwnld\" href=\"#\" alt=\"\">{$arch}</a>\n";
 		}
 	}
 }
@@ -80,12 +80,6 @@ $( "#show-hide-bsd" ).on( "click", function() {
   });
 });
 </script>
-
-<?php
-if (isset($best_artifact)) {
-	echo "</div>\n";
-}
-?>
 
 <?php
 if (isset($best_artifact)) {
