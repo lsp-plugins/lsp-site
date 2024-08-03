@@ -1,5 +1,31 @@
 <h1>NEWS</h1>
 
+<h3>2024-08-03</h3>
+<p>LSP Plugins 1.2.17 released!</p>
+<ul>
+<li>Changed the binary distribution of plugins. Plugins of different formats are now packed together into a 7-zip archive. The same is related to documentation and source code. This allows to gain the economy on the overall size of the compressed data and number of archives required to download.</li>
+<li>Added basic GStreamer plugin format support.</li>
+<li>Plugins now can be built without UI support if the 'ui' option is omitted at the configuration stage.</li>
+<li>Added ISO-226:2023 loudness compensation curves to Loudness Compensator plugin series.</li>
+<li>Added balance knobs to LSP Slap-back Delay Stereo plugin.</li>
+<li>Added Suntory Hall Tokyo 3D model to Room Builder presets (contributed by Fowly).</li>
+<li>Updated makefile scripts related to Git checkout (contributed by Johannes Lorenz).</li>
+<li>Improved build tools: UI resources are now built-in only for shared objects/libraries that actually need them.</li>
+<li>Several AVX-512 optimizations of DSP library.</li>
+<li>Fixed not working MIDI channel setup for the Trigger MIDI plugin series.</li>
+<li>Fixed regression: improper port bindings for Compensation Delay x2 Stereo plugin.</li>
+<li>Fixed several issues related to plugin window sizing for LV2 format.</li>
+<li>Fixed possible access to uninitialized memory when loading built-in resources.</li>
+<li>Fixed improper phase compensation between Dry and Wet channels in Linear Phase mode for multiband plugin series:</li>
+<ul>
+  <li>Multiband Compressor;</li>
+  <li>Multiband Dynamics Processor;</li>
+  <li>Multiband Expander;</li>
+  <li>Multiband Gate.</li>
+</ul>
+<li>Several bugfixes for VST3 wrapper.</li>
+</ul>
+
 <h3>2024-05-22</h3>
 <p>LSP Plugins 1.2.16 released!</p>
 <ul>
