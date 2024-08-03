@@ -91,11 +91,6 @@ if (isset($best_artifact)) {
 <h2>Archive</h2>
 
 <p>You also can download previous releases from our SourceForge page:</p>
-<!-- <p>
-	<a href="https://sourceforge.net/projects/lsp-plugins/files/lsp-plugins/" rel="nofollow">
-		<img alt="Browse archive builds" src="https://a.fsdn.com/con/app/sf-download-button">
-	</a>
-</p> -->
 <p>
 	<a class="download-text-button" href="https://sourceforge.net/projects/lsp-plugins/files/lsp-plugins/" rel="nofollow" alt="Download previous releases" target="_blank">Previous releases</a>
 </p>
