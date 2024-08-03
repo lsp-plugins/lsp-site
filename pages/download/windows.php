@@ -70,6 +70,8 @@ $user = get_session_user();
 $user_purchases = null;
 $user_cart = null;
 
+echo "<div class=\"sel-cart-container\">\n";
+
 if (isset($user)) {
 	$customer_id = $user['id'];
 	$product_ids = utl_unique_field($windows_artifacts, 'product_id');
@@ -83,7 +85,7 @@ if (isset($user)) {
 		}
 	} else {
 		error_log("Error getting user purchases: {$error}");
-	} 
+	}
 }
 
 $architecture = $browser_info['architecture'];
@@ -103,6 +105,7 @@ foreach ($artifacts as $arch => $list) {
 }
 
 echo "</div>\n";
+echo "</div>\n";
 
 foreach ($artifacts as $arch => $list) {
 	usort($list, function($a, $b) {
@@ -111,7 +114,7 @@ foreach ($artifacts as $arch => $list) {
 
 	$style_class = (($architecture === $arch) ? 'display: block;' : 'display: none;');
 	echo "<div id=\"dwnld-block-windows-{$arch}\" style=\"{$style_class}\">\n";
-	echo "<div class=\"tile-win-container\">\n";
+	echo "<div class=\"tile-shop-container\">\n";
 	foreach ($list as $artifact) {
 		show_product($product_csrf_tokens, $artifact, $user_purchases, $user_cart);
 	}
