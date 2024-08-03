@@ -25,6 +25,7 @@ foreach ($artifacts as $architecture => $files) {
 $latest_version = htmlspecialchars((isset($latest_artifact)) ? implode('.', $latest_artifact['version']) : 'unknown');
 $all_keys = array_unique($all_keys);
 sort($all_keys);
+
 ?>
 
 <h2>Latest release for FreeBSD</h2>
@@ -40,7 +41,7 @@ if (isset($best_artifact)) {
 	echo "<a class=\"download-text-button\" href=\"$url\"" .
 		" alt=\"Download latest build for {$best_artifact['platform']} {$best_artifact['architecture']}\"" .
 		">";
-	echo "Download latest build for {$best_artifact['platform']} {$best_artifact['architecture']}";
+	echo "Latest build for {$best_artifact['platform']} {$best_artifact['architecture']}";
 	echo "</a>\n";
 
 	echo "<p><pseudo_link id=\"show-hide-bsd\" href=\"#\" >Click to see all supported architectures.</pseudo_link></p>\n";
@@ -49,31 +50,6 @@ if (isset($best_artifact)) {
 ?>
 
 <div id="show-hide-arch-bsd" style="display: none">
-
-<table class="dwnld-tbl">
-<tr class="dwnld-tbl-tr">
-	<th class="dwnld-tbl-th" >Architecture</th>
-	<th class="dwnld-tbl-th" >Package</th>
-	<th class="dwnld-tbl-th" >Files</th>
-</tr>
-
-<?php
-$base_url = "{$CODE_REPO}/releases/download/{$latest_version}/";
-
-if (isset($best_artifact)) {
-	$url = htmlspecialchars($base_url . $best_artifact['file']);
-	echo "<a class=\"download-text-button\" href=\"$url\"" .
-		" alt=\"Download latest build for {$best_artifact['platform']} {$best_artifact['architecture']}\"" .
-		">";
-	echo "Latest build for {$best_artifact['platform']} {$best_artifact['architecture']}";
-	echo "</a>\n";
-
-	echo "<p><pseudo_link id=\"show-hide-lin\" href=\"#\" >Click to see all supported architectures.</pseudo_link></p>\n";
-	echo "<div>\n";
-}
-?>
-
-<div id="show-hide-arch-lin" style="display: none">
 <?php
 foreach ($artifacts as $architecture => $files) {
 	$arch = htmlspecialchars($architecture);
@@ -88,9 +64,9 @@ foreach ($artifacts as $architecture => $files) {
 			$fmt = htmlspecialchars($file['format']);
 			$alt = htmlspecialchars($format_names[$file['format']]);
 
-			echo "<a class=\"download-text-button lin-arch\" href=\"{$url}\" class=\"formats-links {$fmt}-dwnld\" alt=\"{$alt}\">{$arch}</a>\n";
+			echo "<a class=\"download-text-button bsd-arch\" href=\"{$url}\" class=\"formats-links {$fmt}-dwnld\" alt=\"{$alt}\">{$arch}</a>\n";
 		} else {
-			echo "<a class=\"download-text-button lin-arch\" href=\"#\" class=\"formats-links-inactive {$fmt}-dwnld\" alt=\"\">{$arch}</a>\n";
+			echo "<a class=\"download-text-button bsd-arch\" href=\"#\" class=\"formats-links-inactive {$fmt}-dwnld\" alt=\"\">{$arch}</a>\n";
 		}
 	}
 }
