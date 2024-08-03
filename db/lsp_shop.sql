@@ -73,6 +73,8 @@ CREATE TABLE product
 (
   id int NOT NULL AUTO_INCREMENT,
   name VARCHAR(64) NOT NULL,
+  description VARCHAR(128),
+  price BIGINT(20),
 
   PRIMARY KEY (id),
   CONSTRAINT UK_PRODUCT_NAME UNIQUE KEY (name)
@@ -90,6 +92,8 @@ CREATE TABLE build
   major int NOT NULL,
   minor int NOT NULL,
   micro int NOT NULL,
+  price BIGINT(20),
+  version_raw int NOT NULL,
   
   PRIMARY KEY (id),
   UNIQUE KEY (product_id, major, minor, micro),
@@ -99,14 +103,14 @@ CREATE TABLE build
 
 CREATE TABLE artifact
 (
-  id bigint(20) NOT NULL auto_increment,
+  id varchar(36) NOT NULL,
   build_id bigint(20) NOT NULL,
   platform_id int NOT NULL,
   architecture_id int NOT NULL,
   format_id int NOT NULL,
   file_name VARCHAR(1024) NOT NULL,
   
-  PRIMARY KEY PK_ARTIFACT_ID (id), 
+  CONSTRAINT PK_ARTIFACT_ID PRIMARY KEY(id), 
   CONSTRAINT UK_ARTIFACT_FILE UNIQUE KEY (file_name),
   CONSTRAINT UK_ARTIFACT_LINK UNIQUE KEY (build_id, platform_id, architecture_id, format_id),
   CONSTRAINT FK_ARTIFACT_BUILD FOREIGN KEY (build_id) REFERENCES build(id),
@@ -115,27 +119,14 @@ CREATE TABLE artifact
   CONSTRAINT FK_ARTIFACT_FMT FOREIGN KEY (format_id) REFERENCES format(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE price
-(
-  build_id bigint(20) NOT NULL,
-  platform_id int NOT NULL,
-  
-  initial_price int,
-  update_price int,
-  
-  PRIMARY KEY (build_id, platform_id),
-  CONSTRAINT FK_PRICE_BLD FOREIGN KEY (build_id) REFERENCES build(id),
-  CONSTRAINT FK_PRICE_PLAT FOREIGN KEY (platform_id) REFERENCES platform(id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 DROP VIEW IF EXISTS v_artifacts;
 CREATE VIEW v_artifacts
 AS
   SELECT
-    p.id product_id, p.name product,
+    p.id product_id, p.name product, p.description description,
     a.build_id build_id, b.type_id type_id, bt.name type,
     a.id artifact_id,
-    b.major version_major, b.minor version_minor, b.micro version_micro,
+    b.major version_major, b.minor version_minor, b.micro version_micro, b.version_raw version_raw,
     a.platform_id platform_id, pl.name platform,
     a.architecture_id architecture_id, arch.name architecture,
     a.format_id format_id, fmt.name format,
@@ -145,6 +136,41 @@ AS
   ON (b.id = a.build_id)
   INNER JOIN product p
   ON (p.id = b.product_id)
+  INNER JOIN format fmt
+  ON (fmt.id = a.format_id)
+  INNER JOIN architecture arch
+  ON (arch.id = a.architecture_id)
+  INNER JOIN platform pl
+  ON (pl.id = a.platform_id)
+  INNER JOIN build_type bt
+  ON (bt.id = b.type_id);
+
+DROP VIEW IF EXISTS v_latest_artifacts;
+CREATE VIEW v_latest_artifacts
+AS
+  SELECT
+    p.id product_id, p.name product, p.description description,
+    a.build_id build_id, b.type_id type_id, bt.name type,
+    a.id artifact_id,
+    b.major version_major, b.minor version_minor, b.micro version_micro, b.version_raw version_raw,
+    a.platform_id platform_id, pl.name platform,
+    a.architecture_id architecture_id, arch.name architecture,
+    a.format_id format_id, fmt.name format,
+    a.file_name file_name
+  FROM (
+    SELECT
+      build.product_id, artifact.platform_id, max(version_raw) version_raw
+    FROM build
+    INNER JOIN artifact
+    ON (artifact.build_id = build.id)
+    GROUP BY build.product_id, artifact.platform_id
+  ) bb
+  INNER JOIN build b
+  ON (b.product_id = bb.product_id) AND (b.version_raw = bb.version_raw)
+  INNER JOIN product p
+  ON (p.id = b.product_id)
+  INNER JOIN artifact a
+  ON (a.build_id = b.id) AND (a.platform_id = bb.platform_id)
   INNER JOIN format fmt
   ON (fmt.id = a.format_id)
   INNER JOIN architecture arch
