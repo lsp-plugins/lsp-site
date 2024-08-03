@@ -352,6 +352,12 @@ a:hover.link_no_visit, a:visited:hover.link_no_visit {
   margin-inline-end: 10px;
 }
 
+.download-text-button.bsd-arch {
+  width: 110px;
+  text-align: center;
+  margin-inline-end: 10px;
+}
+
 .cart-button, .cart-button:hover, .cart-button:visited, .cart-button:visited:hover {
   display: inline-block;
   color: #25272e;
