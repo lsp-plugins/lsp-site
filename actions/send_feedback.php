@@ -1,5 +1,7 @@
 <?php
 
+chdir($_SERVER['DOCUMENT_ROOT']);
+
 require_once("./inc/top.php");
 require_once("./inc/service/captcha.php");
 require_once("./inc/service/validation.php");
@@ -10,7 +12,7 @@ function verify_request() {
 	$error = verify_isset($error, $_POST, 'name', 'Name');
 	$error = verify_email($error, $_POST, 'email', 'E-mail');
 	$error = verify_isset($error, $_POST, 'text', 'Text');
-	$error = verify_csrf_token($error, $_POST, 'token');
+	$error = verify_csrf_token($error, 'feedback', $_POST, 'token');
 	$error = verify_captcha($error);
 	
 	return $error;
