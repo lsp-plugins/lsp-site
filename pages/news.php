@@ -1,5 +1,51 @@
 <h1>NEWS</h1>
 
+<h3>2024-10-08</h3>
+
+<p>LSP Plugins 1.2.18 released!</p>
+<ul>
+<li>Implemented Send Mono and Send Stereo plugins for sending audio streams to named connection points stored in shared memory.</li>
+<li>Implemented Return Mono and Return Stereo plugins for receiving audio streams from named connection points stored in shared memory.</li>
+<li>Added inter-communication between Parametric and Graphic Equalizers using new send/return communication primitives which allows to show the spectrogram of another Equalizer's output on the graph.</li>
+<li>Added Reverse button for Impulse Responses plugin series that allows to reverse the impulse response.</li>
+<li>Added support of sidechain passed by shared memory link for Autogain plugin series.</li>
+<li>Added support of sidechain passed by shared memory link for single-band dynamics processing plugin series:</li>
+  <ul>
+  <li>Compressor;</li>
+  <li>Dynamics Processor;</li>
+  <li>Expander;</li>
+  <li>Gate;</li>
+  <li>Limiter.</li>
+  </ul>
+<li>Added support of sidechain passed by shared memory link for multi-band dynamics processing plugin series:</li>
+  <ul>
+  <li>GOTT Compressor;</li>
+  <li>Multiband Compressor;</li>
+  <li>Multiband Dynamics Processor;</li>
+  <li>Multiband Expander;</li>
+  <li>Multiband Gate;</li>
+  <li>Multiband Limiter.</li>
+  </ul>
+<li>Mono samples are now played as stereo samples with duplicated left channel for Trigger, Sampler and Multisampler plugin series.</li>
+<li>Added pre-reverse button to apply sample reversal before cuts, stretches and fades being applied in Sampler and Multisampler plugin series.</li>
+<li>Several UI improvements related to instrument names in Multisampler plugin series: instrument name is now displayed in drop-down list and heading of the drop-down group.</li>
+<li>Added documentation_path parameter in user configuration file which allows to configure the path to the offline documentation installation.</li>
+<li>Update makefiles to simplify cross-compiling, added cross compiling instructions to README.</li>
+<li>Added LUFS meters to the Loudness Compensator plugin series.</li>
+<li>Added reference Pink noise generator of different standard loudness levels to the Loudness Compensator plugin series.</li>
+<li>Added directory contents view and navigation of currently loaded sample for following plugin series:</li>
+  <ul>
+  <li>Impulse Responses;</li>
+  <li>Impulse Reverb;</li>
+  <li>Multsampler;</li>
+  <li>Sampler;</li>
+  <li>Trigger.</li>
+  </ul>
+<li>Fixed random crashes when navigating file dialog in Windows.</li>
+<li>Fixed invalid UI draw issue on Windows when using larger desktop DPI.</li>
+<li>Fixed regression in offline documentation build.</li>
+</ul>
+
 <h3>2024-08-03</h3>
 <p>LSP Plugins 1.2.17 released!</p>
 <ul>
