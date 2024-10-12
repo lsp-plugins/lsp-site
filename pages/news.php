@@ -1,5 +1,19 @@
 <h1>NEWS</h1>
 
+<h3>2024-10-12</h3>
+
+<p>LSP Plugins 1.2.19 - important update! We noticed critical problem with VST2 plugin format and decided to
+issue new release as soon as possible.</p>
+
+<ul>
+<li>Rollback of source code distribution to tar.gz archive format.</li>
+<li>Fixed unneeded resource object deletion and use-after-free in VST plugin wrapper.</li>
+<li>Fixed window sizing for CLAP plugin format.</li>
+<li>Updated CLAP SDK to 1.2.2.</li>
+<li>Updated VST3 SDK to 3.7.12, may be breaking changes related to parameter identifiers as Steinberg has twice reduced the set of valid paremeter identifiers.</li>
+<li>Several fixes in build scripts.</li>
+</ul>
+
 <h3>2024-10-08</h3>
 
 <p>LSP Plugins 1.2.18 released!</p>
