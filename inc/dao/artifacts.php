@@ -246,10 +246,19 @@ function dao_create_artifact($db, $product, $build_type, $format, $version, $pla
 	try {
 		while (true) {
 			// Try to fetch already existing record
-			$stmt = mysqli_prepare(
+			$stmt = mysqli_prepare($db,
 				"SELECT id, file_name from artifact " .
-				"WHERE (buld_id = ?) AND (platform_id = ?) AND (architecture_id = ?) AND (format_id = ?)");
+				"WHERE (build_id = ?) AND (platform_id = ?) AND (architecture_id = ?) AND (format_id = ?)");
 			mysqli_stmt_bind_param($stmt, 'iiii', $build_id, $platform_id, $architecture_id, $format_id);
+			
+			if (!mysqli_stmt_execute($stmt)) {
+				return ["Unknown database error", null];
+			}
+			
+			$result = mysqli_stmt_get_result($stmt);
+			if (!isset($result)) {
+				return ["Unknown database error", null];
+			}
 			
 			$row = mysqli_fetch_array($result);
 			if ((isset($row)) && (isset($row['id'])) && (isset($row['file_name']))) {
