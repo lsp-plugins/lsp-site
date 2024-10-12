@@ -244,17 +244,34 @@ function dao_create_artifact($db, $product, $build_type, $format, $version, $pla
 
 	$stmt = null;
 	try {
-		$stmt = mysqli_prepare($db,
-			"INSERT INTO artifact(id, build_id, platform_id, architecture_id, format_id, file_name) " .
-			"VALUES (?, ?, ?, ?, ?, ?)");
-
 		while (true) {
+			// Try to fetch already existing record
+			$stmt = mysqli_prepare(
+				"SELECT id, file_name from artifact " .
+				"WHERE (buld_id = ?) AND (platform_id = ?) AND (architecture_id = ?) AND (format_id = ?)");
+			mysqli_stmt_bind_param($stmt, 'iiii', $build_id, $platform_id, $architecture_id, $format_id);
+			
+			$row = mysqli_fetch_array($result);
+			if ((isset($row)) && (isset($row['id'])) && (isset($row['file_name']))) {
+				$artifact_id = $row['id'];
+				$old_file_name = $row['file_name'];
+				if (strcmp($old_file_name, $file_name) != 0) {
+					return ["Conflicting file name requested: '{$file_name}', existing: '{$old_file_name}'", null];
+				}
+				
+				return [null, $artifact_id];
+			}
+			
+			// Try to create new record
+			$stmt = mysqli_prepare($db,
+				"INSERT INTO artifact(id, build_id, platform_id, architecture_id, format_id, file_name) " .
+				"VALUES (?, ?, ?, ?, ?, ?)");
 			$artifact_id = make_uuid();
 	
 			try {
 				mysqli_stmt_bind_param($stmt, 'siiiis', $artifact_id, $build_id, $platform_id, $architecture_id, $format_id, $file_name);
 				if (mysqli_stmt_execute($stmt)) {
-					return [null, mysqli_insert_id($db)];
+					return [null, $artifact_id];
 				}
 			} catch (mysqli_sql_exception $e) {
 				if (!unique_key_violation($e)) {
