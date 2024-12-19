@@ -1,5 +1,39 @@
 <h1>NEWS</h1>
 
+<h3>2024-12-21</h3>
+
+<p>LSP Plugins 9th anniversary release 1.2.20 is available!</p>
+<p>And we introduce a "Swiss Knife" in audio analysis, mixing and mastering!</p>
+
+<ul>
+<li><b>Implemented Referencer plugin series.</b></li>
+<li>Added "Automatically load files when navigating file list" feature that allows to
+  automatically load files when navigating file list nearby the loaded sample.</li>
+<li>Added shared memory sends and returns to Mixer plugin series.</li>
+<li>Added shared memory returns to A/B Tester plugin series.</li>
+<li>Added tracking of maximum values to the Spectrum Analyzer plugin series.</li>
+<li>Several fixes around UI Widgets.</li>
+<li>Added 'Stop' button for file preview in plugins tha allow audio file loading:</li>
+  <ul>
+  <li>Impulse Responses;</li>
+  <li>Impulse Reverb;</li>
+  <li>Room Builder;</li>
+  <li>Sampler and Multisampler;</li>
+  <li>Trigger.</li>
+  </ul>
+<li>Better support of Enter and Escape keys in dialogs.</li>
+<li>Yet more SIMD and AVX-512 optimizations in the DSP libray.</li>
+<li>AVX-512 optimizations are now enabled for AMD Ryzen 7000 processor series and later.</li>
+<li>DSP library now supports build for MacOS on Apple M1 and later chips.</li>
+<li>Fixed possible file name loss on deactivated plugins for all modern plugin formats.</li>
+<li>Fixed imprecise spectrum graph and left/right channel desynchronization when rapidly
+  changing the frequency of filter in Parametric Equalizer plugin series.</li>
+<li>Fixed the behaviour of the 'Inspect' button in the VST3 version of Parametric Equalizer
+  plugin series. The fix may cause some regressions in user sessions by enabling the
+  inpection of the first filter.</li>
+<li>Fixed regression related to he AArch64 version of plugins that freezed the host.</li>
+</ul>
+
 <h3>2024-10-12</h3>
 
 <p>LSP Plugins 1.2.19 - important update! We noticed critical problem with VST2 plugin format and decided to
