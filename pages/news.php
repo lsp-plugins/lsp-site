@@ -3,7 +3,7 @@
 <h3>2024-12-21</h3>
 
 <p>LSP Plugins 9th anniversary release 1.2.20 is available!</p>
-<p>And we introduce a "Swiss Knife" in audio analysis, mixing and mastering!</p>
+<p>And we introduce a 'Swiss Knife' in audio analysis, mixing and mastering!</p>
 
 <ul>
 <li><b>Implemented Referencer plugin series.</b></li>
