@@ -2,3 +2,8 @@ RewriteEngine on
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME}\.php -f
 RewriteRule ^(.*)$ $1.php
+
+<Files ~ "^composer.json$|^composer.lock$">
+  Order Deny,Allow
+  Deny from all
+</Files>
