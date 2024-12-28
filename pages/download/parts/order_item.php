@@ -14,7 +14,7 @@ function show_order_item($order, $item) {
 		$description .= ' (upgrade)';
 	}
 	
-	$price = sprintf("%.2f", $item['price'] / 100000.0 );
+	$price = sprintf("%.2f", raw_to_price($item['price']));
 	$description = htmlspecialchars($description);
 	
 	$csrf_token = make_csrf_token('order_item');

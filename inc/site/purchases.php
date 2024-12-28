@@ -327,7 +327,7 @@ function remove_item_from_order($customer_id, $order_id, $product_id) {
 	}
 }
 
-function submit_order($customer_id, $order_id, $remote_id, $price) {
+function submit_order($customer_id, $order_id, $method, $remote_id, $price) {
 	$session_id = user_session_id();
 	$db = null;
 	
@@ -335,6 +335,7 @@ function submit_order($customer_id, $order_id, $remote_id, $price) {
 		$db = connect_db('customers');
 		[$error, $affected] = dao_update_order($db, $order_id, [
 				'status' => 'created',
+			    'method' => $method,
 				'remote_id' => $remote_id,
 				'price' => $price
 			]);

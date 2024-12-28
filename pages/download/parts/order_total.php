@@ -1,7 +1,7 @@
 <?php
 
 function show_order_total($order) {
-	$cost = sprintf("%.2f USD", $order['price'] / 100000.0);
+	$cost = sprintf("%.2f USD", raw_to_price($order['price']));
 
 	echo "<div id=\"order-total\">\n";
 	echo "<div>TOTAL</div>\n";

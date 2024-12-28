@@ -16,7 +16,7 @@ function show_user_cart($user_cart, $user_purchases) {
 		}
 	}
 
-	$total = sprintf("%.2f", $total * 0.00001);
+	$total = sprintf("%.2f", raw_to_price($total));
 	$items = ($items === 1) ? "{$items} item" : "{$items} items";
 	echo "<div id=\"user-cart\" class=\"user-cart\">\n";
 	echo "<div>Cart: {$total} USD ({$items})</div>\n";

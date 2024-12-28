@@ -167,4 +167,12 @@ function get_post_json() {
 	return $json;
 }
 
+function price_to_raw($price) {
+	return intval($price * 100000);
+}
+
+function raw_to_price($price) {
+	return $price * 0.00001;
+}
+
 ?>

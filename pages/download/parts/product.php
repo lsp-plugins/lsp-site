@@ -32,7 +32,7 @@ function show_product(&$csrf_tokens, $artifact, $user_purchases, $user_cart) {
 			$cost = $build_price['price'];
 
 			if ($cost > 0) {
-				$cost_str = sprintf("%.2f", $cost / 100000.0);
+				$cost_str = sprintf("%.2f", raw_to_price($cost));
 				$cart_item = utl_find_first($user_cart, 'product_id', $product_id);
 
 				$price = $cost_str . $char_usd;

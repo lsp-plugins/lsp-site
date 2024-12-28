@@ -61,7 +61,7 @@ function process_proceed_order()
 		$remote_id = make_uuid();
 		
 		// Update order status
-		[$error, $order] = submit_order($customer_id, $order_id, $remote_id, $price);
+		[$error, $order] = submit_order($customer_id, $order_id, 'stripe', $remote_id, $price);
 		if (isset($error)) {
 			error_log($error);
 			return [null, $order_url];

@@ -65,6 +65,7 @@ DROP TABLE orders;
 CREATE TABLE orders
 (
   id varchar(36) NOT NULL,
+  method varchar(16),
   remote_id varchar(128),
   customer_id bigint(20) NOT NULL,
   created_time TIMESTAMP NOT NULL,
@@ -122,6 +123,27 @@ CREATE TABLE customer_log
 CREATE INDEX IDX_CUSTOMER_LOG_CID ON customer_log(customer_id);
 CREATE INDEX IDX_CUSTOMER_LOG_SID ON customer_log(session_id);
 
+CREATE TABLE stripe_products
+(
+  name VARCHAR(128) NOT NULL,
+  product_id VARCHAR(64) NOT NULL,
+  test tinyint NOT NULL,
+  
+  CONSTRAINT PK_STRIPE_PRODUCT PRIMARY KEY(name, test),
+  CONSTRAINT UK_STRIPE_PRODUCT UNIQUE(product_id, test)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE stripe_prices
+(
+  price_id VARCHAR(64) NOT NULL,
+  product_id VARCHAR(64) NOT NULL,
+  test tinyint NOT NULL,
+  amount bigint(20) NOT NULL,
+
+  CONSTRAINT PK_PRICE_ID PRIMARY KEY(price_id, test),
+  CONSTRAINT UK_PRICE_VALUE UNIQUE(product_id, test, amount)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 CREATE VIEW v_latest_orders
 AS
   SELECT
@@ -138,4 +160,8 @@ AS
   GROUP BY
     o.customer_id,
     oi.product_id;
+
+
+ALTER TABLE orders add COLUMN method VARCHAR(16) BEFORE remote_id; 
+
 

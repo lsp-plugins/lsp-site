@@ -392,7 +392,7 @@ function dao_find_order($db, $order_id)
 		// Fetch order
 		$stmt = mysqli_prepare($db,
 			"SELECT " .
-			"o.id order_id, o.remote_id remote_id, o.customer_id customer_id, " .
+			"o.id order_id, o.method method, o.remote_id remote_id, o.customer_id customer_id, " .
 			"o.created_time created_time, o.submit_time submit_time, o.refund_time refund_time, " .
 			"o.complete_time complete_time, o.verify_time verify_time, " .
 			"o.status status_id, os.name status, o.amount amount " .
@@ -419,6 +419,7 @@ function dao_find_order($db, $order_id)
 		
 		$order = [
 			'order_id' => $row['order_id'],
+			'method' => $row['method'],
 			'remote_id' => $row['remote_id'],
 			'customer_id' => $row['customer_id'],
 			'created' => $row['created_time'],
@@ -537,6 +538,11 @@ function dao_update_order($db, $order_id, $fields) {
 		if (isset($fields['remote_id'])) {
 			array_push($conditions, 'remote_id = ?');
 			array_push($arguments, $fields['remote_id']);
+			array_push($types, 's');
+		}
+		if (isset($fields['method'])) {
+			array_push($conditions, 'method = ?');
+			array_push($arguments, $fields['method']);
 			array_push($types, 's');
 		}
 		

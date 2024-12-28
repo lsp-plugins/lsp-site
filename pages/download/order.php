@@ -60,7 +60,7 @@ function show_email_order($order) {
 			$product_desc .= ' (upgrade)';
 		}
 		
-		$price = sprintf("%.2f USD", $item['price'] / 100000.0 );
+		$price = sprintf("%.2f USD", raw_to_price($item['price']));
 		$max_data_len = max(
 			$max_data_len,
 			mb_strlen($product_desc) + mb_strlen($price));
@@ -68,7 +68,7 @@ function show_email_order($order) {
 		array_push($positions, [ $product_desc, $price ]);
 	}
 	
-	$price = sprintf("%.2f USD", $order['amount'] / 100000.0 );
+	$price = sprintf("%.2f USD", raw_to_price($order['amount']));
 	array_push($positions, '');
 	array_push($positions, [ 'TOTAL', $price ]);
 	
