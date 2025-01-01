@@ -392,7 +392,7 @@ function dao_find_order($db, $order_id)
 		// Fetch order
 		$stmt = mysqli_prepare($db,
 			"SELECT " .
-			"o.id order_id, o.method method, o.remote_id remote_id, o.customer_id customer_id, " .
+			"o.id order_id, o.method method, o.remote_id remote_id, o.payment_url payment_url, o.customer_id customer_id, " .
 			"o.created_time created_time, o.submit_time submit_time, o.refund_time refund_time, " .
 			"o.complete_time complete_time, o.verify_time verify_time, " .
 			"o.status status_id, os.name status, o.amount amount " .
@@ -421,6 +421,7 @@ function dao_find_order($db, $order_id)
 			'order_id' => $row['order_id'],
 			'method' => $row['method'],
 			'remote_id' => $row['remote_id'],
+			'payment_url' => $row['payment_url'],
 			'customer_id' => $row['customer_id'],
 			'created' => $row['created_time'],
 			'submitted' => $row['submit_time'],
@@ -538,6 +539,11 @@ function dao_update_order($db, $order_id, $fields) {
 		if (isset($fields['remote_id'])) {
 			array_push($conditions, 'remote_id = ?');
 			array_push($arguments, $fields['remote_id']);
+			array_push($types, 's');
+		}
+		if (isset($fields['payment_url'])) {
+			array_push($conditions, 'payment_url = ?');
+			array_push($arguments, $fields['payment_url']);
 			array_push($types, 's');
 		}
 		if (isset($fields['method'])) {

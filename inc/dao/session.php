@@ -18,7 +18,7 @@ function dao_get_session($db, $session_id)
 		}
 		
 		$result = mysqli_stmt_get_result($stmt);
-		if (!$result)
+		if (!isset($result))
 			return null;
 		
 		$row = mysqli_fetch_array($result);

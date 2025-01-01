@@ -75,6 +75,7 @@ CREATE TABLE orders
   verify_time TIMESTAMP NULL,
   status int NOT NULL,
   amount bigint(20) NOT NULL,
+  payment_url varchar(1024),
 
   PRIMARY KEY (id),
   CONSTRAINT FK_ORDER_CUST FOREIGN KEY (customer_id) REFERENCES customer(id),

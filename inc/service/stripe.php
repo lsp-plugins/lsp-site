@@ -47,7 +47,9 @@ function get_stripe_session() {
 function get_stripe_product_id($session, $product_name) {
 	$stripe = $session['client'];
 	$result = $stripe->products->search([
-		'query' => "active:\'true\' AND name:\'{$product_name}\'",
+		'query' =>
+			"active:\"true\" " . 
+			"AND name:\"{$product_name}\"",
 	]);
 	
 	return ((isset($result)) && (isset($result['data'])) && (count($result['data']) > 0)) ?
@@ -56,22 +58,24 @@ function get_stripe_product_id($session, $product_name) {
 
 function create_stripe_product($session, $product_name, $description) {
 	$stripe = $session['client'];
-	return $stripe->products->create([
-		'name' => $product_name,
-		'description' => $description
-	]);
+	$args = [
+		'name' => $product_name
+	];
+	if ((isset($description)) && (strlen($description) > 0)) {
+		$args['description'] = $description;
+	}
+	
+	return $stripe->products->create($args);
 }
 
-function get_stripe_price_id($session, $product_id, $currency, $amount) {
+function get_stripe_price_id($session, $product_id, $currency) {
 	$stripe = $session['client'];
-	$unit_amount = raw_to_stripe_price($amount);
 	$result = $stripe->prices->search([
 		'query' =>
-			"active:\'true\' " .
-			"AND product:'{$product_id}' " .
-			"AND currency:'{$currency}' " .
-			"AND type:'one_time' " .
-			"AND unit_amount:{$unit_amount}",
+			"active:\"true\" " .
+			"AND product:\"{$product_id}\" " .
+			"AND currency:\"{$currency}\" " .
+			"AND type:\"one_time\" "
 	]);
 	
 	return ((isset($result)) && (isset($result['data'])) && (count($result['data']) > 0)) ?

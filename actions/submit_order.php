@@ -54,14 +54,21 @@ function process_proceed_order()
 		}
 		
 		// Update order price
+		$method = 'stripe';
 		$price = 0;
 		foreach ($order['items'] as $item) {
 			$price += $item['price'];
 		}
-		$remote_id = make_uuid();
+		[$error, $order_info] = create_payment_url($method, $customer_id, $order_id, 'LSP Plugins binary builds', $price);
+		if (isset($error)) {
+			error_log($error);
+			return ["Error occurred while generating remote payment URL", null];
+		}
 		
 		// Update order status
-		[$error, $order] = submit_order($customer_id, $order_id, 'stripe', $remote_id, $price);
+		$remote_id = $order_info['id'];
+		$payment_url = $order_info['url'];
+		[$error, $order] = submit_order($customer_id, $order_id, $method, $remote_id, $payment_url, $price);
 		if (isset($error)) {
 			error_log($error);
 			return [null, $order_url];
@@ -70,7 +77,6 @@ function process_proceed_order()
 		error_log("Order after submit: " . var_export($order, true));
 		
 		// Submit email
-		$payment_url = "{$SITE_URL}/payment?id={$remote_id}";
 		$order_data = show_email_order($order);
 		notify_submit_order($user['email'], $order_id, $order_data, $order_url, $payment_url);
 		

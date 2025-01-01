@@ -3,6 +3,8 @@
 require_once("./inc/dao/artifacts.php");
 require_once('./inc/dao/logging.php');
 require_once("./inc/dao/purchases.php");
+require_once("./inc/dao/stripe.php");
+require_once("./inc/service/stripe.php");
 require_once("./inc/site/session.php");
 
 function get_products($filter)
@@ -327,16 +329,21 @@ function remove_item_from_order($customer_id, $order_id, $product_id) {
 	}
 }
 
-function submit_order($customer_id, $order_id, $method, $remote_id, $price) {
+function submit_order($customer_id, $order_id, $method, $remote_id, $payment_url, $price) {
 	$session_id = user_session_id();
 	$db = null;
 	
 	try {
 		$db = connect_db('customers');
+		if (!isset($db)) {
+			return [ "Database connection error", null ];
+		}
+		
 		[$error, $affected] = dao_update_order($db, $order_id, [
 				'status' => 'created',
 			    'method' => $method,
 				'remote_id' => $remote_id,
+				'payment_url' => $payment_url,
 				'price' => $price
 			]);
 		if (isset($error)) {
@@ -370,6 +377,175 @@ function submit_order($customer_id, $order_id, $method, $remote_id, $price) {
 	} finally {
 		db_safe_rollback($db);
 	}
+}
+
+function ensure_stripe_product_id_exists($db, $stripe_session, $product_name) {
+	while (true) {
+		// Fetch product from database
+		[$error, $db_product] = dao_get_stripe_product($db, $stripe_session['test'], $product_name);
+		if (isset($error)) {
+			error_log("Error fetching stripe product identifier from database: {$error}");
+			return [ $error, null ];
+		} else if (isset($db_product)) {
+			return [ null, $db_product['product_id'] ];
+		}
+		
+		// Try to find or create the product using Stripe API
+		$api_product_id = get_stripe_product_id($stripe_session, $product_name);
+		if (!isset($api_product_id)) {
+			// Create product using the stripe API
+			$api_product = create_stripe_product($stripe_session, $product_name, null);
+			if (!isset($api_product)) {
+				error_log("Error creating stripe product using Stripe API");
+				return ["Error creating stripe product using Stripe API", null];
+			}
+			$api_product_id = $api_product['id'];
+		}
+		
+		// Now we need to save the product in the database
+		try {
+			[$error, $db_product] = dao_create_stripe_product($db, $stripe_session['test'], $product_name, $api_product_id);
+			if (isset($error)) {
+				error_log("Error creating database stripe product: {$error}");
+				return [$error, null];
+			}
+			
+			return [null, $db_product['product_id']];
+		} catch (mysqli_sql_exception $e) {
+			if (!unique_key_violation($e)) {
+				return [ db_log_exception($e), null ];
+			}
+		}
+	}
+}
+
+function ensure_stripe_price_id_exists($db, $stripe_session, $product_id, $amount) {
+	while (true) {
+		// Fetch price for specified product from database
+		[$error, $db_price] = dao_get_stripe_price($db, $stripe_session['test'], $product_id, $amount);
+		if (isset($error)) {
+			error_log("Error fetching stripe price identifier from database: {$error}");
+			return [ $error, null ];
+		} else if (isset($db_price)) {
+			return [ null, $db_price['price_id'] ];
+		}
+		
+		// Create product using the stripe API
+		$api_price = create_stripe_price($stripe_session, $product_id, 'usd', $amount);
+		if (!isset($api_price)) {
+			error_log("Error creating stripe price using Stripe API");
+			return ["Error creating stripe price using Stripe API", null];
+		}
+		$api_price_id = $api_price['id'];
+		
+		// Now we need to save the product in the database
+		try {
+			[$error, $db_price] = dao_create_stripe_price($db, $stripe_session['test'], $product_id, $api_price_id, $amount);
+			if (isset($error)) {
+				error_log("Error creating database stripe product: {$error}");
+				return [$error, null];
+			}
+			
+			return [null, $db_price['price_id']];
+		} catch (mysqli_sql_exception $e) {
+			if (!unique_key_violation($e)) {
+				return [ db_log_exception($e), null ];
+			}
+		}
+	}
+}
+
+function get_stripe_price_for_product($stripe_session, $product_name, $price) {
+	$db = null;
+	
+	try {
+		// Connect to database
+		$db = connect_db('customers');
+		if (!isset($db)) {
+			return [ "Database connection error", null ];
+		}
+		
+		// Ensure that product identifier exists
+		[$error, $stripe_product_id] = ensure_stripe_product_id_exists($db, $stripe_session, $product_name);
+		if (isset($error)) {
+			return [ $error, null ];
+		}
+		
+		// Ensure that price identifier exists
+		[$error, $stripe_price_id] = ensure_stripe_price_id_exists($db, $stripe_session, $stripe_product_id, $price);
+		if (isset($error)) {
+			return [ $error, null ];
+		}
+		
+		// Commit information about product and price to database
+		mysqli_commit($db);
+		return [null, $stripe_price_id];
+	} catch (mysqli_sql_exception $e) {
+		$error = db_log_exception($e);
+		return [$error, null];
+	} finally {
+		db_safe_rollback($db);
+	}
+}
+
+function create_stripe_payment_url($session_id, $customer_id, $order_id, $product, $price) {
+	[$error, $stripe_session] = get_stripe_session();
+	if (isset($error)) {
+		error_log("Failed to estimate stripe session: {$error}");
+		return [$error, null];
+	}
+	
+	[$error, $price_id] = get_stripe_price_for_product($stripe_session, $product, $price);
+	if (isset($error)) {
+		return [$error, null];
+	}
+	
+	// Now we have stripe price identifier. We are ready to create payment URL.
+	$result = make_stripe_payment_session($stripe_session, $price_id);
+	if (!isset($result)) {
+		return [ "Error creating payment URL for Stripe service", null ];
+	}
+	
+	// Log user action
+	try {
+		// Connect to database
+		$db = connect_db('customers');
+		if (!isset($db)) {
+			return [ "Database connection error", null ];
+		}
+		
+		dao_log_user_action($db, $customer_id, $session_id, 'create_payment_url', [
+				'method' => 'stripe',
+				'url' => $result['url'],
+				'data' => $result
+			]);
+		mysqli_commit($db);
+		return [
+			null,
+			[
+				'id' => $result['id'],
+				'url' => $result['url']
+			]
+		];
+	} catch (mysqli_sql_exception $e) {
+		$error = db_log_exception($e);
+		return [ $error, null ];
+	} finally {
+		db_safe_rollback($db);
+	}
+}
+
+function create_payment_url($service, $customer_id, $order_id, $product, $price) {
+	$session_id = user_session_id();
+	if (!isset($session_id)) {
+		return ["No active user session", null];
+	}
+	
+	if ($service == 'stripe') {
+		return create_stripe_payment_url($session_id, $customer_id, $order_id, $product, $price);
+	}
+	
+	return ["Unknown provider id: {$service}", null];
 }
 
 ?>
