@@ -474,6 +474,100 @@ function dao_find_order($db, $order_id)
 	}
 }
 
+function dao_get_unfinished_orders($db)
+{
+	$stmt = null;
+	
+	try {
+		// Fetch order
+		$stmt = mysqli_prepare($db,
+			"SELECT " .
+			"o.id order_id, o.method method, o.remote_id remote_id, o.payment_url payment_url, o.customer_id customer_id, " .
+			"o.created_time created_time, o.submit_time submit_time, o.refund_time refund_time, " .
+			"o.complete_time complete_time, o.verify_time verify_time, " .
+			"o.status status_id, os.name status, o.amount amount " .
+			"FROM orders o " .
+			"INNER JOIN order_status os " .
+			"ON (os.id = o.status)" .
+			"WHERE (os.name in ('created', 'draft'))");
+		
+		if (!mysqli_stmt_execute($stmt)) {
+			return ["Database error (fetch order)", null];
+		}
+		
+		$result = mysqli_stmt_get_result($stmt);
+		if (!isset($result)) {
+			return ["Database error (get order)", null];
+		}
+		
+		$order_list = [];
+		while (true) {
+			$row = mysqli_fetch_array($result);
+			if (!isset($row)) {
+				break;
+			}
+		
+			array_push($order_list, [
+				'order_id' => $row['order_id'],
+				'method' => $row['method'],
+				'remote_id' => $row['remote_id'],
+				'payment_url' => $row['payment_url'],
+				'customer_id' => $row['customer_id'],
+				'created' => $row['created_time'],
+				'submitted' => $row['submit_time'],
+				'refunded' => $row['refund_time'],
+				'completed' => $row['complete_time'],
+				'verified' => $row['verify_time'],
+				'status_id' => $row['status_id'],
+				'status' => $row['status'],
+				'amount' => $row['amount']
+			]);
+		}
+		
+		return [null, $order_list];
+	} catch (mysqli_sql_exception $e) {
+		return [db_log_exception($e), null];
+	} finally {
+		db_safe_close($stmt);
+	}
+}
+
+function dao_remove_order($db, $order_id)
+{
+	if (!isset($order_id)) {
+		return ['Invalid parameters', null];
+	}
+	
+	$stmt = null;
+	
+	try {
+		// Fetch order
+		$query = "DELETE FROM orders " .
+			"WHERE (id = ?) " .
+			"  AND (status IN (" .
+			"    SELECT os.id " .
+			"    FROM order_status os " .
+			"    WHERE (os.name = ?)" .
+			"  ))";
+		
+		$stmt = mysqli_prepare($db, $query);
+		$status = 'draft';
+		mysqli_stmt_bind_param($stmt, 'ss', $order_id, $status);
+		
+		if (!mysqli_stmt_execute($stmt)) {
+			return ["Database error (remove order)", null];
+		}
+		
+		$affected = mysqli_affected_rows($db);
+		
+		return ($affected > 0) ? [null, $affected] : [ 'Order not found', null ];
+	} catch (mysqli_sql_exception $e) {
+		return [db_log_exception($e), null];
+	} finally {
+		db_safe_close($stmt);
+	}
+}
+
 function dao_remove_item_from_order($db, $customer_id, $order_id, $product_id)
 {
 	if ((!isset($order_id)) || (!isset($product_id)) || (!isset($customer_id))) {
@@ -492,7 +586,6 @@ function dao_remove_item_from_order($db, $customer_id, $order_id, $product_id)
 			"    ON (os.id = o.status)" .
 			"    WHERE (o.id = ?) AND (o.customer_id = ?) AND (os.name = ?)" .
 			"  ))";
-		error_log($query);
 		
 		$stmt = mysqli_prepare($db, $query);
 		$status = 'draft';
@@ -549,6 +642,21 @@ function dao_update_order($db, $order_id, $fields) {
 		if (isset($fields['method'])) {
 			array_push($conditions, 'method = ?');
 			array_push($arguments, $fields['method']);
+			array_push($types, 's');
+		}
+		if (isset($fields['submitted'])) {
+			array_push($conditions, 'submit_time = ?');
+			array_push($arguments, $fields['submitted']);
+			array_push($types, 's');
+		}
+		if (isset($fields['completed'])) {
+			array_push($conditions, 'complete_time = ?');
+			array_push($arguments, $fields['completed']);
+			array_push($types, 's');
+		}
+		if (isset($fields['refunded'])) {
+			array_push($conditions, 'refund_time = ?');
+			array_push($arguments, $fields['refunded']);
 			array_push($types, 's');
 		}
 		

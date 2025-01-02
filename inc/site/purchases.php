@@ -344,7 +344,8 @@ function submit_order($customer_id, $order_id, $method, $remote_id, $payment_url
 			    'method' => $method,
 				'remote_id' => $remote_id,
 				'payment_url' => $payment_url,
-				'price' => $price
+				'price' => $price,
+				'submitted' => db_current_timestamp()
 			]);
 		if (isset($error)) {
 			error_log("Order update error: {$error}");
@@ -501,7 +502,7 @@ function create_stripe_payment_url($session_id, $customer_id, $order_id, $produc
 	}
 	
 	// Now we have stripe price identifier. We are ready to create payment URL.
-	$result = make_stripe_payment_session($stripe_session, $price_id);
+	$result = make_stripe_payment_session($stripe_session, $price_id, $order_id);
 	if (!isset($result)) {
 		return [ "Error creating payment URL for Stripe service", null ];
 	}
@@ -547,5 +548,148 @@ function create_payment_url($service, $customer_id, $order_id, $product, $price)
 	
 	return ["Unknown provider id: {$service}", null];
 }
+
+function synchronize_stripe_order_status($db, $order)
+{
+	$order_id = $order['order_id'];
+	$remote_id = $order['remote_id'];
+	
+	// Check for test status
+	$test = null;
+	if (preg_match('/^cs_test_/', $remote_id)) {
+		$test = true;
+	} elseif (preg_match('/^cs_live_/', $remote_id)) {
+		$test = false;
+	}
+	if (!isset($test)) {
+		return ["Could not determine test/live status of the order {$order_id}", false];
+	}
+	
+	// Retrieve Stripe payment session
+	[$error, $stripe_session] = get_stripe_session($test);
+	if (isset($error)) {
+		return [ "Could not acquire Stripe session for the order {$order_id}: {$error}", false];
+	}
+	$payment_session = retrieve_stripe_payment_session($stripe_session, $remote_id);
+	if (!isset($payment_session)) {
+		return [ "Could not get Stripe payment session {$remote_id} for {$order_id}", false ];
+	}
+	
+	// Check session status
+	$status = $payment_session['status'];
+	
+	if ($status == 'expired') {
+		[$error, $affected] = dao_update_order($db, $order_id, [
+			'completed' => db_current_timestamp(),
+			'status' => 'expired'
+		]);
+		if (isset($error)) {
+			return [ "Could not mark order {$order['order_id']} as expired: {$error}", false ];
+		}
+		if ($affected > 0) {
+			dao_log_user_action($db, $order['customer_id'], null, 'order_expired', [
+				'order_id' => $order_id,
+				'remote_id' => $remote_id,
+				'method' => 'stripe'				
+			]);
+			mysqli_commit($db);
+		}
+		
+		return [ null, $affected > 0 ];
+	} elseif ($status == 'complete') {
+		[$error, $affected] = dao_update_order($db, $order_id, [
+			'completed' => db_current_timestamp(),
+			'status' => 'paid'
+		]);
+		if (isset($error)) {
+			return [ "Could not mark order {$order['order_id']} as completed: {$error}", false ];
+		}
+		if ($affected > 0) {
+			dao_log_user_action($db, $order['customer_id'], null, 'order_complete', [
+				'order_id' => $order_id,
+				'remote_id' => $remote_id,
+				'method' => 'stripe'
+			]);
+			mysqli_commit($db);
+		}
+		
+		return [ null, $affected > 0 ];
+	} elseif ($status != 'open') {
+		return [ "Unexpected Stripe session status '{$status}' for session {$remote_id}, order {$order_id}", false ];
+	}
+	
+	$created = gmdate("Y-m-d H:i:s", $payment_session['created']);
+	$expire = gmdate("Y-m-d H:i:s", $payment_session['expires_at']);
+	$ctime = gmdate("Y-m-d H:i:s");
+	error_log("Stripe session {$remote_id} for order '{$order_id}' is still active (created at ${created} UTC, expires at ${expire} UTC, now is ${ctime} UTC)"); 
+	
+	return [ null, false ];
+}
+
+function synchronize_order_status($db, $order)
+{
+	$order_status = $order['status'];
+	
+	// Depending on the status of the order, we need to do some stuff
+	if ($order_status == 'draft') {
+		$ctime = db_current_timestamp();
+		$expire = db_add_time_interval($order['created'], "+1 day");
+		
+		// Remove the order draft if it is too late
+		if (strcmp($expire, $ctime) < 0) {
+			[$error] = dao_remove_order($db, $order['order_id']);
+			if (isset($error)) {
+				return ["Could not remove stale order draft {$order['order_id']}: {$error}", null ];
+			} else {
+				mysqli_commit($db);
+			}
+		}
+	} elseif ($order_status == 'created') {
+		$method = $order['method'];
+		$order_id = $order['order_id'];
+		
+		if ($method == 'stripe') {
+			return synchronize_stripe_order_status($db, $order);
+		}
+		
+		return [ "Unknown payment method '{$method}' for order {$order_id}", null ];
+	}
+	
+	return [ "Could not finalize stale order {$order['order_id']}: unknown status {$order_status}", null ];
+}
+
+function cleanup_stale_orders()
+{
+	$db = null;
+	$num_errors = 0;
+	
+	try {
+		// Connect to the database
+		$db = connect_db('customers_admin');
+		if (!isset($db)) {
+			return false;
+		}
+		
+		// Fetch list of unfinished orders
+		[$error, $unfinished_orders] = dao_get_unfinished_orders($db);
+		if (isset($error)) {
+			return false;
+		}
+		
+		// Synchronize status for each pending order
+		foreach ($unfinished_orders as $order) {
+			[$error] = synchronize_order_status($db, $order);
+			if (isset($error)) {
+				error_log($error);
+				++$num_errors;
+			}
+		}
+	} finally {
+		db_safe_rollback($db);
+	}
+	
+	return $num_errors <= 0;
+}
+
 
 ?>

@@ -9,6 +9,7 @@ require_once('./config/config.php');
 require_once('./inc/site/auth.php');
 require_once('./inc/site/csrf.php');
 require_once('./inc/site/notifications.php');
+require_once('./inc/site/purchases.php');
 require_once('./inc/site/session.php');
 
 $errors = [];
@@ -21,6 +22,9 @@ if (!cleanup_sessions()) {
 }
 if (!cleanup_user_tokens()) {
 	array_push($errors, "Failed to cleanup old customer tokens");
+}
+if (!cleanup_stale_orders()) {
+	array_push($errors, "Failed to cleanup stale orders");
 }
 
 if (count($errors) > 0)

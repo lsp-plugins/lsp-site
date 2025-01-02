@@ -8,8 +8,6 @@ function show_order($order) {
 	echo "<div class=\"form-div\" id=\"order-contents\">\n";
 	if (isset($order)) {
 		$order_id = $order['order_id'];
-		$order_status = $order['status'];
-		$order_proceed = ($order_status == 'draft') || ($order_status == 'created');
 		$csrf_token = make_csrf_token('order');
 		$order_cost = 0;
 		foreach ($order['items'] as $item) {
@@ -32,6 +30,24 @@ function show_order($order) {
 			echo "<div>Your order is empty</div>\n";
 		}
 		echo "</div>\n";
+		
+		// Output order status
+		$order_status = $order['status'];
+		$order_proceed = ($order_status == 'draft') || ($order_status == 'created');
+		if ($order_status == 'created') {
+			$order_status = "Order created at {$order['created']} UTC";
+		} elseif ($order_status == 'paid') {
+			$order_status = "Order successfully completed at {$order['completed']} UTC";
+		} elseif ($order_status == 'refunded') {
+			$order_status = "Order successfully refunded at {$order['refunded']} UTC";
+		} elseif ($order_status == 'expired') {
+			$order_status = "Order has expired at {$order['cancelled']} UTC";
+		} else {
+			$order_status = null;
+		}
+		if (isset($order_status)) {
+			echo "<div class=\"order-status\">" . htmlspecialchars($order_status) . "</div>\n";
+		}
 		
 		// Buttons
 		echo "<div class=\"form-button\">\n";

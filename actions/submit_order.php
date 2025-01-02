@@ -82,9 +82,7 @@ function process_proceed_order()
 		
 		return [null, $payment_url];
 	} elseif ($order_status == 'created') {
-		$remote_id = $order['remote_id'];
-		$payment_url = "{$SITE_URL}/payment?id={$remote_id}";
-		return [null, $payment_url];
+		return [null, $order['payment_url']];
 	}
 	
 	return [null, $order_url];
@@ -111,7 +109,8 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
 [$error, $url] = process_submit_order_request();
 if (isset($error)) {
 	error_log($error);
-	http_response_code(500);
+	http_response_code(400);
+	echo "{$error}\n";
 	exit;
 }
 

@@ -8,7 +8,7 @@ function raw_to_stripe_price($amount) {
 	return intval(raw_to_price($amount * 100));
 }
 
-function get_stripe_session() {
+function get_stripe_session($test = null) {
 	global $STRIPE_SESSIONS;
 	global $ACCOUNTING;
 	
@@ -19,7 +19,9 @@ function get_stripe_session() {
 
 	// Ensure that API key is present
 	$stripe_cfg = $ACCOUNTING['stripe'];
-	$test = (isset($stripe_cfg['test'])) ? $stripe_cfg['test'] : true;
+	if (!isset($test)) {
+		$test = (isset($stripe_cfg['test'])) ? $stripe_cfg['test'] : true;
+	}
 	$api_key = ($test) ? 'test_api_key' : 'live_api_key';
 	if (!isset($stripe_cfg[$api_key])) {
 		return [ "No configuration for Stripe {$api_key}", null, null ];
@@ -93,10 +95,11 @@ function create_stripe_price($session, $product_id, $currency, $amount) {
 	]);
 }
 
-function make_stripe_payment_session($session, $price_id) {
+function make_stripe_payment_session($session, $price_id, $order_id) {
 	global $SITE_URL;
 	
 	$stripe = $session['client'];
+	
 	return $stripe->checkout->sessions->create(
 		[
 			'line_items' => [
@@ -106,12 +109,21 @@ function make_stripe_payment_session($session, $price_id) {
 				]
 			],
 			'mode' => 'payment',
-			'success_url' => $SITE_URL . '/actions/finish_order',
-			'cancel_url' => $SITE_URL . '/actions/finish_order',
+			'success_url' => $SITE_URL . "/actions/finish_order?order_id={$order_id}",
+			'cancel_url' => $SITE_URL . "/actions/finish_order?order_id={$order_id}",
 			'automatic_tax' => [
 				'enabled' => true,
 			],
+			'metadata' => [
+				'order_id' => $order_id
+			]
 		]);
+}
+
+function retrieve_stripe_payment_session($session, $session_id) {
+	$stripe = $session['client'];
+	
+	return $stripe->checkout->sessions->retrieve($session_id, []);
 }
 
 ?>

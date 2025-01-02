@@ -12,7 +12,7 @@ CREATE TABLE order_status
 INSERT INTO order_status (id, name) VALUES (1, 'created');
 INSERT INTO order_status (id, name) VALUES (2, 'paid');
 INSERT INTO order_status (id, name) VALUES (3, 'verified');
-INSERT INTO order_status (id, name) VALUES (4, 'cancelled');
+INSERT INTO order_status (id, name) VALUES (4, 'expired');
 INSERT INTO order_status (id, name) VALUES (5, 'refunded');
 INSERT INTO order_status (id, name) VALUES (6, 'draft');
 
@@ -116,7 +116,7 @@ CREATE TABLE customer_log
 (
   time TIMESTAMP NOT NULL,
   customer_id bigint(20) NOT NULL,
-  session_id varchar(36) NOT NULL,
+  session_id varchar(36),
   action varchar(64) NOT NULL,
   data text NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
