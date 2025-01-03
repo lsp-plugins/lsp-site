@@ -1,0 +1,22 @@
+Dear customer!
+
+We're sending to you information about your order on LSP Plugins site:
+%%site_url%%
+
+Your order has been sucessfully processed!
+You may now proceed the 'Downloads' page to access binary builds here:
+
+%%download_url%%
+
+Your order contents are the following:
+-------------------------------------------------------------------------------
+ORDER ID: %%order_id%%
+
+%%order_data%%
+-------------------------------------------------------------------------------
+
+You can view information about your order here:
+%%order_url%%
+
+All the best,
+Linux Studio Plugins Project

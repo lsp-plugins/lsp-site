@@ -5,6 +5,8 @@ require_once('./inc/dao/logging.php');
 require_once("./inc/dao/purchases.php");
 require_once("./inc/dao/stripe.php");
 require_once("./inc/service/stripe.php");
+require_once("./inc/site/auth.php");
+require_once("./inc/site/notifications.php");
 require_once("./inc/site/session.php");
 
 function get_products($filter)
@@ -549,6 +551,30 @@ function create_payment_url($service, $customer_id, $order_id, $product, $price)
 	return ["Unknown provider id: {$service}", null];
 }
 
+function on_order_processed($order_id)
+{
+	global $SITE_URL;
+	
+	[$error, $order] = find_order($order_id);
+	if (isset($error)) {
+		return;
+	}
+
+	$customer_id = $order['customer_id'];
+	$user = auth_get_user($customer_id);
+	error_log("order owner = " . var_export($user, true));
+	
+	if (isset($user)) {
+		error_log("Notifying user about successful purchase");
+		
+		$order_id = $order['order_id'];
+		$order_url = "{$SITE_URL}/order?order_id={$order_id}";
+		$download_url = "{$SITE_URL}/download";
+		$order_data = show_email_order($order);
+		notify_complete_order($user['email'], $order_id, $order_data, $order_url, $download_url);
+	}
+}
+
 function synchronize_stripe_order_status($db, $order)
 {
 	$order_id = $order['order_id'];
@@ -584,7 +610,7 @@ function synchronize_stripe_order_status($db, $order)
 			'status' => 'expired'
 		]);
 		if (isset($error)) {
-			return [ "Could not mark order {$order['order_id']} as expired: {$error}", false ];
+			return [ "Could not mark order {$order_id} as expired: {$error}", false ];
 		}
 		if ($affected > 0) {
 			dao_log_user_action($db, $order['customer_id'], null, 'order_expired', [
@@ -602,7 +628,7 @@ function synchronize_stripe_order_status($db, $order)
 			'status' => 'paid'
 		]);
 		if (isset($error)) {
-			return [ "Could not mark order {$order['order_id']} as completed: {$error}", false ];
+			return [ "Could not mark order {$order_id} as completed: {$error}", false ];
 		}
 		if ($affected > 0) {
 			dao_log_user_action($db, $order['customer_id'], null, 'order_complete', [
@@ -611,6 +637,7 @@ function synchronize_stripe_order_status($db, $order)
 				'method' => 'stripe'
 			]);
 			mysqli_commit($db);
+			on_order_processed($order_id);
 		}
 		
 		return [ null, $affected > 0 ];

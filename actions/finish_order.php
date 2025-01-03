@@ -26,13 +26,14 @@ function process_finish_order_request()
 		return [$error, null];
 	}
 	
+	// Update order status
 	$order_id = $_REQUEST['order_id'];
-	
 	[$error, $order] = update_order_status($order_id);
 	if (isset($error)) {
 		return [$error, null];
 	}
 	
+	// Analyze order status
 	$order_status = $order['status'];
 	$url = ($order_status == 'paid') ?
 		"{$SITE_URL}/download" :
