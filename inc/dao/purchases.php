@@ -159,6 +159,7 @@ function dao_build_prices($db, $product_ids, $latest_orders)
 				$major_update = false;
 				$order_price = null;
 				$price = 0;
+				$is_free = false;
 				
 				// Process other rows
 				while ($row = mysqli_fetch_array($result)) {
@@ -169,6 +170,7 @@ function dao_build_prices($db, $product_ids, $latest_orders)
 					// First row?
 					if (!isset($order_price)) {
 						$order_price = $row['price'];
+						$is_free = ($order_price <= 0);							
 						if ($version_raw !== $mapping_version) {
 							$price = $order_price;
 						}
@@ -201,7 +203,9 @@ function dao_build_prices($db, $product_ids, $latest_orders)
 					'purchase_raw' => $purchase_raw,
 					'purchase' => raw_to_version($purchase_raw),
 					'is_upgrade' => $is_upgrade,
-					'price' => $price
+					'is_free' => $is_free,
+					'price' => $price,
+					'product_price' => (isset($order_price)) ? $order_price : 0
 				];
 			} else {
 				// Purchase logic
@@ -227,6 +231,7 @@ function dao_build_prices($db, $product_ids, $latest_orders)
 				$row = mysqli_fetch_array($result);
 				if (isset($row)) {
 					$version_raw = $row['version_raw'];
+					$price = $row['price'];
 					
 					$data = [
 						'download_raw' => null,
@@ -234,7 +239,9 @@ function dao_build_prices($db, $product_ids, $latest_orders)
 						'purchase_raw' => $version_raw,
 						'purchase' => raw_to_version($version_raw),
 						'is_upgrade' => false,
-						'price' => $row['price']
+						'is_free' => ($price <= 0),
+						'price' => $price,
+						'product_price' => $price
 					];
 				}
 			}

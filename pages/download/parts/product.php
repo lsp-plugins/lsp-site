@@ -12,6 +12,7 @@ function show_product(&$csrf_tokens, $artifact, $user_purchases, $user_cart) {
 	$purchase_action = null;
 	$upgrade_action = null;
 	$remove_action = null;
+	$stroke_price = null;
 	$purchase_price = null;
 	$upgrade_price = null;
 	$available_version = implode('.', $artifact['version']);
@@ -26,13 +27,15 @@ function show_product(&$csrf_tokens, $artifact, $user_purchases, $user_cart) {
 
 	if (isset($user_purchases)) {
 		$build_price = $user_purchases[$product_id];
-		error_log("product_id={$product_id}, build_proce = " . var_export($build_price, true));
+		error_log("product_id={$product_id}, build_price = " . var_export($build_price, true));
 
 		if (isset($build_price)) {
 			$cost = $build_price['price'];
+			$product_cost = $build_price['product_price'];
 
 			if ($cost > 0) {
 				$cost_str = sprintf("%.2f", raw_to_price($cost));
+				$product_cost_str = sprintf("%.2f", raw_to_price($product_cost));
 				$cart_item = utl_find_first($user_cart, 'product_id', $product_id);
 
 				$price = $cost_str . $char_usd;
@@ -61,6 +64,9 @@ function show_product(&$csrf_tokens, $artifact, $user_purchases, $user_cart) {
 					if ($is_upgrade) {
 						$upgrade_version = $purchase_version;
 						$upgrade_price = $cost_str . $char_usd;
+						if ($product_cost > $cost) {
+							$stroke_price = $product_cost_str . $char_usd;
+						}
 					} else {
 						$available_version = $purchase_version;
 						$purchase_price = $cost_str;
@@ -85,7 +91,7 @@ function show_product(&$csrf_tokens, $artifact, $user_purchases, $user_cart) {
 					}
 				}
 			} else {
-				$price = 'free';
+				$price = $build_price['is_free'] ? 'free' : '';
 
 				$artifact_id = $artifact['artifact_id'];
 				$download_id = (isset($artifact_id)) ? make_download_id($artifact_id) : 'null';
@@ -106,8 +112,10 @@ function show_product(&$csrf_tokens, $artifact, $user_purchases, $user_cart) {
 		echo "</div>\n";
 		echo "<div class=\"tile-shop-left\">\n";
 		if (isset($upgrade_action)) {
-			echo "<div class=\"tile-shop-price-line-through\">{$price}</div>\n";
-				echo "<div class=\"tile-shop-price\">{$upgrade_price}</div>\n";
+			if (isset($stroke_price)) {
+				echo "<div class=\"tile-shop-price-line-through\">{$stroke_price}</div>\n";
+			}
+			echo "<div class=\"tile-shop-price\">{$upgrade_price}</div>\n";
 		}
 		else {
 			echo "<div class=\"tile-shop-price\">{$price}</div>\n";
