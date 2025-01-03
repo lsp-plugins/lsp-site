@@ -41,7 +41,7 @@ function show_order($order) {
 		} elseif ($order_status == 'refunded') {
 			$order_status = "Order successfully refunded at {$order['refunded']} UTC";
 		} elseif ($order_status == 'expired') {
-			$order_status = "Order has expired at {$order['cancelled']} UTC";
+			$order_status = "Order has expired at {$order['completed']} UTC";
 		} else {
 			$order_status = null;
 		}

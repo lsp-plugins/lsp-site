@@ -580,7 +580,7 @@ function synchronize_stripe_order_status($db, $order)
 	
 	if ($status == 'expired') {
 		[$error, $affected] = dao_update_order($db, $order_id, [
-			'completed' => db_current_timestamp(),
+			'completed' => db_unix_timestamp($payment_session['expires_at']),
 			'status' => 'expired'
 		]);
 		if (isset($error)) {
@@ -626,33 +626,48 @@ function synchronize_stripe_order_status($db, $order)
 	return [ null, false ];
 }
 
+function synchronize_draft_order($db, $order)
+{
+	$ctime = db_current_timestamp();
+	$expire = db_add_time_interval($order['created'], "+1 day");
+	$affected = 0;
+	
+	// Remove the order draft if it is too late
+	if (strcmp($expire, $ctime) < 0) {
+		$order_id = $order['order_id'];
+		[$error] = dao_remove_order($db, $order_id);
+		if (isset($error)) {
+			return ["Could not remove stale order draft {$order_id}: {$error}", null ];
+		} else {
+			mysqli_commit($db);
+		}
+		++$affected;
+	}
+	
+	return [ null, $affected > 0 ];
+}
+
+function synchronize_active_order($db, $order)
+{
+	$method = $order['method'];
+	$order_id = $order['order_id'];
+	
+	if ($method == 'stripe') {
+		return synchronize_stripe_order_status($db, $order);
+	}
+	
+	return [ "Unknown payment method '{$method}' for order {$order_id}", null ];
+}
+
 function synchronize_order_status($db, $order)
 {
 	$order_status = $order['status'];
 	
 	// Depending on the status of the order, we need to do some stuff
 	if ($order_status == 'draft') {
-		$ctime = db_current_timestamp();
-		$expire = db_add_time_interval($order['created'], "+1 day");
-		
-		// Remove the order draft if it is too late
-		if (strcmp($expire, $ctime) < 0) {
-			[$error] = dao_remove_order($db, $order['order_id']);
-			if (isset($error)) {
-				return ["Could not remove stale order draft {$order['order_id']}: {$error}", null ];
-			} else {
-				mysqli_commit($db);
-			}
-		}
+		return synchronize_draft_order($db, $order);
 	} elseif ($order_status == 'created') {
-		$method = $order['method'];
-		$order_id = $order['order_id'];
-		
-		if ($method == 'stripe') {
-			return synchronize_stripe_order_status($db, $order);
-		}
-		
-		return [ "Unknown payment method '{$method}' for order {$order_id}", null ];
+		return synchronize_active_order($db, $order);
 	}
 	
 	return [ "Could not finalize stale order {$order['order_id']}: unknown status {$order_status}", null ];
@@ -689,6 +704,41 @@ function cleanup_stale_orders()
 	}
 	
 	return $num_errors <= 0;
+}
+
+function update_order_status($order_id)
+{
+	$db = null;
+	
+	try {
+		// Connect to the database
+		$db = connect_db('customers');
+		if (!isset($db)) {
+			return ['Could not connect to database', null];
+		}
+		
+		// Fetch order by it's identifier
+		[$error, $order] = dao_find_order($db, $order_id);
+		if (isset($error)) {
+			return [$error, null];
+		}
+		
+		// Check order status
+		$order_status = $order['status'];
+		if ($order_status != 'created') {
+			return ["Bad order status: {$order_status}", null];
+		}
+		
+		// Synchronize order status
+		[$error, $updated] = synchronize_active_order($db, $order);
+		if (isset($error)) {
+			return [$error, null];
+		}
+		
+		return ($updated) ? dao_find_order($db, $order_id) : [null, $order];
+	} finally {
+		db_safe_rollback($db);
+	}
 }
 
 

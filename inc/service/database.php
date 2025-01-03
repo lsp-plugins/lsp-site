@@ -39,13 +39,24 @@ function db_safe_rollback($db) {
 
 function db_current_timestamp($delta = null) {
 	$curr_date = date("Y-m-d H:i:s");
-	if (!isset($delta))
+	if (!isset($delta)) {
 		return $curr_date;
+	}
 	
 	return date(
 		"Y-m-d H:i:s",
-		strtotime($delta, strtotime($curr_date))
-	);
+		strtotime($delta, strtotime($curr_date)));
+}
+
+function db_unix_timestamp($timestamp, $delta = null) {
+	$curr_date = date("Y-m-d H:i:s", $timestamp);
+	if (!isset($delta)) {
+		return $curr_date;
+	}
+		
+	return date(
+		"Y-m-d H:i:s",
+		strtotime($delta, strtotime($curr_date)));
 }
 
 function db_add_time_interval($timestamp, $delta) {
