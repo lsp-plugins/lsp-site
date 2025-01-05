@@ -1,4 +1,5 @@
 <?php
+require_once("./config/config.php");
 require_once('./inc/files.php');
 require_once('./inc/service/database.php');
 require_once('./inc/service/utils.php');
@@ -73,6 +74,18 @@ if (!check_site_feature('macos')) {
 
 // Determine what section to show
 $current_section = null;
+$current_architectures = [];
+
+[$error, $context] = get_session_context();
+if (!isset($error)) {
+	error_log("Session context is: " . var_export($context, true));
+	
+	$current_section = utl_get_value($context, 'pages.download.section');
+	$current_architectures = utl_get_value($context, 'pages.download.architectures');
+} else {
+	error_log("Error while getting session context: {$error}");
+}
+
 $browser_info = browser_info();
 if (array_key_exists('section', $_REQUEST)) {
 	$current_section = $_REQUEST['section'];
@@ -81,9 +94,6 @@ if (!isset($current_section)) {
 	if ((isset($browser_info)) && (array_key_exists('platform_family', $browser_info))) {
 		$current_section = $browser_info['platform_family'];
 	}
-}
-if (!isset($current_section)) {
-	$current_section = 'linux';
 }
 if ((!isset($current_section)) || (!array_key_exists($current_section, $sections))) {
 	$current_section = 'linux';
@@ -130,6 +140,7 @@ foreach ($sections as $key => $page) {
 							} else {
 								window.location.search = new_string;
 							}
+							ajax_post('navigation', { 'download.section': key });
 							redirect = true;
 						} else {
 							$(div).removeClass("dwnld-active");
@@ -192,3 +203,19 @@ foreach ($sections as $key => $page) {
 }
 ?>
 </div>
+
+<?php
+
+// Update currently selected page
+error_log("Updating session context");
+
+update_session_context(
+	function ($context) use ($current_section, $current_architectures) {
+		utl_set_value($context, 'pages.download.section', $current_section);
+		utl_set_value($context, 'pages.download.architectures', $current_architectures);
+		
+		return $context;
+	});
+
+?>
+

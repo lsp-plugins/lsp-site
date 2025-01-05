@@ -2,9 +2,9 @@
 chdir($_SERVER['DOCUMENT_ROOT']);
 
 require_once("./inc/top.php");
-require_once ('./inc/plugins.php');
-require_once ('./inc/site/preload.php');
-require_once ('./config/plugins.php');
+require_once('./inc/plugins.php');
+require_once('./inc/site/preload.php');
+require_once('./config/plugins.php');
 
 $bundle_id  = isset($_REQUEST['bundle']) ? $_REQUEST['bundle'] : '';
 $fancybox = isset($_REQUEST['fancybox']) ? $_REQUEST['fancybox'] : false;

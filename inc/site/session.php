@@ -23,18 +23,19 @@ function user_session_id()
 	// Connect to the database
 	$db = null;
 	try {
-		$db = connect_db('site');
-		if (!isset($db)) {
-			error_log("Not connected to database");
-			return null;
-		}
-			
 		// Read the cookie
 		if (!isset($_COOKIE['session_id'])) {
 			error_log("Not set session_id in cookies");
 			return null;
 		}
 		
+		// Connect to database
+		$db = connect_db('site');
+		if (!isset($db)) {
+			error_log("Not connected to database");
+			return null;
+		}
+	
 		// Check that user has passed valid session in a cookie parameter
 		$session_id = $_COOKIE['session_id'];
 		$session = dao_get_session($db, $session_id);
@@ -154,6 +155,50 @@ function get_session_user() {
 function get_session_desc() {
 	global $USER_SESSION;
 	return $USER_SESSION['session'];
+}
+
+function get_session_context() {
+	global $USER_SESSION;
+	
+	if (!isset($USER_SESSION['id'])) {
+		return [ 'No user session active', null ];
+	}
+	
+	$session_id = $USER_SESSION['id'];
+	
+	try {
+		// Connect to the database
+		$db = connect_db('site');
+		if (!isset($db)) {
+			return [ 'DB connection failure', null ];
+		}
+		
+		return dao_get_session_context($db, $session_id);
+	} finally {
+		db_safe_rollback($db);
+	}
+}
+
+function update_session_context($modifier) {
+	global $USER_SESSION;
+	
+	if (!isset($USER_SESSION['id'])) {
+		return [ 'No user session active', null ];
+	}
+	
+	$session_id = $USER_SESSION['id'];
+	
+	try {
+		// Connect to the database
+		$db = connect_db('site');
+		if (!isset($db)) {
+			return [ 'DB connection failure', null ];
+		}
+		
+		return dao_update_session_context($db, $session_id, $modifier);
+	} finally {
+		db_safe_rollback($db);
+	}
 }
 
 function cleanup_sessions() {

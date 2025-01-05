@@ -3,6 +3,7 @@ CREATE TABLE sessions (
   created TIMESTAMP NOT NULL DEFAULT current_timestamp,
   expire TIMESTAMP NOT NULL DEFAULT current_timestamp,
   user_id bigint(20) DEFAULT NULL,
+  context TEXT,
   
   CONSTRAINT PK_SESSION_ID UNIQUE(id) 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

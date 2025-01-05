@@ -175,4 +175,39 @@ function raw_to_price($price) {
 	return $price * 0.00001;
 }
 
+function utl_get_value($array, $key, $dfl = null) {
+	$path = explode('.', $key);
+	
+	foreach ($path as $key) {
+		if (!is_array($array)) {
+			return $dfl;
+		}
+		if (!array_key_exists($key, $array)) {
+			return $dfl;
+		}
+		$array = $array[$key];
+	}
+	
+	return $array;
+}
+
+function utl_set_value(&$array, $key, $value, $overwrite = true) {
+	$path = explode('.', $key);
+	
+	foreach ($path as $key) {
+		if (!is_array($array)) {
+			if (!$overwrite) {
+				return;
+			}
+			$array = [];
+		}
+		if (!array_key_exists($key, $array)) {
+			$array[$key] = [];
+		}
+		$array = &$array[$key];
+	}
+	
+	$array = $value;
+}
+
 ?>
