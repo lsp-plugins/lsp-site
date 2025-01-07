@@ -1,5 +1,6 @@
 <?php
 require_once("./config/config.php");
+require_once("./config/plugins.php");
 require_once('./inc/files.php');
 require_once('./inc/service/database.php');
 require_once('./inc/service/utils.php');

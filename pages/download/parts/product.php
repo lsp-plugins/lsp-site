@@ -1,6 +1,9 @@
 <?php
 
 function show_product(&$csrf_tokens, $artifact, $user_purchases, $user_cart) {
+	global $BUNDLES;
+	global $PLUGINS;
+	
 	$product = $artifact['product'];
 	$product_id = $artifact['product_id'];
 	$arch = $artifact['architecture'];
@@ -25,6 +28,30 @@ function show_product(&$csrf_tokens, $artifact, $user_purchases, $user_cart) {
 	// echo "<div class=\"tile-shop-inner\" id=\"product-{$product}-{$platform}-{$arch}\">\n";
 	// echo "<div>{$description}</div>\n";
 	// echo "<div>\n";
+	
+	$grp_image = '';
+	$plug_list = [];
+	$bundle = null;
+	foreach ($BUNDLES as $bundle)
+	{
+		if ($artifact['bundle'] == $bundle['id']) {
+			// Keep only related to bundle plugins and sort them alphabetically
+			foreach ($PLUGINS as $plugin) {
+				if ($plugin['bundle'] != $bundle['id']) {
+					continue;
+				}
+				
+				array_push($plug_list, $plugin);
+				
+				if ((strpos($plugin['id'], '_stereo') > 0) ||
+					(strpos($plugin['id'], '_x2') > 0) ||
+					(strlen($grp_image) <= 0))
+					$grp_image = "/img/plugins/${plugin['id']}.png";
+			}
+			
+			break;
+		}
+	}
 
 	if (isset($user_purchases)) {
 		$build_price = $user_purchases[$product_id];
@@ -112,10 +139,17 @@ function show_product(&$csrf_tokens, $artifact, $user_purchases, $user_cart) {
 
 	echo "<div class=\"tile-shop-inner\" id=\"product-{$unique_product_id}\">\n";
 	echo "<div class=\"tile-shop-header\">\n";
-	echo "<div class=\"tile-shop-name\">{$name}</div>\n";
+		echo "<div class=\"tile-shop-name\">{$name}</div>\n";
 		echo "<div class=\"tile-shop-version\">{$char_version}{$available_version}</div>\n";
+	echo "</div>\n";
+	if (isset($bundle)) {
+		echo "<div class=\"tile-inner\">\n";
+			echo "<a data-fancybox data-type=\"ajax\" data-src=\"/ajax/bundle.php?bundle={$bundle['id']}\" href=\"javascript:;\"\n>";
+				echo "<img src=\"{$grp_image}\" />\n";
+			echo "</a>\n";
 		echo "</div>\n";
-		echo "<div class=\"tile-shop-left\">\n";
+	}
+	echo "<div class=\"tile-shop-left\">\n";
 		if (isset($upgrade_action)) {
 			if (isset($stroke_price)) {
 				echo "<div class=\"tile-shop-price-line-through\">{$stroke_price}</div>\n";

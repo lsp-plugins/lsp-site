@@ -75,6 +75,7 @@ CREATE TABLE product
   name VARCHAR(64) NOT NULL,
   description VARCHAR(128),
   price BIGINT(20),
+  bundle_name varchar(32),
 
   PRIMARY KEY (id),
   CONSTRAINT UK_PRODUCT_NAME UNIQUE KEY (name)
@@ -123,7 +124,7 @@ DROP VIEW IF EXISTS v_artifacts;
 CREATE VIEW v_artifacts
 AS
   SELECT
-    p.id product_id, p.name product, p.description description,
+    p.id product_id, p.name product, p.bundle_name bundle, p.description description,
     a.build_id build_id, b.type_id type_id, bt.name type,
     a.id artifact_id,
     b.major version_major, b.minor version_minor, b.micro version_micro, b.version_raw version_raw,
@@ -149,7 +150,7 @@ DROP VIEW IF EXISTS v_latest_artifacts;
 CREATE VIEW v_latest_artifacts
 AS
   SELECT
-    p.id product_id, p.name product, p.description description,
+    p.id product_id, p.name product, p.bundle_name bundle, p.description description,
     a.build_id build_id, b.type_id type_id, bt.name type,
     a.id artifact_id,
     b.major version_major, b.minor version_minor, b.micro version_micro, b.version_raw version_raw,
