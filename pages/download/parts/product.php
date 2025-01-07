@@ -20,6 +20,7 @@ function show_product(&$csrf_tokens, $artifact, $user_purchases, $user_cart) {
 	$checkout_action = '';
 	$char_usd = ' $';
 	$char_version = ' v. ';
+	$unique_product_id = "{$product}-{$platform}-{$arch}";
 
 	// echo "<div class=\"tile-shop-inner\" id=\"product-{$product}-{$platform}-{$arch}\">\n";
 	// echo "<div>{$description}</div>\n";
@@ -80,7 +81,11 @@ function show_product(&$csrf_tokens, $artifact, $user_purchases, $user_cart) {
 					$csrf_token = $csrf_tokens[$product_id];
 
 					if (isset($cart_item)) {
-						$checkout_action = "<a class=\"cart-check cart-button\" href=\"/actions/checkout\">Checkout</a>";
+						$checkout_action =
+							"<form id=\"checkout-{$unique_product_id}\" method=\"POST\" action=\"/actions/checkout\">" .
+							"<input type=\"hidden\" value=\"{$csrf_token}\">" .
+							"<a class=\"cart-check cart-button\" href=\"javascript:submit_form('checkout-{$unique_product_id}');\">Checkout</a>" .
+							"</form>";
 						$remove_action = "<a class=\"cart-remove cart-button\" href=\"javascript:ajax_post('remove_from_cart', { 'product_id': {$product_id}, 'token': '{$csrf_token}' });\">Remove</a>\n";
 					} else {
 						if (isset($build_price['download_raw'])) {
@@ -105,10 +110,10 @@ function show_product(&$csrf_tokens, $artifact, $user_purchases, $user_cart) {
 		$download = "<a class=\"cart-download cart-button\" href=\"/signin\">Download</a>\n";
 	}
 
-	echo "<div class=\"tile-shop-inner\" id=\"product-{$product}-{$platform}-{$arch}\">\n";
+	echo "<div class=\"tile-shop-inner\" id=\"product-{$unique_product_id}\">\n";
 	echo "<div class=\"tile-shop-header\">\n";
 	echo "<div class=\"tile-shop-name\">{$name}</div>\n";
-			echo "<div class=\"tile-shop-version\">{$char_version}{$available_version}</div>\n";
+		echo "<div class=\"tile-shop-version\">{$char_version}{$available_version}</div>\n";
 		echo "</div>\n";
 		echo "<div class=\"tile-shop-left\">\n";
 		if (isset($upgrade_action)) {

@@ -26,7 +26,7 @@ function show_user_cart($user_cart, $user_purchases) {
 
 		echo "<div>\n";
 		echo "<form action=\"{$SITEROOT}/actions/checkout\" method=\"POST\">\n";
-		echo "<input type=\"hidden\" value=\"$csrf_token\">\n";
+		echo "<input type=\"hidden\" value=\"{$csrf_token}\">\n";
 		echo "<input type=\"submit\" value=\"Checkout\" name=\"checkout\">\n";
 		echo "<input type=\"button\" value=\"Empty\" name=\"empty\" onclick=\"javascript:ajax_post('empty_cart', { 'token': '{$csrf_token}' });\">\n";
 		echo "</form>\n";

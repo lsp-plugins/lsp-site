@@ -17,3 +17,7 @@ function ajax_post(url, data) {
 		dataType: 'text'
 	});
 }
+
+function submit_form(id) {
+	$('#' + id).submit();
+}
