@@ -1131,6 +1131,10 @@ div.g-recaptcha, div.g-recaptcha div {
   width: 100%;
 }
 
+#fb_form div p {
+  text-align: left;
+}
+
 .footer-logo-wrapper, .footer-menu, .footer-links, .footer-copy, .footer-text {
   display: inline-block;
   padding: 8px;

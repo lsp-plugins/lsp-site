@@ -3,7 +3,9 @@
 
 <form id="fb_form" action="<?=$SITEROOT?>/?page=feedback" method="GET">
 	<div>
-		<p><?php echo $message ?></p>
+		<?php echo $message ?>
+	</div>
+	<div>
 		<input type="button" value="<?php echo $button ?>" onclick="location.reload();">
 	</div>
 </form>

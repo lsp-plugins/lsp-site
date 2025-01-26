@@ -6,6 +6,7 @@ require_once("./inc/top.php");
 require_once("./inc/service/captcha.php");
 require_once("./inc/service/validation.php");
 require_once("./inc/site/notifications.php");
+require_once("./inc/site/banhammer.php");
 
 function verify_request() {
 	$error = null;
@@ -14,6 +15,13 @@ function verify_request() {
 	$error = verify_isset($error, $_POST, 'text', 'Text');
 	$error = verify_csrf_token($error, 'feedback', $_POST, 'token');
 	$error = verify_captcha($error);
+	
+	$error = apply_feeback_banhammer([
+			'name' => $_POST['name'],
+			'email' => $_POST['email'],
+			'text' => $_POST['text']
+		]
+	);
 	
 	return $error;
 }
