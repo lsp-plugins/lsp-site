@@ -2,7 +2,6 @@
 
 $BANHAMMER = [
 	[
-// 		'name' => 'Eric Jones',
 		'email' => 'ericjonesmyemail@gmail.com',
 		'text' => [
 			'My name’s Eric and I’m betting you’d like your website',
@@ -26,6 +25,17 @@ $BANHAMMER = [
 			'<p>If anyone occasionally is reading this message, please consider that service ' .
 			'<a href="https://trustedleadgeneration.com">trustedleadgenerations.com</a> that Eric Jones ' .
 			'is forcing to promote is a scam and garbage that we won\'t ever use.</p>'
+	],
+	[
+		'email' => 'isamblog1982@myrambler.ru',
+		'text' => [
+			'Мы знаeм, чтo нaxoдить нoвыx клиeнтoв и yвeличивaть пpoдажи – этo ключeвая зaдaчa для любoгo бизнеcа',
+			'Hашa ycлyга пpeдлагaет вaм вcё неoбходимoe для уcпешного запyска pеклaмныx кaмпaний',
+			'Экoнoмия вpeмeни – вы cоcpедотaчиваeтecь на cвoeм бизнecе, пoкa мы зaнимaeмся пpивлечением клиeнтoв',
+			'нашa кoманда экcпepтов использyет пеpeдoвыe мeтoды для дocтижения мaкcимaльнoй oтдaчи от вaшиx инвeстиций',
+			'мы pазрaбaтывaем индивидyaльныe pешения, иcxoдя из кoнкpeтныx пoтpeбнocтeй вaшeгo бизнеcа',
+			'https://t.me/directyandex_bot'
+		]
 	]
 ];
 
