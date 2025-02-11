@@ -28,7 +28,9 @@ function apply_feeback_banhammer($parameters)
 		if (isset($rule['email']) && isset($user_email)) {
 			$emails = (is_array($rule['email'])) ? $rule['email'] : [ $rule['email'] ];
 			foreach ($emails as $check) {
-				if ($user_name == $check) {
+				if ($user_email == $check) {
+					return $message;
+				} elseif (str_starts_with($check, '@') && str_ends_with(strtolower($user_email), strtolower($check))) {
 					return $message;
 				}
 			}

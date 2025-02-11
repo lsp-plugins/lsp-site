@@ -36,6 +36,14 @@ $BANHAMMER = [
 			'мы pазрaбaтывaем индивидyaльныe pешения, иcxoдя из кoнкpeтныx пoтpeбнocтeй вaшeгo бизнеcа',
 			'https://t.me/directyandex_bot'
 		]
+	],
+	[
+		'email' => [
+			'@dont-reply.me',
+			'@do-not-respond.me',
+			'@dont-respond.me',
+			'@dont-reply.me'
+		]
 	]
 ];
 
