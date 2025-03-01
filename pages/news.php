@@ -1,5 +1,33 @@
 <h1>NEWS</h1>
 
+<h3>2024-03-01</h3>
+
+<p>New LSP Plugins release, now with accelerated UI!</p>
+<p>For many years LSP Plugins have had serious performance issues when drawing UI with Cairo graphics library.</p>
+<p>Now we introduce new graphics backend that uses OpenGL graphisc for rendering widgets. We still keep possibility to
+easily switch back to Cairo if you meet some problems using OpenGL backend.</p>
+
+<ul>
+<li>Implemented default OpenGL rendering engine for the UI for X11-based operating systems. The rendering engine can be switched back to Cairo by setting LSP_WS_LIB_GLXSURFACE=off environment variable.</li>
+<li>Added possibility to use custom scaling for each plugin bundle.</li>
+<li>Added highlighting of active item in file navigator nearby sample preview.</li>
+<li>Several optimizations related to scaling widgets in the graphical toolkit library.</li>
+<li>Updated several core libraries for better support of MacOS.</li>
+<li>Additional AVX-512 optimizations of code DSP library.</li>
+<li>Several changes in Sampler and Multisampler plugin series:</li>
+<ul>
+  <li>Implemented possibility to Drag&Drop drumkits, SFZ files and LSPC files directly to the plugin's window for import purpose.</li>
+  <li>Muting button does not disable the listen button.</li>
+  <li>Added 'velocity' button that allows to disable or enable the volume control of a sample by the velocity value of the MIDI note.</li>
+  <li>Added automatic instrument name assign same to current sample file name if UI behavior option 'Take instrument name from file' is enabled and the name of instrument is empty or similar to currently selected sample file.</li>
+  <li>Updated several labels in the UI.</li>
+</ul>
+<li>Added workaround for Renoise host related to latency reporting by VST2 and VST3 plugins on state load.</li>
+<li>Fixed unnecessary output parameter cleanup when importing configuration that caused several bugs when importing plugin state from file.</li>
+<li>Fixed regression related to impossibility of setting proper values for in several parameters in the VST3 plugin format.</li>
+<li>Fixed some typos in UI.</li>
+</ul>
+
 <h3>2024-12-21</h3>
 
 <p>LSP Plugins 9th anniversary release 1.2.20 is available!</p>
