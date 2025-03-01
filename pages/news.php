@@ -4,7 +4,7 @@
 
 <p>New LSP Plugins release, now with accelerated UI!</p>
 <p>For many years LSP Plugins have had serious performance issues when drawing UI with Cairo graphics library.</p>
-<p>Now we introduce new graphics backend that uses OpenGL graphisc for rendering widgets. We still keep possibility to
+<p>Now we introduce new graphics backend that uses OpenGL library for rendering widgets. We still keep possibility to
 easily switch back to Cairo if you meet some problems using OpenGL backend.</p>
 
 <ul>
