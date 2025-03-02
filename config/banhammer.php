@@ -38,6 +38,14 @@ $BANHAMMER = [
 		]
 	],
 	[
+		'text' => [
+			'The Click Engine',
+			'Looking to drive high-quality traffic to your site',
+			'http://hamsterkombat.',
+			'https://hamsterkombat.',
+		]
+	],
+	[
 		'email' => [
 			'@dont-reply.me',
 			'@do-not-respond.me',
