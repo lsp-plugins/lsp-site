@@ -1,8 +1,29 @@
 <h1>NEWS</h1>
 
-<h3>2024-03-01</h3>
+<h3>2025-05-19</h3>
 
-<p>New LSP Plugins release, now with accelerated UI!</p>
+<p>New LSP Plugins release 1.2.22, with new plugin and some sort of UI improvements!</p>
+
+<ul>
+<li><b>Implemented Phaser plugin series.</b></li>
+<li>Implemented overlay widgets which allow to hide rarely used controls under special buttons which trigger them to pop up.</li>
+<li>Added Feedback Drive control for Chorus and Flanger plugin series.</li>
+<li>Significantly reduced quantization noise for Chorus and Flanger plugin series.</li>
+<li>Better support of widgets activity and coloring in the toolkit library.</li>
+<li>Added pitch knob for pitching files to the Impulse Responses and Impulse Reverb plugin series.</li>
+<li>Optimized resampling algorithms.</li>
+<li>Added possibility to launch standalone plugins in minimized window state.</li>
+<li>Source code now builds for ARM-based MacOS but without the UI support.</li>
+<li>Fixed problems related to usage of OpenGL under ARM-based devices which do not support Core OpenGL 3.3 with GLSL 3.3 and above.</li>
+<li>Fixes in OpenGL shaders for support of GLSL 1.80 and several bogus OpenGL API implementations.</li>
+<li>Fixed broken transport (tempo BPM) synchronization for CLAP plugin format.</li>
+<li>Fixed some command line options that caused JACK version to crash.</li>
+<li>Fixed regression related to creating new global configuration file.</li>
+</ul>
+
+<h3>2025-03-01</h3>
+
+<p>New LSP Plugins release 1.2.21, now with accelerated UI!</p>
 <p>For many years LSP Plugins have had serious performance issues when drawing UI with Cairo graphics library.</p>
 <p>Now we introduce new graphics backend that uses OpenGL library for rendering widgets. We still keep possibility to
 easily switch back to Cairo if you meet some problems using OpenGL backend.</p>
