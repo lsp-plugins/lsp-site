@@ -1,5 +1,16 @@
 <h1>NEWS</h1>
 
+<h3>2025-06-01</h3>
+
+<p>An interview to Linux Audio Plugin Development site!</p>
+
+<p>This sunday the Vladimir Sadovnikov, the founder of Linux Studio Plugins project,
+has submitted <a href="https://linuxaudio.dev/linux-audio-developers-spotlight/linux-studio-plugins" alt="Interview">and interview to the LAPD project</a>!
+</p>
+<p>There you can get his vision about Open Source and Proprietary world, some insights from the LSP Project's kitchen,
+further plans and even more!</p>
+<p>Hope you will enjoy the interview!</p>
+
 <h3>2025-05-19</h3>
 
 <p>New LSP Plugins release 1.2.22, with new plugin and some sort of UI improvements!</p>
