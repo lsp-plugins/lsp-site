@@ -5,7 +5,7 @@
 <p>An interview to Linux Audio Plugin Development site!</p>
 
 <p>This sunday Vladimir Sadovnikov, the founder of Linux Studio Plugins project,
-has submitted <a href="https://linuxaudio.dev/linux-audio-developers-spotlight/linux-studio-plugins" alt="Interview">and interview to the LAPD project</a>!
+has submitted <a href="https://linuxaudio.dev/linux-audio-developers-spotlight/linux-studio-plugins" alt="Interview">an interview to the LAPD project</a>!
 </p>
 <p>There you can get his vision about Open Source and Proprietary world, some insights from the LSP Project's kitchen,
 further plans and even more!</p>
