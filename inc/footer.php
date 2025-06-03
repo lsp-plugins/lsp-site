@@ -52,7 +52,7 @@
 				<a data-fancybox data-src="#hidden-content" href="javascript:;">
 					<div class="donate-button-footer"></div>
 				</a>
-				<p>&copy; Linux Studio Plugins, 2015-2024</p>
+				<p>&copy; Linux Studio Plugins, 2015-2025</p>
 				<p>All rights reserved</p>
 				<?php require_once('./lib/google-gtag.php') ?>
 				<a
