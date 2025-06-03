@@ -442,7 +442,7 @@
 </div>
 
 <p>There are also widgets of the same to<strong><em> &lt;group&gt; </em></strong>meaning: <strong><em>&lt;tabs&gt; and &lt;cgroup&gt;</em></strong>. They are designed for paging purpose and paginized access to the huge amount of control elements such
-	as filter parameters in the equalizer or difference sample manipulations in sampler.</p>
+	as filter parameters in the equalizer or different sample manipulations in sampler.</p>
 
 <div class="images">
 	<img class="border" style="max-width: 100%;" src="<?= $CTL ?>/tabs.png">
