@@ -72,7 +72,7 @@ foreach ($BUNDLES as $bundle)
 					<a href="https://github.com/free-audio/clap/" target="_blank" class="formats-links clap smooth" alt="CLAP"></a>
 				<? } ?>
 				<?php if (isset($plug['gst_uid']) && (strlen($plug['gst_uid']) > 0)) { ?>
-					<a href="https://gstreamer.freedesktop.org/" target="_blank" class="formats-links clap smooth" alt="GST"></a>
+					<a href="https://gstreamer.freedesktop.org/" target="_blank" class="formats-links gst smooth" alt="GST"></a>
 				<? } ?>
 				<?php if (isset($plug['ladspa_label']) && (strlen($plug['ladspa_label']) > 0)) { ?>
 					<a href="https://www.ladspa.org/" target="_blank" class="formats-links ladspa smooth" alt="LADSPA"></a>
