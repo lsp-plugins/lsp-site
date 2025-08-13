@@ -46,6 +46,21 @@ $BANHAMMER = [
 		]
 	],
 	[
+		'text' => [
+			'http://graph.org',
+			'https://graph.org',
+			'BTC received'
+		]
+	],
+	[
+		'email' => [
+			'http://',
+			'https://',
+			'Fast Transfer',
+			'BTC received'
+		]
+	],
+	[
 		'email' => [
 			'@dont-reply.me',
 			'@do-not-respond.me',
