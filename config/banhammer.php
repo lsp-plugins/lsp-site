@@ -65,7 +65,13 @@ $BANHAMMER = [
 			'@dont-reply.me',
 			'@do-not-respond.me',
 			'@dont-respond.me',
-			'@dont-reply.me'
+			'@dont-reply.me',
+			'*http://',
+			'*https://'
+		],
+		'name' => [
+			'*http://',
+			'*https://'
 		]
 	]
 ];
