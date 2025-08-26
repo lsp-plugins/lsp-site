@@ -85,7 +85,12 @@
 		<?php } ?>
 		<li><b>Link</b> - the shared memory link is used to receive sidechain signal.</li>
 	</ul>
-	<?php if ($sc) { ?>
+	<li><b>Pre-mix</b> - shows pre-mix control overlay.</li>
+	<?php if ($m == 'lr') { ?>
+		<li><b>L/R Link</b> - enables linking between Left and Right channel controls so change of one forces the sibling to become the same value.</li>
+	<?php } elseif ($m == 'ms') { ?>
+		<li><b>M/S Link</b> - enables linking between Mid and Side channel controls so change of one forces the sibling to become the same value.</li>
+	<?php } elseif ($m == 's') { ?>
 	<li><b>Stereo Split</b> - enables independent compression of left and right channels.</li>
 	<?php } ?>
 </ul>
@@ -157,5 +162,17 @@
 	<li><b>Compression curve</b> - the compression curve graph and the gain reduction meter.</li>
 </ul>
 
-
+<p><b>Pre-mix control overlay:</b></p>
+<ul>
+	<?php if ($sc) { ?>
+	<li><b>In -> SC</b> - the amount of signal from input channel added to the Sidechain.</li>
+	<?php } ?>
+	<li><b>In -> Link</b> - the amount of signal from input channel added to the shared memory link.</li>
+	<?php if ($sc) { ?>
+	<li><b>SC -> In</b> - the amount of signal from sidechain input channel added to the input channel.</li>
+	<li><b>SC -> Link</b> - the amount of signal from sidechain input channel added to the shared memory link.</li>
+	<?php } ?>
+	<li><b>Link -> In</b> - the amount of signal from shared memory link added to the input channel.</li>
+	<li><b>Link -> SC</b> - the amount of signal from shared memory link added to the sidechain channel.</li>
+</ul>
 

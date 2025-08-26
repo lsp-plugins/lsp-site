@@ -20,7 +20,7 @@
 	</ul>
 	<li><b>Punch detection</b> - detection of peaks above the average level of the audio. For that case two type of RMS values are computed:</li>
 	<ul>
-		<li><b>Long time</b> - the long-time RMS value (by default, the estimation period is 400 ms) to estimate the average level of the audio signal.</li> 
+		<li><b>Long time</b> - the long-time RMS value (by default, the esitmation period is 400 ms) to estimate the average level of the audio signal.</li> 
 		<li><b>Short time</b> - the short-time RMS value (by default, the estimation period is less than 20 ms and depends on the frequency range) to estimate the envelope of the changing in time signal.</li>
 	</ul>
 	<li><b>Punch filtering</b> - additional stage to eliminate some noise from the signal not associated with punches.</li>

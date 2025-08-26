@@ -40,7 +40,7 @@
 											title="Donate using Liberapay" rel="noopener">Liberapay</a>
 									</div>
 									<div class="pay">
-										<a href="https://paypal.me/sadko4u" target="_blank"
+										<a href="https://paypal.me/borTCreative" target="_blank"
 											title="Donate with PayPal" rel="noopener">PayPal</a>
 									</div>
 									<div class="ptr">

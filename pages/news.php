@@ -1,5 +1,46 @@
 <h1>NEWS</h1>
 
+<h3>2025-08-26</h3>
+
+<p>New LSP Plugins 1.2.23 available!</p>
+<p>We also appreciate if you <a href="https://paypal.me/borTCreative">make donations</a> to our regular member Boris
+Gotsulenko as he is going through hard times and needs some financial support. The current LSP UI/UX design you see
+is the result of his hard work.</p>
+<p>This is a pretty heavy release and contains many new features for different plugins and some minor bug fixes:</p>
+<ul>
+<li>Added experimental support of UI for MacOS using FreeType and Cairo libraries. Contributed by Marvin Edeler.</li>
+<li>Implemented human-friendly preset management in the plugin's UI.</li>
+<li>VST3 plugin state format changed, not backward-compatible with previous versions of plugins. Downgrading version may cause plugin state loss.</li>
+<li>Added AHDBSSR (Attack, Hold, Decay, Break, Slope, Sustain, Release) envelope control over loaded samples in Sampler and Multisampler plugin series.</li>
+<li>Added DC offset control for Clipper and Multiband Clipper plugin series.</li>
+<li>Added frequency linking button to the Phaser plugin series that allows to link minimum and maximum LFO frequencies and to keep logarithmic frequency range being constant.</li>
+<li>Added support of linear axis for frequency in Spectrum Analyzer plugin series.</li>
+<li>Added frequency inspection mode to the Spectrum Analyzer plugin series activated by 'Inspect' button or Ctrl + Left Mouse Button on the graph.</li>
+<li>Added support of minimum-phase filter mode for Loudness Compensator plugin series.</li>
+<li>Added 'M/S Link' and 'S/C Link' buttons to LeftRigth and MidSide versions of following plugins:</li>
+<ul>
+  <li>Compressor, Dynamics Builder, Expander, Gate;</li>
+  <li>Multiband plugins: Compressor, Dynamics Builder, Expander, Gate;</li>
+  <li>Equalizers: Parametric Equalizer and Graphic Equalizer;</li>
+  <li>Crossover plugin.</li>
+</ul>
+<li>Added audio channel pre-mixing controls for the following plugins:</li>
+<ul>
+  <li>Compressor, Dynamics Processor, Expander, Gate and Limiter;</li>
+  <li>Multiband plugins: Compressor, Dynamics Processor, Expander, Gate and Limiter;</li>
+  <li>GOTT Compressor.</li>
+</ul>
+<li>Extended collection of built-in rooms for Room Builder plugin series by Boris Gotsulenko aka borT.</li>
+<li>Added exciter-like effect presets for Phaser plugin series contributed by Attila Schler.</li>
+<li>Added possibility to automatically play samples when navigating file list.</li>
+<li>Added command line option for JACK that allows to specify client name.</li>
+<li>Some bugfixes and improvements in VST3 plugin format, now UI works for editorhost demo application from the Steinberg VST3 SDK.</li>
+<li>Additional optimizations of 3D space mathematics with AVX instruction set.</li>
+<li>Fixed improper AVX-512 optimization for lanczos kernel genration function which could cause improper resampling of audio files and yield some plugins to not to work properly.</li>
+<li>Fixed bug in frequency split editing for Mid/Side and Left/Right versions of Crossover plugin.</li>
+<li>Fixed bug in Mid/Side conversion of stereo signal on 32-bit and 64-bit ARM processors. Contributed by Asahi Lina.</li>
+</ul>
+
 <h3>2025-06-01</h3>
 
 <p>An interview to Linux Audio Plugin Development site!</p>

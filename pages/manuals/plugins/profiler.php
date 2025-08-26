@@ -1,6 +1,6 @@
 <?php
 	plugin_header();
-
+	
 	$s      =   (strpos($PAGE, '_stereo') > 0);
 ?>
 

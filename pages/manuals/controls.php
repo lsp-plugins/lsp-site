@@ -65,7 +65,7 @@
 
 <section id="AudioFile">
 	<h2>Audio File</h2>
-
+	
 	<div class="grid-2col-man">
 		<div class="thc-descr">
 			<p>File widget &ndash; initial condition:</p>
@@ -75,7 +75,7 @@
 			<p>File widget &ndash; file loaded:</p>
 			<img class="plugin" style="max-width: 100%;" src="<?= $CTL ?>file_loaded.png">
 		</div>
-
+	
 		<div class="thc-descr">
 			<p>
 				AudioFile widget is used for loading and editing audio files. It tells to the plugin the actual location of file on
@@ -109,7 +109,7 @@
 
 <section id="Button">
 	<h2>Button</h2>
-
+	
 	<p>
 		Buttons are mostly used to turn on/turn off some binary parameter. Rarely they are also used for switching between
 		different processing modes (See <?php plugin_ref('comp_delay_mono'); ?> plugin for example). There are two different
@@ -131,9 +131,9 @@
 		sequence of events by pressing left mouse button over the button and repeatedly moving
 		mouse cursor outside widget's area and back.
 	</p>
-
+	
 	<p>For space economy and clarity improving purposes buttons may be combined with LEDs.</p>
-
+	
 	<p style="text-align:center">Here is example of different button widgets:</p>
 	<div class="images">
 		<img src="<?= $CTL ?>button_tap.png">
@@ -153,14 +153,14 @@
 
 <section id="Combo">
 	<h2>Combo</h2>
-
+	
 	<p>Combo is a drop-down list that in normal state displays only currently selected item. When clicking
 	by left mouse button, it shows drop-down list with all possible variants for choosing. Only one list item
 	may be selected at the same time.</p>
-
+	
 	<p>It is very useful for defining controls that use enumerations or for switching between different
 	control groups.</p>
-
+	
 	<p style="text-align:center">Here is example of combo box widgets:</p>
 	<div class="images">
 		<img src="<?= $CTL ?>combo.png">
@@ -169,15 +169,15 @@
 
 <section id="ComboGroup">
 	<h2>Combo Group</h2>
-
+	
 	<p>Combo group is a <b>Group</b> control that allows to select the displayed content by calling a drop-down list.
 	The drop-down list is accessible by clicking with left mouse button the header header of the group.</p>
-
+	
 	<p style="text-align:center">Here is example of combo group widget:</p>
 	<div class="images">
 		<img class="border" src="<?= $CTL ?>combo_group.png">
 	</div>
-
+	
 	<p style="text-align:center">When clicking the group header, we get all possible variants for choosing widget groups for displaying:</p>
 	<div class="images">
 		<img class="border" src="<?= $CTL ?>combo_group_select.png">
@@ -216,7 +216,7 @@
 		<li>Adjust the UI scaling for high-DPI displays.</li>
 		<li>Adjust the font scaling for people with disabled vision.</li>
 	</ul>
-
+	
 	<div class="images">
 		<img class="border" src="<?= $CTL ?>footer.png">
 	</div>
@@ -241,7 +241,7 @@
 		in the DSP core of plugin. It may contain lines, text labels, different curves (meshes),
 		markers and dots.
 	</p>
-
+	
 	<p style="text-align:center">Example of graph widget:</p>
 	<div class="grid-2col-man">
 	<div class="images">
@@ -251,7 +251,7 @@
 		<img src="<?= $CTL ?>graph_osc.png">
 	</div>
 	</div>
-
+	
 	<p>
 		All elements of graph except dots can not change input parameters of plugin. Dots may control
 		simultaneously up to three parameters by the following events:
@@ -267,7 +267,7 @@
 	left-clicking, this makes the change of parameters more accurate. The movement may be cancelled
 	by pressing the opposite button of the mouse.</p>
 	<p>Additional tolerance for mouse scroll may be achieved by pressing shift key on keyboard</p>
-
+	
 	<p style="text-align:center">Example showing dot controls:</p>
 	<div class="images">
 		<img src="<?= $CTL ?>dots.png">
@@ -276,10 +276,10 @@
 
 <section id="Group">
 	<h2>Group</h2>
-
+	
 	<p>Group widget is a special widget that allows to visually distinguish set of widgets that
 	control parameters of some device or set of similar devices.</p>
-
+	
 	<p style="text-align:center">Example showing controls consolidated into group:</p>
 	<div class="images">
 		<img class="border" src="<?= $CTL ?>group.png">
@@ -319,7 +319,7 @@
 		<li>Select the 3D rendering backend if plugin requires 3D rendering.</li>
 		<li>Apply different built-in presets if they are present and supported by the plugin.</li>
 	</ul>
-
+	
 	<p>Plugins typically use the following model code format: <b>XXXX&nbsp;MM&nbsp;NN&nbsp;CC</b>, where:</p>
 	<ul>
 		<li><b>XXXX</b> &ndash; arconym from the full name of plugin, for example <b>GE</b> for <b>Grafischer Entzerrer</b>.</li>
@@ -334,11 +334,11 @@
 			<li><b>MS</b> &ndash; middle and side channels.</li>
 		</ul>
 	</ul>
-
+	
 	<div class="images">
 		<img class="border" src="<?= $CTL ?>menu_bar.png">
 	</div>
-
+	
 	<p>
 		The content of the exported/imported text file can be manually edited.
 		Each parameter has detailed description. Below an example of the configuration file is present:
@@ -357,49 +357,49 @@
 	#   https://lsp-plug.in/
 	#
 	#-------------------------------------------------------------------------------
-
+	
 	# Bypass: true/false
 	bypass = false
-
+	
 	# Mode: 0..2
 	#   0: Samples
 	#   1: Distance
 	#   2: Time
 	mode = 2
-
+	
 	# Samples [samp]: 0..10000
 	samp = 0
-
+	
 	# Meters [m]: 0..200
 	m = 0
-
+	
 	# Centimeters [cm]: 0.000000..100.000000
 	cm = 0.000000
-
+	
 	# Temperature [°C]: -60.000000..60.000000
 	t = 20.000000
-
+	
 	# Time [ms]: 0.000000..1000.000000
 	time = 3.349236
-
+	
 	# Dry amount [G]: 0.000000..10.000000
 	dry = 0.000000
-
+	
 	# Wet amount [G]: 0.000000..10.000000
 	wet = 1.000000
-
+	
 	# Output gain [G]: 0.000000..10.000000
 	g_out = 1.000000
-
+	
 	#-------------------------------------------------------------------------------
 	</pre>
 </section>
 
 <section id="Indicator">
 	<h2>Indicator</h2>
-
+	
 	<p>Indicators are widgets that display measured or computed value by the plugin.</p>
-
+	
 	<p style="text-align:center">Example of indicator widget:</p>
 	<div class="images">
 		<img src="<?= $CTL ?>indicator.png">
@@ -408,7 +408,7 @@
 
 <section id="InlineDisplay">
 	<h2>Inline display</h2>
-
+	
 	<p>Inline displays are not widgets or elements of plugin's UI at all. Instead of this, they're part of
 	the host UI since the <a href="https://ardour.org/">Ardour DAW</a> implemented Inline Display extension for
 	LV2 format.</p>
@@ -416,7 +416,7 @@
 	available in <a href="https://harrisonconsoles.com/">Mixbus DAW</a> as the relative to Ardour product.</p>
 	<p>Because inline display is an LV2-specific extension, it is available only for LV2 version of LSP plugins.
 	But standalone JACK versions of plugins that support inline displays in LV2, draw them on window's icon.</p>
-
+	
 	<p style="text-align:center">Example of inline displays:</p>
 	<div class="images">
 		<img src="<?= $CTL ?>inline_display1.png">
@@ -443,7 +443,7 @@
 	located nearby the knob . While the knob widget allows to adjust the value with some step, the 'Parameter'
 	widget allows to set the precise value by double-clicking the displayed value and entering the new desired
 	value by the keyboard.</p>
-
+	
 	<p style="text-align:center">Example showing knob controls:</p>
 	<div class="images">
 		<img src="<?= $CTL ?>knob_blue.png">
@@ -458,7 +458,7 @@
 <section id="Label">
 	<h2>Label</h2>
 	<p style="text-align:center">Labels are widgets that display static text information.<p>
-
+	
 	<p style="text-align:center">Example of label widgets:</p>
 	<div class="images">
 		<img class="border" src="<?= $CTL ?>labels.png">
@@ -520,10 +520,10 @@
 
 <section id="SampleEditor">
 	<h2>Sample Editor</h2>
-
+	
 	<p>Sample Editor widget is used for viewing and editing audio samples. It is similar to AudioFile wiget but
 	unlike AudioFile widget, it does not allow to load files from file system.</p>
-
+	
 	<p>By default if there is no sample data, the file widget displays
 	<b style="color: #00c000">'No data'</b> text.</p>
 	<p>Example of sample editor widget:</p>
@@ -534,7 +534,7 @@
 
 <section id="SharedMemoryLink">
 	<h2>Shared Memory Link</h2>
-
+	
 	<p>The shared memory link allows to connect plugins via a shared memory segment. This allows one set of plugins
 	to allocate some named shared memory segment and submit some data (like audio stream) to it. The other set of
 	plugins can connect to the shared memory segment and read data from it. Some plugins allow to work with multiple
@@ -562,12 +562,13 @@
 
 <section id="TabControl">
 	<h2>Tab Control</h2>
-
+	
 	<p>Tab control allows to group multiple elements into tabs. When a specific tab is active, the only set of
 	   controls that belong to the tab becomes visible.</p>
-
+	
 	<p>Example of the tab control:</p>
 	<div class="images">
 		<img class="border" src="<?= $CTL ?>tab_control.png">
 	</div>
 </section>
+
