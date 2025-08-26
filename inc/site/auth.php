@@ -340,7 +340,7 @@ function cleanup_user_tokens() {
 	$db = null;
 	try {
 		// Connect to the database
-		$db = connect_db('customers');
+		$db = connect_db('customers_admin');
 		if (!isset($db)) {
 			return false;
 		}
