@@ -43,6 +43,14 @@ $BANHAMMER = [
 			'Looking to drive high-quality traffic to your site',
 			'http://hamsterkombat.',
 			'https://hamsterkombat.',
+			'http://domoscope.ru',
+			'https://domoscope.ru',
+			'http://rjadom.ru',
+			'https://rjadom.ru',
+			'http://domo-graph.ru',
+			'https://domo-graph.ru',
+			'http://test.rusosky.com',
+			'https://test.rusosky.com'
 		]
 	],
 	[
