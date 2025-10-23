@@ -16,12 +16,15 @@ function verify_request() {
 	$error = verify_csrf_token($error, 'feedback', $_POST, 'token');
 	$error = verify_captcha($error);
 	
-	$error = apply_feeback_banhammer([
-			'name' => $_POST['name'],
-			'email' => $_POST['email'],
-			'text' => $_POST['text']
-		]
-	);
+	if (!isset($error))
+	{
+		$error = apply_feeback_banhammer([
+				'name' => $_POST['name'],
+				'email' => $_POST['email'],
+				'text' => $_POST['text']
+			]
+		);
+	}
 	
 	return $error;
 }
