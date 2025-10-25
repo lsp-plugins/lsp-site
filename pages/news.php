@@ -1,6 +1,6 @@
 <h1>NEWS</h1>
 
-<h3>2025-10-25</h3>
+<h3>2025-10-26</h3>
 <p>New LSP Plugins 1.2.24 available!</p>
 
 <ul>
