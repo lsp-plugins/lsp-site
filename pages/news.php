@@ -1,5 +1,23 @@
 <h1>NEWS</h1>
 
+<h3>2025-10-25</h3>
+<p>New LSP Plugins 1.2.24 available!</p>
+
+<ul>
+<li><b>Implemented Ring-Modulated sidechain plugin series.</b><li>
+<li>Implemented Multiband Ring-Modulated sidechain plugin series.</li>
+<li>Implemented A/B preset switching support by plugins.</li>
+<li>Added support of integrated loudness metering for Referencer plugin series.</li>
+<li>Added True Peak limiting modes to the Limiter and Multiband Limiter plugin series.</li>
+<li>Added Piano keyboard layout to all plugins that provide frequency graph.</li>
+<li>Added support of BeginEdit and EndEdit events for CLAP, LV2, VST2 and VST3 formats.</li>
+<li>Moved Dry, Wet and Dry/Wet knobs into a separate Mix overlay for Trigger plugin series.</li>
+<li>Fixed frequency range display for Multiband Compressor, Expander, Gate and Dynamics Processor plugin series.</li>
+<li>Fixed regressions in LV2 plugin wrapper related to setting path parameters.</li>
+<li>Fixed crash when loading project with Loudness Compensator plugin in IIR mode.</li>
+<li>Fixed VST3 plugins crash under Ardour related to improper IRunLoop interface operations based on invalid API calls by the DAW.</li>
+</ul>
+
 <h3>2025-08-26</h3>
 
 <p>New LSP Plugins 1.2.23 available!</p>
