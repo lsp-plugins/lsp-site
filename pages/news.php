@@ -4,7 +4,7 @@
 <p>New LSP Plugins 1.2.24 available!</p>
 
 <ul>
-<li><b>Implemented Ring-Modulated sidechain plugin series.</b><li>
+<li><b>Implemented Ring-Modulated sidechain plugin series.</b></li>
 <li>Implemented Multiband Ring-Modulated sidechain plugin series.</li>
 <li>Implemented A/B preset switching support by plugins.</li>
 <li>Added support of integrated loudness metering for Referencer plugin series.</li>
