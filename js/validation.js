@@ -97,3 +97,8 @@ function verify_email_isset(form, key) {
 
 	return true;
 }
+
+function verify_check_isset(form, key) {
+	var item = form.elements[key];
+	return (item != null) && (item.checked === true);
+}

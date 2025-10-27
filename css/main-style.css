@@ -242,6 +242,56 @@ a:hover.link_no_visit, a:visited:hover.link_no_visit {
   -ms-transition: all 0.1s ease;
 }
 
+.cookie-banner-post {
+  max-width: 950px;
+  display: flex;
+  margin: 0 auto;
+  justify-content: center;
+  padding: 5px 10px;
+}
+
+.cookie-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #373944;
+  color: #d8dadc;
+  padding: 15px 0;
+  text-align: center;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
+
+.cookie-banner-button {
+  border: 2px solid #1b1c22;
+  background: #21222a;
+  color: #d8dadc;
+  font-size: 13px;
+  font-family: NDC;
+  transition: all 0.3s ease;
+  -webkit-transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
+  -ms-transition: all 0.3s ease;
+  /* height: 32px; */
+  width: 100px;
+  cursor: pointer;
+}
+
+.cookie-banner-text {
+  padding-right: 10px;
+  text-align: right;
+}
+
+.cookie-banner-button:focus, .cookie-banner-button:hover {
+  background: #1b1c22;
+  transition: all 0.3s ease;
+  -webkit-transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
+  -ms-transition: all 0.3s ease;
+}
+
+
 .manual_plugin_list {
   columns: 3;
   -webkit-columns: 3;
@@ -983,7 +1033,7 @@ div.plugin_select div {
   display: inline-block;
 }
 
-.fs-name, .fs-email, .fs-message, .form-field {
+.fs-name, .fs-email, .fs-message, .form-field, .fs-privacy {
   float: right;
   display: block;
   width: 100%;
@@ -1003,6 +1053,18 @@ div.plugin_select div {
 .fs-send>input[type="button"], .fs-send>input[type="submit"], .form-button>input[type="button"], .form-button>input[type="submit"] {
   width: auto;
   margin-top: 5px;
+}
+
+.fs-privacy>input[type="checkbox"] {
+  float: left;
+  width: 24px;
+  height: 24px;
+  margin: 0 10px 0 0;
+}
+
+.fs-privacy>input[type="checkbox"]::before {
+  background: #21222a;
+  color: #d8dadc;
 }
 
 /* Input elements */

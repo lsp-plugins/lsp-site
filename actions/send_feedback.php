@@ -13,6 +13,7 @@ function verify_request() {
 	$error = verify_isset($error, $_POST, 'name', 'Name');
 	$error = verify_email($error, $_POST, 'email', 'E-mail');
 	$error = verify_isset($error, $_POST, 'text', 'Text');
+	$error = verify_checked($error, $_POST, 'privacy_agreement', true);
 	$error = verify_csrf_token($error, 'feedback', $_POST, 'token');
 	$error = verify_captcha($error);
 	

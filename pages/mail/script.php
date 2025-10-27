@@ -16,9 +16,13 @@
 			alert("Please enter at least some words you want to tell us.");
 			return false;
 		}
+		if (!verify_check_isset(form, 'privacy_agreement')) {
+			alert("You need to confirm our privacy agreement before submitting the form.");
+			return false;
+		}
 		return true;
 	}
-	
+
 	frm.submit(function (ev) {
 		var form = ev.currentTarget;
 		ev.preventDefault();
@@ -26,7 +30,7 @@
 		if (!verify_feedback_form(form)) {
 			return;
 		}
-	
+
 		$.ajax({
 			type: frm.attr('method'),
 			url: frm.attr('action'),

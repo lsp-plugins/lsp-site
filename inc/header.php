@@ -15,6 +15,11 @@
 		<script type="text/javascript" src="https://www.google.com/recaptcha/api.js" async defer></script>
 	</head>
 	<body>
+
+
+	<?php require("./inc/cookie_alert.php") ?>
+
+
 	<div class="lsp-content smooth">
 		<!-- Header -->
 		<div id="header">

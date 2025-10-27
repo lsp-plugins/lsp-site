@@ -32,6 +32,7 @@
 							echo "</li>\n";
 						}
 					?>
+					<li class="menu-li-footer "><a href="?page=privacy">Privacy Policy</a></li>
 				</ul>
 			</div>
 			<div class="footer-links">
