@@ -3,7 +3,7 @@
 	$PACKAGE = array(
 		'artifact' => "lsp-plugins",
 		'name' => "Linux Studio Plugins",
-		'version' => "1.2.24",
+		'version' => "1.2.25",
 		'brand' => "LSP",
 		'short' => "LSP",
 		'full' => "Linux Studio Plugins",

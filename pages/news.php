@@ -1,5 +1,17 @@
 <h1>NEWS</h1>
 
+<h3>2025-11-04</h3>
+<p>New LSP Plugins 1.2.25 available!</p>
+<p>This release provides several bug fixes for regressions of previous release.</p>
+<ul>
+<li>Improved plugin metadata validation tool in plugin framework.</li>
+<li>VST3 data synchronization between DSP and UI is now performed in the UI thread if possible.</li>
+<li>Fixed VST3 crash on JUCE-based hosts related to improper IRunLoop handling.</li>
+<li>Fixed Room Builder plugin that could not render impulse responses for some built-in rooms.</li> 
+<li>Fixed possible SIGFPE crash on LADSPA descriptor generation related to division by zero error.</li>
+<li>Fixed data transport for LV2 plugins that caused many annoying log messages in Ardour.</li>
+</ul>
+
 <h3>2025-10-26</h3>
 <p>New LSP Plugins 1.2.24 available!</p>
 
