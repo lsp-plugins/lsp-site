@@ -9,7 +9,7 @@
 <h2>Vladimir Sadovnikov</h2>
 <a class="fancybox" href="<?=$SITEROOT?>/img/members/sadko.jpg"><img src="<?=$SITEROOT?>/img/members/sadko.jpg" class="portrait" alt="Vladimir Sadovnikov"></a>
 <p>
-	Vladimir Sadovnikov is the founder and the main developer of the LSP project from Saint Petersburg, Russia.
+	Vladimir Sadovnikov is the founder and the main developer of the LSP project.
 	For over than ten years he became an experienced software developer with knowledge of x86 Assembly, C, C++, Perl and Java languages.
 	Beside the programming he is an extreme-style guitar player specialized on wide range of Heavy Metal styles, extreme vocalist, composer and non-professional sound engineer.
 	After he became a GNU/Linux user and developer, he started to explore sound processing under GNU/Linux and met lack of some useful software.
@@ -36,7 +36,7 @@
 <h2>Boris Gotsulenko</h2>
 <a class="fancybox" href="<?=$SITEROOT?>/img/members/bor-t.jpg"><img src="<?=$SITEROOT?>/img/members/bor-t.jpg" class="portrait" alt="Boris Gotsulenko"></a>
 <p>
-	Boris, bor-T, the former Windows-addictive, now user of Linux from Moldova.
+	Boris, bor-T, the former Windows-addictive, now user of Linux.
 	In the beginning of 2020 got familiar with LSP Plugins and found
 	frequent application of them in his own projects. Noticed the
 	superb quality of sound but found the UI too motley. Once has met

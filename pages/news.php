@@ -866,7 +866,7 @@ The full list of changes:</p>
 <li>Updated behaviour of limiter in classic mode.</li>
 <li>Implemented multilingual interface support.</li>
 <li>Implemented workaround for Drag&Drop support initiated by GTK-based applications.</li>
-<li>Added russian translations of the user interface.</li>
+<li>Added more translations of the user interface.</li>
 <li>Added desktop menu for standalone JACK plugins (contributed by David Runge).</li>
 <li>Added scalable vector graphics (SVG) logo (contributed by <a href="http://tkach.de/">Sergey Tkach</a>).</li>
 <li>Added 4.5 dB/octave envelope compensation for spectrum analyzer, renamed purple noise to violet noise in UI.</li>
