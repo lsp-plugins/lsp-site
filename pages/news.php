@@ -1,5 +1,27 @@
 <h1>NEWS</h1>
 
+<h3>2025-12-21</h3>
+
+<p>New LSP Plugins 1.2.26 available!</p>
+<p>Today we celebrate oure 10th anniversary! Ten years flew by in a flash since our 1.0.0 release!</p>
+<p>LSP plugins grew from a small enthusiastic project into a serious collection of powerful tools!</p>
+<p>Thanks to all who supported us, gave ideas, reported bugs, published pull requests and promoted the project!</p>
+<p>In this release we introduce a new but powerful toy!</p>
+<ul>
+<li><b>Implemented Matcher plugin series</b>.</li>
+<li>Implemented metadata revisioning to not to corrupt parameter automation in DAWs like Ardour related to changing port indices when some new parameter is added.</li>
+<li>Added possibility to select between host-friendly and user-frienfly values when exporting configuration to the file.</li>
+<li>Added 'smooth' parameter in Limiter and Multiband Limiter plugins that allows to adjust the smoothnes of the ALR knee.</li>
+<li>Optimized spectrum analyzer module: reduced memory usage and memory copying.</li>
+<li>Some optimizations related to plugin port mappings in the UI.</li>
+<li>Removed duplicate and not working filter point thickness settings in UI behavior menu.</li>
+<li>Fixed out-of sync ALR attack and release timings for the Limiter module when changing the sample rate.</li>
+<li>Fixed moduleinfo.json generation and validation for VST3.</li>
+<li>Fixed possible garbage at the end of KVT BLOB serialization.</li>
+<li>Fixed endianess-related bugs in VST3 headers.</li>
+<li>Fixed some bugs in VST3 plugin state deserialization.</li>
+</ul>
+
 <h3>2025-11-04</h3>
 <p>New LSP Plugins 1.2.25 available!</p>
 <p>This release provides several bug fixes for regressions of previous release.</p>
