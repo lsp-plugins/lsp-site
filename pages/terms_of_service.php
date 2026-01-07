@@ -2,6 +2,8 @@
 
 <h1>Terms of Service</h1>
 
+<h2>Preamble</h2>
+
 <p><b>Last Updated:</b> 2026-01-01</p>
 
 <p>These Terms of Service ("Terms") govern your purchase and use of the official distribution services
