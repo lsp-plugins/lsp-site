@@ -9,6 +9,8 @@ require_once("./lib/recaptcha/autoload.php");
 
 function validate_register_request() {
 	$error = null;
+	$error = verify_checked($error, $_POST, 'privacy_agreement', true);
+	$error = verify_checked($error, $_POST, 'tos_agreement', true);
 	$error = verify_email($error, $_POST, 'email', 'Email');
 	$error = verify_strong_password($error, $_POST, 'password', 'New password');
 	$error = verify_isset($error, $_POST, 'password2', 'Password confirmation');

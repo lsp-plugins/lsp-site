@@ -21,6 +21,15 @@
 			alert("Password and it's confirmation do not match.");
 			return false;
 		}
+		if (!verify_check_isset(form, 'privacy_agreement')) {
+			alert("You need to accept our privacy aggreement.");
+			return false;
+		}
+		if (!verify_check_isset(form, 'tos_agreement')) {
+			alert("You need to accept our terms of service.");
+			return false;
+		}
+		
 		return true;
 	}
 
