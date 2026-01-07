@@ -28,6 +28,10 @@ sort($all_keys);
 
 ?>
 
+<?php
+require_once("./pages/download/parts/terms_of_service.php");
+?>
+
 <h2>Latest release for Linux</h2>
 
 <p>The latest release version for GNU/Linux is <?= htmlspecialchars($latest_version); ?>.</p>

@@ -9,6 +9,10 @@ $artifact_file = $src_artifact['file'];
 $source_link = htmlspecialchars("{$CODE_REPO}/releases/download/{$latest_version}/{$artifact_file}");
 ?>
 
+<?php
+require_once("./pages/download/parts/terms_of_service.php");
+?>
+
 <h2>Source code</h2>
 
 <p>Source code is available under terms of <a href="https://www.gnu.org/licenses/lgpl-3.0.en.html" alt="GNU LGPLv3">GNU Lesser Public License version 3</a></p>
