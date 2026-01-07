@@ -174,13 +174,12 @@ foreach ($sections as $key => $page) {
 <h1>DOWNLOAD</h1>
 
 <?php
-require_once('./pages/parts/user_verification_status.php');
-
 preload_images('svg/downloads');
 ?>
 
 <?php
 require("./pages/download/parts/terms_of_service.php");
+require_once('./pages/parts/user_verification_status.php');
 ?>
 
 <h2>Select a platform</h2>

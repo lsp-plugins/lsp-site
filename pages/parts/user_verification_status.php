@@ -10,10 +10,12 @@ if (isset($retry_period)) {
 <p>For full functionality we've sent you verification link on your e-mail. Please follow this link. If you didn't receive the e-mail,
 you can request to send it again.</p>
 
-<input id="email_button" type="submit" value="Send e-mail" name="verification" <?= ($resend_period > 0) ? 'disabled' : '' ?>>
-<input type="hidden" name="token" value="<?= make_csrf_token('email_verification') ?>">
+<div style="clear:both;">
+	<input id="email_button" type="submit" value="Send e-mail" name="verification" <?= ($resend_period > 0) ? 'disabled' : '' ?>>
+	<input type="hidden" name="token" value="<?= make_csrf_token('email_verification') ?>">
+</div>
 
-<div id="email_countdown_message" style="display: none;">
+<div id="email_countdown_message" style="display: none; clear:both;">
 	Re-send available after: <span id="email_countdown"></p>
 </div>
 
