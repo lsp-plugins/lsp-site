@@ -179,6 +179,12 @@ require_once('./pages/parts/user_verification_status.php');
 preload_images('svg/downloads');
 ?>
 
+<?php
+require("./pages/download/parts/terms_of_service.php");
+?>
+
+<h2>Select a platform</h2>
+
 <div class="tile-flex-container">
 	<div class="tile-flex" style="margin-bottom:10px;">
 

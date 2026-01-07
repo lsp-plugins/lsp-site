@@ -9,10 +9,6 @@ ksort($artifacts);
 
 ?>
 
-<?php
-require_once("./pages/download/parts/terms_of_service.php");
-?>
-
 <h2>Latest release for Windows</h2>
 
 <script>

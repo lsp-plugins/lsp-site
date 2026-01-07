@@ -46,16 +46,16 @@ However, we want you to be satisfied:</p>
 	<tbody>
 		<tr>
 			<td>Technical Issues</td>
-			<th>If the software fails to launch or has a critical bug preventing use on a supported OS, 
-			we will offer a full refund if we cannot resolve it within 14 days.</th>
+			<td>If the software fails to launch or has a critical bug preventing use on a supported OS, 
+			we will offer a full refund if we cannot resolve it within 14 days.</td>
 		</rd>
 		<tr>
 			<td>Accidental Purchase</td>
-			<th>If you purchased but did not download the file, we offer a 14-day "no questions asked" refund.</th>
+			<td>If you purchased but did not download the file, we offer a 14-day "no questions asked" refund.</td>
 		</rd>
 		<tr>
 			<td>Change of Mind</td>
-			<th>No refunds are provided once the software has been downloaded.</th>
+			<td>No refunds are provided once the software has been downloaded.</td>
 		</rd>
 	</tbody>
 </table>
