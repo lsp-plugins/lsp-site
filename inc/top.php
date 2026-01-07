@@ -1,6 +1,7 @@
 <?php
 
 require_once("./config/config.php");
+require_once("./config/pages.php");
 require_once("./config/plugins.php");
 require_once("./inc/site/csrf.php");
 require_once("./inc/site/features.php");
