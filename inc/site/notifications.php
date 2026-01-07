@@ -32,7 +32,7 @@ function notify_password_reset($email, $token_id) {
 		]);
 }
 
-function notify_user_feedback($name, $email, $text) {
+function notify_user_feedback($name, $email, $text, $support_id) {
 	global $MAIL_ADDR;
 	
 	return send_mail(
@@ -43,7 +43,8 @@ function notify_user_feedback($name, $email, $text) {
 		[
 			'name' => $name,
 			'email' => $email,
-			'text' => $text
+			'text' => $text,
+			'support_id' => isset($support_id) ? $support_id : ''
 		]);
 }
 

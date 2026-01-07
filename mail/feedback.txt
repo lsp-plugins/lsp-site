@@ -1,3 +1,5 @@
-Received feedback from %%name%% <%%email%%>:
+Received feedback from: %%name%% <%%email%%>
+Support identifier: %%support_id%%
+Text:
 
 %%text%%

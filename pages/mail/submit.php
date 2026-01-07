@@ -13,7 +13,8 @@
 				<div class="fs-name">Your name:<input type="text" name="name"></div>
 				<div class="fs-email">Contact e-mail:<input type="email" name="email" value="<?= (isset($user)) ? htmlspecialchars($user['email']) : '' ?>"></div>
 				<?php if (isset($user)) { ?>
-				<div class="fs-support-id">Support identifier: <?= htmlspecialchars($user['support_id']) ?></div>
+				<div class="fs-support-id">Support identifier:</div>
+				<div class="fs-support-id"><?= htmlspecialchars($user['support_id']) ?></div>
 				<?php } ?>
 				<div class="fs-privacy">
 					<span>I agree with <a data-fancybox data-type="ajax" data-src="/ajax/privacy.php" href="javascript:;">privacy policy</a></span>

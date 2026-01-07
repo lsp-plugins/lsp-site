@@ -3,6 +3,7 @@
 chdir($_SERVER['DOCUMENT_ROOT']);
 
 require_once("./inc/top.php");
+require_once("./inc/site/auth.php");
 require_once("./inc/service/captcha.php");
 require_once("./inc/service/validation.php");
 require_once("./inc/site/notifications.php");
@@ -36,10 +37,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	$message = verify_request();
 
 	if (!isset($message)) {
-		$result = notify_user_feedback(
-			$_POST['name'],
-			$_POST['email'],
-			$_POST['text']);
+		// Ensure that user session is set
+		ensure_user_session_is_set();
+		$user = get_session_user();
+		$support_id = isset($user) ? $user['support_id'] : '';
+		
+		$result = notify_user_feedback($_POST['name'], $_POST['email'], $_POST['text'], $support_id);
 		if ($result) {
 			$message = 'Thank you for feedback! We will respond to your e-mail as soon as possible.';
 			$button = 'Write more';
