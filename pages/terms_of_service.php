@@ -69,8 +69,8 @@ However, we want you to be satisfied:</p>
     the framework it uses.</li>
     <li><b>Support:</b> Technical support is limited to installation issues and "bugs" in the official build.
     We do not provide support for custom forks or modifications made to the source code by the user. To gain the support,
-    you can create an issue on our <a href="https://github.com/lsp-plugins/lsp-plugins/issues">issue tracker</a> or
-    contact us directly via the <a href="<?=$SITEROOT?>/?page=feedback">feedback form </a>and specifying your support
+    you can create an issue on our <a href="https://github.com/lsp-plugins/lsp-plugins/issues" target="_blank">issue tracker</a> or
+    contact us directly via the <a href="<?=$SITEROOT?>/?page=feedback" target="_blank">feedback form </a>and specifying your support
     identifier given at the registration stage.</li>
 </ul>
 
