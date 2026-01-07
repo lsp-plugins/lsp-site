@@ -1,4 +1,4 @@
-<div style="">
+<div style="max-width: 800px;">
 
 <h1>Terms of Service</h1>
 

@@ -1,4 +1,5 @@
-<div style="">
+<div style="max-width: 800px;">
+
 <h1>Privacy Policy</h1>
 
 <h2>Preamble</h2>
