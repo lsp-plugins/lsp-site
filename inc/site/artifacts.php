@@ -3,7 +3,7 @@
 require_once("./inc/dao/artifacts.php");
 require_once("./inc/site/download.php");
 
-function create_artifacts($file_names, $build_type) {
+function create_artifacts($file_names, $build_type, $price) {
 	$platform_mapping = [
 		'BSD' => 'freebsd',
 		'FreeBSD' => 'freebsd',
@@ -50,7 +50,7 @@ function create_artifacts($file_names, $build_type) {
 				$result = dao_create_artifact($db,
 					$product, $build_type, 'src',
 					[$major, $minor, $micro],
-					'any', 'noarch', $basename);
+					'any', 'noarch', $basename, 0);
 				
 			} elseif (preg_match("/^{$product_pattern}-doc-{$version_pattern}\\.{$archive_pattern}$/", $basename, $matches)) {
 				// Documentation
@@ -59,7 +59,7 @@ function create_artifacts($file_names, $build_type) {
 				$result = dao_create_artifact($db,
 					$product, $build_type, 'doc',
 					[$major, $minor, $micro],
-					'any', 'noarch', $basename);
+					'any', 'noarch', $basename, 0);
 				
 			} elseif (preg_match("/^{$product_pattern}-{$fmt_pattern}-{$version_pattern}-{$platform_pattern}-{$architecture_pattern}\\.{$archive_pattern}$/", $basename, $matches)) {
 				// Binary build
@@ -79,7 +79,7 @@ function create_artifacts($file_names, $build_type) {
 				$result = dao_create_artifact($db,
 					$product, $build_type, $format,
 					[$major, $minor, $micro],
-					$platform, $architecture, $basename);
+					$platform, $architecture, $basename, $price);
 				
 			} elseif (preg_match("/^{$product_pattern}-{$version_pattern}-{$platform_pattern}-{$architecture_pattern}\\.{$archive_pattern}$/", $basename, $matches)) {
 				// Binary build
@@ -99,7 +99,7 @@ function create_artifacts($file_names, $build_type) {
 				$result = dao_create_artifact($db,
 					$product, $build_type, 'multi',
 					[$major, $minor, $micro],
-					$platform, $architecture, $basename);
+					$platform, $architecture, $basename, $price);
 				
 			} else {
 				$result = [ "Could not parse artifact {$file}", null ];

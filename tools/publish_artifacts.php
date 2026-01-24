@@ -31,7 +31,9 @@ if (!isset($options['type'])) {
 	exit(2);
 }
 
-$errors = create_artifacts($files, $options['type']);
+$price = (isset($options['price'])) ? $options['price'] : 0;
+
+$errors = create_artifacts($files, $options['type'], price_to_raw($price));
 
 if (isset($errors)) {
 	foreach ($errors as $error) {

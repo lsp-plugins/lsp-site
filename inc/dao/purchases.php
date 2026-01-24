@@ -182,8 +182,8 @@ function dao_build_prices($db, $product_ids, $latest_orders)
 						$price = $order_price;
 					} else if (isset($update_price)) {
 						if (!$major_update) {
-							// We don't take more than 80% price for upgrades
-							$price = max($price + $update_price, intval($order_price * 0.8));
+							// We don't take more than 80% of original price for upgrades
+							$price = min($price + $update_price, intval($order_price * 0.8));
 						}
 					}
 					

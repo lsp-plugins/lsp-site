@@ -185,7 +185,7 @@ function dao_get_build($db, $product_id, $build_type_id, $version) {
 	return null;
 }
 
-function dao_create_build($db, $product_id, $build_type_id, $version) {
+function dao_create_build($db, $product_id, $build_type_id, $version, $price) {
 	
 	$build_id = dao_get_build($db, $product_id, $build_type_id, $version);
 	if (isset($build_id)) {
@@ -194,11 +194,11 @@ function dao_create_build($db, $product_id, $build_type_id, $version) {
 	
 	$stmt = null;
 	try {
-		$stmt = mysqli_prepare($db, "INSERT INTO build(product_id, issue_date, type_id, major, minor, micro, version_raw) " .
-			"VALUES (?, current_date, ?, ?, ?, ?, ?)");
+		$stmt = mysqli_prepare($db, "INSERT INTO build(product_id, issue_date, type_id, major, minor, micro, version_raw, price) " .
+			"VALUES (?, current_date, ?, ?, ?, ?, ?, ?)");
 		
 		$raw_version = ($version[0] * 1000 + $version[1]) * 1000 + $version[2];
-		mysqli_stmt_bind_param($stmt, 'iiiiii', $product_id, $build_type_id, $version[0], $version[1], $version[2], $raw_version);
+		mysqli_stmt_bind_param($stmt, 'iiiiii', $product_id, $build_type_id, $version[0], $version[1], $version[2], $raw_version, );
 		if (mysqli_stmt_execute($stmt)) {
 			return mysqli_insert_id($db);
 		}
@@ -211,7 +211,7 @@ function dao_create_build($db, $product_id, $build_type_id, $version) {
 	return null;
 }
 
-function dao_create_artifact($db, $product, $build_type, $format, $version, $platform, $architecture, $file_name) {
+function dao_create_artifact($db, $product, $build_type, $format, $version, $platform, $architecture, $file_name, $price) {
 	$product_id = dao_create_product($db, $product);
 	if (!isset($product_id)) {
 		return ["Could not register product '{$product_id}'", null];
@@ -222,7 +222,7 @@ function dao_create_artifact($db, $product, $build_type, $format, $version, $pla
 		return ["Unknown build type '{$build_type}'", null];
 	}
 	
-	$build_id = dao_create_build($db, $product_id, $build_type_id, $version);
+	$build_id = dao_create_build($db, $product_id, $build_type_id, $version, $price);
 	if (!isset($build_id)) {
 		return ["Could not create build type '{$build_type}' version '{$version[0]}.{$version[1]}.{$version[2]}' for product {$product}", null];
 	}
