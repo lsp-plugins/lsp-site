@@ -408,7 +408,7 @@ a:hover.link_no_visit, a:visited:hover.link_no_visit {
   margin-inline-end: 10px;
 }
 
-.cart-button, .cart-button:hover, .cart-button:visited, .cart-button:visited:hover {
+.cart-button, .cart-button:hover, .cart-button:visited, .cart-button:visited:hover, .cart-inactive, .cart-inactive:hover, .cart-inactive:visited, .cart-inactive:visited:hover {
   display: inline-block;
   color: #25272e;
   font-weight: bold;
@@ -422,7 +422,7 @@ a:hover.link_no_visit, a:visited:hover.link_no_visit {
   background-repeat: no-repeat;
   background-position: right;
   background-size: contain;
-  min-width: 75px;
+  min-width: 115px;
   text-align: center;
   transition: all 0.3s ease;
   -webkit-transition: all 0.3s ease;
@@ -450,16 +450,16 @@ a:hover.link_no_visit, a:visited:hover.link_no_visit {
   background-image: url(../svg/download_icon_button.svg);
   position: absolute;
   bottom: 0;
-  left: 0;
+  right: 0;
   /* margin-bottom: 0px; */
 }
 
 .cart-check {
   background-color: #44a88f;
   background-image: url(../svg/cart_check_icon_button.svg);
-  position: absolute;
+  /* position: absolute;
   bottom: 0;
-  right: 0;
+  right: 0; */
   /* margin-bottom: 0px; */
 }
 
@@ -470,25 +470,6 @@ a:hover.link_no_visit, a:visited:hover.link_no_visit {
 .cart-inactive, .cart-inactive:hover, .cart-inactive:visited, .cart-inactive:visited:hover {
   background-color: #444755;
   cursor: default;
-  display: inline-block;
-  color: #25272e;
-  font-weight: bold;
-  font-size: 13px;
-  letter-spacing: 1px;
-  text-transform: UPPERCASE;
-  text-decoration: none;
-  padding: 0px 23px 0px 5px;
-  height: 18px;
-  margin: 5px 0px;
-  background-repeat: no-repeat;
-  background-position: right;
-  background-size: contain;
-  min-width: 75px;
-  text-align: center;
-  transition: all 0.3s ease;
-  -webkit-transition: all 0.3s ease;
-  -moz-transition: all 0.3s ease;
-  -ms-transition: all 0.3s ease;
 }
 
 
@@ -1436,6 +1417,7 @@ tr.stroke {
   display: grid;
   grid-gap: 12px;
   grid-template-columns: 1fr 1fr 1fr;
+  white-space: nowrap;
 }
 
 .tile-shop-inner {
@@ -1475,20 +1457,19 @@ tr.stroke {
   margin: -5px 0px;
 }
 
-.tile-shop-left {
-  float: left;
+.tile-shop-left, .tile-shop-right {
   width: 50%;
-  height: 110px;
+  height: 84px;
   position: relative;
   margin: -5px 0px;
 }
 
+.tile-shop-left {
+  float: left;
+}
+
 .tile-shop-right {
   float: right;
-  width: 50%;
-  height: 110px;
-  position: relative;
-  margin: -5px 0px;
 }
 
 .tile-shop-upgrade {}
@@ -1510,7 +1491,7 @@ tr.stroke {
 }
 
 .tile-shop-download {
-  float: left;
+  float: right;
 }
 
 .tile-shop-add {

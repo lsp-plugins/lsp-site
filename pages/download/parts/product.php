@@ -150,49 +150,38 @@ function show_product(&$csrf_tokens, $artifact, $user_purchases, $user_cart) {
 	}
 	if (isset($user_purchases)) {
 	echo "<div class=\"tile-shop-left\">\n";
-		if (isset($upgrade_action)) {
+		// if (isset($upgrade_action)) {
 			if (isset($stroke_price)) {
 				echo "<div class=\"tile-shop-price-line-through\">{$stroke_price}</div>\n";
-			}
+			// }
 			echo "<div class=\"tile-shop-price\">{$upgrade_price}</div>\n";
 		}
 		else {
 			echo "<div class=\"tile-shop-price\">{$price}</div>\n";
-		}
-		if (isset($download)) {
-			echo "<div class=\"tile-shop-download\">{$download}</div>\n";
-		}
-		else {
-			echo "<div class=\"tile-shop-download\"><div class=\"cart-download cart-inactive\">Download</div>\n</div>\n";
 		}
 		echo "</div>\n";
 		echo "<div class=\"tile-shop-right\">\n";
 			if (isset($purchase_action)) {
 				echo "<div class=\"tile-shop-add\">{$purchase_action}</div>\n";
 			}
-			else {
-				echo "<div class=\"tile-shop-add\"><div class=\"cart-add cart-inactive\">Add to cart</div>\n</div>\n";
-			}
-			if (isset($remove_action)) {
+			elseif (isset($remove_action)) {
 				echo "<div class=\"tile-shop-remove\">{$remove_action}</div>\n";
 			}
-			else {
-				echo "<div class=\"tile-shop-remove\"><div class=\"cart-remove cart-inactive\">Remove</div>\n</div>\n";
-			}
-			if (isset($upgrade_action)) {
+			elseif (isset($upgrade_action)) {
 				echo "<div class=\"tile-shop-upgrade\">\n";
 					echo "<div class=\"tile-shop-upgrade-text\">{$upgrade_action}</div>\n";
 				echo "</div>\n";
 			}
-			else {
-				echo "<div class=\"tile-shop-upgrade\">\n";
-				echo "<div class=\"tile-shop-upgrade-text\"><div class=\"cart-upgrade cart-inactive\">Upgrade V. 0.0.00</div>\n</div>\n";
-				echo "</div>\n";
-			}
 			if ($checkout_action != '') {
 				echo "<div class=\"tile-shop-cart-checkout\">{$checkout_action}</div>\n";
-			} else {
+			} elseif ($price != 'free') {
 				echo "<div class=\"tile-shop-cart-checkout\"><div class=\"cart-check cart-inactive\">Checkout</div></div>\n";
+			}
+			if (isset($download)) {
+				echo "<div class=\"tile-shop-download\">{$download}</div>\n";
+			}
+			else {
+				echo "<div class=\"tile-shop-download\"><div class=\"cart-download cart-inactive\">Download</div>\n</div>\n";
 			}
 		}
 		else {
