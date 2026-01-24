@@ -3,7 +3,7 @@
 function show_product(&$csrf_tokens, $artifact, $user_purchases, $user_cart) {
 	global $BUNDLES;
 	global $PLUGINS;
-	
+
 	$product = $artifact['product'];
 	$product_id = $artifact['product_id'];
 	$arch = $artifact['architecture'];
@@ -22,13 +22,12 @@ function show_product(&$csrf_tokens, $artifact, $user_purchases, $user_cart) {
 	$upgrade_version = null;
 	$checkout_action = '';
 	$char_usd = ' $';
-	$char_version = ' v. ';
 	$unique_product_id = "{$product}-{$platform}-{$arch}";
 
 	// echo "<div class=\"tile-shop-inner\" id=\"product-{$product}-{$platform}-{$arch}\">\n";
 	// echo "<div>{$description}</div>\n";
 	// echo "<div>\n";
-	
+
 	$grp_image = '';
 	$plug_list = [];
 	$bundle = null;
@@ -40,15 +39,15 @@ function show_product(&$csrf_tokens, $artifact, $user_purchases, $user_cart) {
 				if ($plugin['bundle'] != $bundle['id']) {
 					continue;
 				}
-				
+
 				array_push($plug_list, $plugin);
-				
+
 				if ((strpos($plugin['id'], '_stereo') > 0) ||
 					(strpos($plugin['id'], '_x2') > 0) ||
 					(strlen($grp_image) <= 0))
 					$grp_image = "/img/plugins/${plugin['id']}.png";
 			}
-			
+
 			break;
 		}
 	}
@@ -116,7 +115,7 @@ function show_product(&$csrf_tokens, $artifact, $user_purchases, $user_cart) {
 						$remove_action = "<a class=\"cart-remove cart-button\" href=\"javascript:ajax_post('remove_from_cart', { 'product_id': {$product_id}, 'token': '{$csrf_token}' });\">Remove</a>\n";
 					} else {
 						if (isset($build_price['download_raw'])) {
-							$upgrade_action = "<a class=\"cart-upgrade cart-button\" href=\"javascript:ajax_post('add_to_cart', { 'product_id': {$product_id}, 'token': '{$csrf_token}' });\">Upgrade {$char_version}{$upgrade_version}</a>\n";
+							$upgrade_action = "<a class=\"cart-upgrade cart-button\" href=\"javascript:ajax_post('add_to_cart', { 'product_id': {$product_id}, 'token': '{$csrf_token}' });\">Upgrade to {$upgrade_version}</a>\n";
 						} else {
 							$purchase_action = "<a class=\"cart-add cart-button\" href=\"javascript:ajax_post('add_to_cart', { 'product_id': {$product_id}, 'token': '{$csrf_token}' });\">Add to cart</a>\n";
 						}
@@ -140,15 +139,16 @@ function show_product(&$csrf_tokens, $artifact, $user_purchases, $user_cart) {
 	echo "<div class=\"tile-shop-inner\" id=\"product-{$unique_product_id}\">\n";
 	echo "<div class=\"tile-shop-header\">\n";
 		echo "<div class=\"tile-shop-name\">{$name}</div>\n";
-		echo "<div class=\"tile-shop-version\">{$char_version}{$available_version}</div>\n";
+		echo "<div class=\"tile-shop-version\">{$available_version}</div>\n";
 	echo "</div>\n";
 	if (isset($bundle)) {
-		echo "<div class=\"tile-inner\">\n";
+		echo "<div class=\"tile-inner-download\">\n";
 			echo "<a data-fancybox data-type=\"ajax\" data-src=\"/ajax/bundle.php?bundle={$bundle['id']}\" href=\"javascript:;\"\n>";
 				echo "<img src=\"{$grp_image}\" />\n";
 			echo "</a>\n";
 		echo "</div>\n";
 	}
+	if (isset($user_purchases)) {
 	echo "<div class=\"tile-shop-left\">\n";
 		if (isset($upgrade_action)) {
 			if (isset($stroke_price)) {
@@ -162,21 +162,48 @@ function show_product(&$csrf_tokens, $artifact, $user_purchases, $user_cart) {
 		if (isset($download)) {
 			echo "<div class=\"tile-shop-download\">{$download}</div>\n";
 		}
+		else {
+			echo "<div class=\"tile-shop-download\"><div class=\"cart-download cart-inactive\">Download</div>\n</div>\n";
+		}
 		echo "</div>\n";
 		echo "<div class=\"tile-shop-right\">\n";
 			if (isset($purchase_action)) {
 				echo "<div class=\"tile-shop-add\">{$purchase_action}</div>\n";
 			}
+			else {
+				echo "<div class=\"tile-shop-add\"><div class=\"cart-add cart-inactive\">Add to cart</div>\n</div>\n";
+			}
 			if (isset($remove_action)) {
 				echo "<div class=\"tile-shop-remove\">{$remove_action}</div>\n";
+			}
+			else {
+				echo "<div class=\"tile-shop-remove\"><div class=\"cart-remove cart-inactive\">Remove</div>\n</div>\n";
 			}
 			if (isset($upgrade_action)) {
 				echo "<div class=\"tile-shop-upgrade\">\n";
 					echo "<div class=\"tile-shop-upgrade-text\">{$upgrade_action}</div>\n";
-					// echo "<div class=\"tile-shop-upgrade-text\">{$upgrade_version}</div>\n";
 				echo "</div>\n";
 			}
+			else {
+				echo "<div class=\"tile-shop-upgrade\">\n";
+				echo "<div class=\"tile-shop-upgrade-text\"><div class=\"cart-upgrade cart-inactive\">Upgrade V. 0.0.00</div>\n</div>\n";
+				echo "</div>\n";
+			}
+			if ($checkout_action != '') {
 				echo "<div class=\"tile-shop-cart-checkout\">{$checkout_action}</div>\n";
+			} else {
+				echo "<div class=\"tile-shop-cart-checkout\"><div class=\"cart-check cart-inactive\">Checkout</div></div>\n";
+			}
+		}
+		else {
+		echo "<div class=\"tile-shop-guest\">\n";
+		if (isset($download)) {
+			echo "<div class=\"tile-shop-download\">{$download}</div>\n";
+		}
+		else {
+			echo "<div class=\"tile-shop-download\"><div class=\"cart-download cart-inactive\">Download</div>\n</div>\n";
+		}
+		}
 		echo "</div>\n";
 	echo "</div>\n";
 

@@ -467,6 +467,31 @@ a:hover.link_no_visit, a:visited:hover.link_no_visit {
   background-color: #9da3ca;
 }
 
+.cart-inactive, .cart-inactive:hover, .cart-inactive:visited, .cart-inactive:visited:hover {
+  background-color: #444755;
+  cursor: default;
+  display: inline-block;
+  color: #25272e;
+  font-weight: bold;
+  font-size: 13px;
+  letter-spacing: 1px;
+  text-transform: UPPERCASE;
+  text-decoration: none;
+  padding: 0px 23px 0px 5px;
+  height: 18px;
+  margin: 5px 0px;
+  background-repeat: no-repeat;
+  background-position: right;
+  background-size: contain;
+  min-width: 75px;
+  text-align: center;
+  transition: all 0.3s ease;
+  -webkit-transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
+  -ms-transition: all 0.3s ease;
+}
+
+
 .shop-pre-container {
   display: inline-block;
 }
@@ -1442,6 +1467,14 @@ tr.stroke {
   display: inline-block;
 }
 
+.tile-shop-guest {
+  float: left;
+  width: 100%;
+  height: 29px;
+  position: relative;
+  margin: -5px 0px;
+}
+
 .tile-shop-left {
   float: left;
   width: 50%;
@@ -1703,6 +1736,16 @@ tr.stroke {
 }
 
 .tile-inner img {
+  width: 100%;
+  height: 166px;
+  object-fit: contain;
+  background: #1f2026;
+}
+
+.tile-inner-download {
+}
+
+.tile-inner-download img {
   width: 100%;
   height: 166px;
   object-fit: contain;
@@ -2373,8 +2416,8 @@ tr.stroke {
   }
 
   .tile-shop-container {
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(11, 1fr);
+    grid-template-columns: repeat(1, 1fr);
+    /* grid-template-rows: repeat(11, 1fr); */
   }
 
   .logo-text {

@@ -131,6 +131,7 @@ foreach ($artifacts as $arch => $list) {
 	$style_class = (($architecture === $arch) ? 'display: block;' : 'display: none;');
 	echo "<div id=\"dwnld-block-windows-{$arch}\" style=\"{$style_class}\">\n";
 	echo "<div class=\"tile-shop-container\">\n";
+
 	foreach ($list as $artifact) {
 		show_product($product_csrf_tokens, $artifact, $user_purchases, $user_cart);
 	}
