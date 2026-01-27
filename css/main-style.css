@@ -170,6 +170,79 @@ textarea {
   resize: horizontal;
 }
 
+input[class="survey"][type="text"] {
+  float: none;
+  margin-left: 5px;
+  width: 108px;
+}
+
+input[type="radio"][class="survey"], input[type="checkbox"][class="survey"] {
+  float: left;
+  width: auto;
+  margin: 5px 10px 0px 20px;
+}
+
+/* end for survey page */
+input:focus, textarea:focus, input[type="button"]:hover, input[type="submit"]:hover {
+  background: #1b1c22;
+  transition: all 0.3s ease;
+  -webkit-transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
+  -ms-transition: all 0.3s ease;
+}
+
+textarea {
+  border: 2px solid #1b1c22;
+  width: 98.685%;
+  width: calc(100% - 4px);
+  height: 320px;
+  background: #21222a;
+  color: #d8dadc;
+  font-size: 13px;
+  font-family: NDC;
+  text-indent: 8px;
+  margin-top: 4px;
+  resize: none;
+  padding: 0;
+  transition: all 0.3s ease;
+  -webkit-transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
+  -ms-transition: all 0.3s ease;
+}
+
+/* Input elements */
+input {
+  border: 2px solid #1b1c22;
+  width: 200px;
+  float: right;
+  background: #21222a;
+  color: #d8dadc;
+  font-size: 13px;
+  font-family: NDC;
+  text-indent: 8px;
+  transition: all 0.3s ease;
+  -webkit-transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
+  -ms-transition: all 0.3s ease;
+}
+
+input[type="radio"], input[type="checkbox"] {
+  float: left;
+  width: auto;
+}
+
+input[type="button"], input[type="submit"] {
+  height: 32px;
+  float: left;
+  cursor: pointer;
+  font-family: NDC;
+  width: 304px;
+  transition: all 0.3s ease;
+  -webkit-transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
+  -ms-transition: all 0.3s ease;
+}
+
 pseudo_link {
   cursor: pointer;
 }
@@ -291,7 +364,6 @@ a:hover.link_no_visit, a:visited:hover.link_no_visit {
   -ms-transition: all 0.3s ease;
 }
 
-
 .manual_plugin_list {
   columns: 3;
   -webkit-columns: 3;
@@ -408,7 +480,7 @@ a:hover.link_no_visit, a:visited:hover.link_no_visit {
   margin-inline-end: 10px;
 }
 
-.cart-button, .cart-button:hover, .cart-button:visited, .cart-button:visited:hover, .cart-inactive, .cart-inactive:hover, .cart-inactive:visited, .cart-inactive:visited:hover {
+.cart-button, .cart-button:hover, .cart-button:visited, .cart-button:visited:hover, .cart-inactive, .cart-inactive:hover, .cart-inactive:visited, .cart-inactive:visited:hover, input.cart-button, input.cart-button:hover, input.cart-button:visited, input.cart-button:visited:hover, input.cart-inactive, input.cart-inactive:hover, input.cart-inactive:visited, input.cart-inactive:visited:hover {
   display: inline-block;
   color: #25272e;
   font-weight: bold;
@@ -428,6 +500,7 @@ a:hover.link_no_visit, a:visited:hover.link_no_visit {
   -webkit-transition: all 0.3s ease;
   -moz-transition: all 0.3s ease;
   -ms-transition: all 0.3s ease;
+
 }
 
 .cart-remove {
@@ -467,11 +540,10 @@ a:hover.link_no_visit, a:visited:hover.link_no_visit {
   background-color: #9da3ca;
 }
 
-.cart-inactive, .cart-inactive:hover, .cart-inactive:visited, .cart-inactive:visited:hover {
+.cart-inactive, .cart-inactive:hover, .cart-inactive:visited, .cart-inactive:visited:hover, .user-cart-buttons .cart-inactive, .user-cart-buttons .cart-inactive:hover, .user-cart-buttons .cart-inactive:visited, .user-cart-buttons .cart-inactive:visited:hover {
   background-color: #444755;
   cursor: default;
 }
-
 
 .shop-pre-container {
   display: inline-block;
@@ -1073,39 +1145,6 @@ div.plugin_select div {
   color: #d8dadc;
 }
 
-/* Input elements */
-input {
-  border: 2px solid #1b1c22;
-  width: 200px;
-  float: right;
-  background: #21222a;
-  color: #d8dadc;
-  font-size: 13px;
-  font-family: NDC;
-  text-indent: 8px;
-  transition: all 0.3s ease;
-  -webkit-transition: all 0.3s ease;
-  -moz-transition: all 0.3s ease;
-  -ms-transition: all 0.3s ease;
-}
-
-input[type="radio"], input[type="checkbox"] {
-  float: left;
-  width: auto;
-}
-
-input[type="button"], input[type="submit"] {
-  height: 32px;
-  float: left;
-  cursor: pointer;
-  font-family: NDC;
-  width: 304px;
-  transition: all 0.3s ease;
-  -webkit-transition: all 0.3s ease;
-  -moz-transition: all 0.3s ease;
-  -ms-transition: all 0.3s ease;
-}
-
 /* for survey page */
 .survey-adaptive {
   width: auto;
@@ -1122,46 +1161,6 @@ input[type="button"], input[type="submit"] {
   margin-block-end: 5px;
   padding-right: 5px;
   text-align: left !important;
-}
-
-input[class="survey"][type="text"] {
-  float: none;
-  margin-left: 5px;
-  width: 108px;
-}
-
-input[type="radio"][class="survey"], input[type="checkbox"][class="survey"] {
-  float: left;
-  width: auto;
-  margin: 5px 10px 0px 20px;
-}
-
-/* end for survey page */
-input:focus, textarea:focus, input[type="button"]:hover, input[type="submit"]:hover {
-  background: #1b1c22;
-  transition: all 0.3s ease;
-  -webkit-transition: all 0.3s ease;
-  -moz-transition: all 0.3s ease;
-  -ms-transition: all 0.3s ease;
-}
-
-textarea {
-  border: 2px solid #1b1c22;
-  width: 98.685%;
-  width: calc(100% - 4px);
-  height: 320px;
-  background: #21222a;
-  color: #d8dadc;
-  font-size: 13px;
-  font-family: NDC;
-  text-indent: 8px;
-  margin-top: 4px;
-  resize: none;
-  padding: 0;
-  transition: all 0.3s ease;
-  -webkit-transition: all 0.3s ease;
-  -moz-transition: all 0.3s ease;
-  -ms-transition: all 0.3s ease;
 }
 
 div.g-recaptcha, div.g-recaptcha div {
@@ -1409,8 +1408,78 @@ tr.stroke {
 
 .user-cart {
   float: right;
-  display: inline-block;
+  display: block;
   width: 50%;
+}
+
+.user-cart-buttons {
+  display: flex;
+  width: 100%;
+  gap: 10px;
+}
+
+.user-cart-total {
+  display: inline-block;
+  float: right;
+}
+
+.user-cart-button-checkout, .user-cart-button-checkout:hover {
+  background-color: #44a88f;
+  background-image: url(../svg/cart_check_num_icon_button.svg) !important;
+  width: 100% !important;
+}
+
+.user-cart-button-empty, input.user-cart-button-empty, .user-cart-button-empty:hover, input.user-cart-button-empty:hover {
+  background-color: #e63637;
+  background-image: url(../svg/cart_empty_icon_button.svg);
+  width: 30%;
+}
+
+.user-cart-button-empty, .user-cart-button-checkout, input.user-cart-button-empty, input.user-cart-button-checkout, .user-cart-button-empty:hover, .user-cart-button-checkout:hover, input.user-cart-button-empty:hover, input.user-cart-button-checkout:hover {
+  border: none;
+  font-size: 17px;
+  height: 44px;
+  min-width: 115px;
+  padding: 0px 44px 0px 0px;
+  box-sizing: border-box;
+  appearance: none;
+  -webkit-appearance: none;
+  outline: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-cart-button-empty:hover, .user-cart-button-checkout:hover, input.user-cart-button-empty:hover, input.user-cart-button-checkout:hover {
+  background-color: #9da3ca;
+}
+
+.user-cart-button-checkout-wrapper{
+  position: relative;
+  flex: 0 0 70%;
+  display: flex;
+}
+
+.user-cart-items, .user-cart-items-zero {
+  position: absolute;
+  top: 18px;
+  right: 8px;
+  font-size: 12px;
+  font-weight: bold;
+  text-align: center;
+  z-index: 10;
+  width: 22px;
+  font-family: monospace;
+
+  pointer-events: none;
+}
+
+.user-cart-items {
+  color: #6ee8ca;
+}
+
+.user-cart-items-zero {
+  color: #444755;
 }
 
 .tile-shop-container {
@@ -1561,7 +1630,7 @@ tr.stroke {
 .dwnld-block-lin, .dwnld-block-win, .dwnld-block-mac, .dwnld-block-bsd, .dwnld-block-src {
   background-repeat: no-repeat;
   background-size: contain;
-  background-position-x: right;
+  background-position-x: center;
   background-position-y: top;
 }
 
@@ -1723,8 +1792,7 @@ tr.stroke {
   background: #1f2026;
 }
 
-.tile-inner-download {
-}
+.tile-inner-download {}
 
 .tile-inner-download img {
   width: 100%;
