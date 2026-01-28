@@ -2846,6 +2846,24 @@ tr.stroke {
     font-size: 22px;
     line-height: 28px;
   }
+
+  .sel-arch, .user-cart {
+    display: block;
+    margin: 0px auto 40px;
+    float: none;
+  }
+
+  .user-cart {
+    width: 100%;
+  }
+
+  .user-cart-button-checkout-wrapper {
+    flex: 0 0 50%;
+  }
+
+  .user-cart-button-empty, input.user-cart-button-empty, .user-cart-button-empty:hover, input.user-cart-button-empty:hover {
+    width: 50%;
+  }
 }
 
 @media only screen and (min-width : 0px) and (max-width : 354px) {

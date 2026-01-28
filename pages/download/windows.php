@@ -70,6 +70,19 @@ $user = get_session_user();
 $user_purchases = null;
 $user_cart = null;
 
+echo "<div class=\"sel-arch\">\n";
+
+foreach ($artifacts as $arch => $list) {
+	$style_class = "arch-text-selector" . (($architecture === $arch) ? ' dwnld-active' : '');
+	echo "<div id=\"dwnld-windows-{$arch}\" class=\"{$style_class}\">\n";
+	echo "<div>\n";
+	echo "{$arch}\n";
+	echo "</div>\n";
+	echo "</div>\n";
+}
+
+echo "</div>\n";
+
 echo "<div class=\"sel-cart-container\">\n";
 
 if (isset($user)) {
@@ -109,18 +122,6 @@ if (!array_key_exists($architecture, $artifacts)) {
 }
 $current_architectures['windows'] = $architecture;
 
-echo "<div class=\"sel-arch\">\n";
-
-foreach ($artifacts as $arch => $list) {
-	$style_class = "arch-text-selector" . (($architecture === $arch) ? ' dwnld-active' : '');
-	echo "<div id=\"dwnld-windows-{$arch}\" class=\"{$style_class}\">\n";
-	echo "<div>\n";
-	echo "{$arch}\n";
-	echo "</div>\n";
-	echo "</div>\n";
-}
-
-echo "</div>\n";
 echo "</div>\n";
 
 foreach ($artifacts as $arch => $list) {
