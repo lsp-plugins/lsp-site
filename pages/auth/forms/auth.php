@@ -6,7 +6,7 @@
 			<div class="form-field" style="margin-bottom: 20px;">Password:<input type="password" name="password"></div>
 			<?php require('./pages/parts/captcha.php'); ?>
 			<div class="form-button">
-				<input type="submit" value="Restore" name="restore">
+				<!-- <input type="submit" value="Restore" name="restore"> -->
 				<input type="submit" value="Sign in" name="auth">
 			</div>
 		</div>
