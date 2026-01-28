@@ -500,7 +500,10 @@ a:hover.link_no_visit, a:visited:hover.link_no_visit {
   -webkit-transition: all 0.3s ease;
   -moz-transition: all 0.3s ease;
   -ms-transition: all 0.3s ease;
+}
 
+.ocl-item-remove .cart-button, .ocl-item-remove .cart-button:hover, .ocl-item-remove .cart-button:visited, .ocl-item-remove .cart-button:visited:hover {
+  min-width: auto;
 }
 
 .cart-remove {
@@ -1174,7 +1177,7 @@ div.g-recaptcha, div.g-recaptcha div {
   margin: 0 auto;
   margin-bottom: 6px;
   background: #25272e;
-  min-height: 300px;
+  min-height: 382px;
 }
 
 .main h1 {
@@ -1450,11 +1453,11 @@ tr.stroke {
   justify-content: center;
 }
 
-.user-cart-button-empty:hover, .user-cart-button-checkout:hover, input.user-cart-button-empty:hover, input.user-cart-button-checkout:hover {
+.user-cart-button-empty:hover, .user-cart-button-checkout:hover, input.user-cart-button-empty:hover, input.user-cart-button-checkout:hover, .user-cart-button-empty:focus, .user-cart-button-checkout:focus, input.user-cart-button-empty:focus, input.user-cart-button-checkout:focus {
   background-color: #9da3ca;
 }
 
-.user-cart-button-checkout-wrapper{
+.user-cart-button-checkout-wrapper {
   position: relative;
   flex: 0 0 70%;
   display: flex;
@@ -1470,7 +1473,6 @@ tr.stroke {
   z-index: 10;
   width: 22px;
   font-family: monospace;
-
   pointer-events: none;
 }
 
@@ -1480,6 +1482,125 @@ tr.stroke {
 
 .user-cart-items-zero {
   color: #444755;
+}
+
+.order-checkout-list, .order-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  max-width: 600px;
+  margin: 10px auto;
+}
+
+.order-buttons {
+  flex-wrap: nowrap;
+  margin-bottom: 20px;
+}
+
+.order-buttons input, .order-buttons input:visited, .order-buttons input:active {
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+  background-color: #5d6177;
+  color: #25272e;
+  font-weight: bold;
+  font-size: 18px;
+  letter-spacing: 1px;
+  line-height: 34px;
+  text-transform: UPPERCASE;
+  height: 34px;
+  border: none;
+  transition: all 0.3s ease;
+  -webkit-transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
+  -ms-transition: all 0.3s ease;
+}
+
+.order-buttons input:hover {
+  background-color: #868cad;
+  transition: all 0.1s ease;
+  -webkit-transition: all 0.1s ease;
+  -moz-transition: all 0.1s ease;
+  -ms-transition: all 0.1s ease;
+}
+
+.ocl-item {
+  background: #373944;
+  padding: 8px;
+  display: flex;
+  width: 100%;
+  gap: 10px;
+}
+
+.ocl-item-img {
+  width: 74px;
+  height: 74px;
+  background: #25272e;
+  object-fit: cover;
+}
+
+.ocl-item-misc {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.ocl-item-name, .ocl-item-price {
+  text-transform: uppercase;
+  color: #9da3ca;
+  font-size: 22px;
+}
+
+.ocl-item-name {
+  width: 70%;
+}
+
+.ocl-item-price {
+  width: 30%;
+}
+
+.ocl-item-name {
+  text-align: left;
+  float: left;
+}
+
+.ocl-item-price {
+  text-align: right;
+  float: right;
+}
+
+.ocl-item-remove {
+  float: left;
+  text-align: left;
+  width: 100%;
+  border-top: 2px solid #525466;
+  align-self: flex-end;
+}
+
+.order-total {
+  max-width: 600px;
+  margin: 10px auto;
+}
+
+.order-message, .order-status {
+  text-align: center;
+  padding: 40px 0;
+}
+
+.ot-total, .ot-cost {
+  display: block;
+  text-align: right;
+  font-size: 32px;
+  line-height: 38px;
+  text-transform: uppercase;
+  color: #9da3ca;
+}
+
+.ot-cost {
+  letter-spacing: 1px;
+  width: 100%;
+  border-top: 2px solid #525466;
+  padding-top: 5px;
 }
 
 .tile-shop-container {
@@ -2081,6 +2202,11 @@ tr.stroke {
   background-image: url(../svg/downloads/jack_hover.svg);
 }
 
+.submitted {
+  display: inline-block;
+  width: 100%;
+}
+
 @media only screen and (min-width : 0px) and (max-width : 1000px) {
   .tile-flex {
     flex-wrap: wrap;
@@ -2216,7 +2342,7 @@ tr.stroke {
   }
 
   .container-menu {
-    width: 636px;
+    width: 645px;
     margin: -1px auto 0;
     float: none;
     text-align: center;
@@ -2710,6 +2836,15 @@ tr.stroke {
 
   .ti-box-under-image-name {
     height: auto;
+  }
+
+  .ocl-item-name, .ocl-item-price {
+    font-size: 15px;
+  }
+
+  .ot-total, .ot-cost {
+    font-size: 22px;
+    line-height: 28px;
   }
 }
 

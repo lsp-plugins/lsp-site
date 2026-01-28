@@ -1,4 +1,4 @@
-<div style="display:inline-block; width:100%;">
+<div class="submitted">
 <div class="fb-div">
 
 <form id="fb_form" action="<?=$SITE_URL?>" method="GET">

@@ -4,8 +4,10 @@ require_once('./inc/site/csrf.php');
 require_once('./pages/download/parts/order_item.php');
 require_once('./pages/download/parts/order_total.php');
 
+
 function show_order($order) {
-	echo "<div class=\"form-div\" id=\"order-contents\">\n";
+
+	echo "<div id=\"order-contents\">\n";
 	if (isset($order)) {
 		$order_id = $order['order_id'];
 		$csrf_token = make_csrf_token('order');
@@ -13,24 +15,27 @@ function show_order($order) {
 		foreach ($order['items'] as $item) {
 			$order_cost += $item['price'];
 		}
-	
+
 		echo "<form id=\"order_form\" action=\"/actions/submit_order\" method=\"POST\">\n";
 		echo "<input type=\"hidden\" name=\"token\" value=\"{$csrf_token}\">\n";
 		echo "<input type=\"hidden\" name=\"order_id\" value=\"{$order_id}\">\n";
-		
+
 		// Order items
 		echo "<div class=\"form-cont\">\n";
+
 		if ($order_cost > 0) {
+			echo "<div class=\"order-checkout-list\">";
 			foreach ($order['items'] as $item) {
 				show_order_item($order, $item);
 			}
+			echo "</div>";
 			$order['price'] = $order_cost;
 			show_order_total($order);
 		} else {
-			echo "<div>Your order is empty</div>\n";
+			echo "<div class=\"order-message\">Your order is empty</div>\n";
 		}
 		echo "</div>\n";
-		
+
 		// Output order status
 		$order_status = $order['status'];
 		$order_proceed = ($order_status == 'draft') || ($order_status == 'created');
@@ -50,13 +55,13 @@ function show_order($order) {
 		}
 		
 		// Buttons
-		echo "<div class=\"form-button\">\n";
+		echo "<div class=\"order-buttons\">\n";
+		echo "<input type=\"submit\" value=\"Back\" name=\"back\">\n";
 		if (($order_cost > 0) && ($order_proceed)) {
 			echo "<input type=\"submit\" value=\"Proceed\" name=\"proceed\">\n";
 		}
-		echo "<input type=\"submit\" value=\"Back\" name=\"back\">\n";
 		echo "</div>\n";
-		
+
 		echo "</form>\n";
 	}
 	echo "</div>\n";
@@ -66,7 +71,7 @@ function show_email_order($order) {
 	if (!isset($order)) {
 		return "";
 	}
-	
+
 	$positions = [];
 	$max_data_len = 10;
 	foreach ($order['items'] as $item) {
@@ -75,19 +80,19 @@ function show_email_order($order) {
 		if ($item['is_upgrade']) {
 			$product_desc .= ' (upgrade)';
 		}
-		
+
 		$price = sprintf("%.2f USD", raw_to_price($item['price']));
 		$max_data_len = max(
 			$max_data_len,
 			mb_strlen($product_desc) + mb_strlen($price));
-	
+
 		array_push($positions, [ $product_desc, $price ]);
 	}
-	
+
 	$price = sprintf("%.2f USD", raw_to_price($order['amount']));
 	array_push($positions, '');
 	array_push($positions, [ 'TOTAL', $price ]);
-	
+
 	// Format contents
 	$width = $max_data_len + 10;
 	$result = '';
@@ -102,7 +107,7 @@ function show_email_order($order) {
 		}
 		$result .= "\n";
 	}
-	
+
 	return $result;
 }
 

@@ -80,7 +80,7 @@ $current_architectures = [];
 [$error, $context] = get_session_context();
 if (!isset($error)) {
 	error_log("Session context is: " . var_export($context, true));
-	
+
 	$current_section = utl_get_value($context, 'pages.download.section');
 	$current_architectures = utl_get_value($context, 'pages.download.architectures');
 } else {
@@ -219,9 +219,8 @@ update_session_context(
 	function ($context) use ($current_section, $current_architectures) {
 		utl_set_value($context, 'pages.download.section', $current_section);
 		utl_set_value($context, 'pages.download.architectures', $current_architectures);
-		
+
 		return $context;
 	});
 
 ?>
-
