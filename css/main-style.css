@@ -1536,7 +1536,7 @@ tr.stroke {
   width: 74px;
   height: 74px;
   background: #25272e;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .ocl-item-misc {

@@ -6,6 +6,7 @@ require_once('./pages/download/parts/order_total.php');
 
 
 function show_order($order) {
+	echo "<div id=\"plugins_page_name\"><h1>Order preview</h1></div>\n";
 
 	echo "<div id=\"order-contents\">\n";
 	if (isset($order)) {
@@ -53,7 +54,7 @@ function show_order($order) {
 		if (isset($order_status)) {
 			echo "<div class=\"order-status\">" . htmlspecialchars($order_status) . "</div>\n";
 		}
-		
+
 		// Buttons
 		echo "<div class=\"order-buttons\">\n";
 		echo "<input type=\"submit\" value=\"Back\" name=\"back\">\n";
