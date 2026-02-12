@@ -7,7 +7,7 @@
 		),
 		array(
 			'id' => 'dynamics',
-			'name' => 'Dynamic Processing',
+			'name' => 'Dynamics Processing',
 			'description' => 'Single-channel dynamic processing tools.'
 		),
 		array(
@@ -17,7 +17,7 @@
 		),
 		array(
 			'id' => 'convolution',
-			'name' => 'Convolution / Reverb processing',
+			'name' => 'Convolution / Reverb Processing',
 			'description' => 'Convolution-base processors for generating and applying impulse responses to the signal.'
 		),
 		array(
