@@ -16,7 +16,6 @@ function show_product(&$csrf_tokens, $artifact, $user_purchases, $user_cart) {
 	$upgrade_action = null;
 	$remove_action = null;
 	$stroke_price = null;
-	$purchase_price = null;
 	$upgrade_price = null;
 	$available_version = implode('.', $artifact['version']);
 	$upgrade_version = null;
@@ -69,7 +68,6 @@ function show_product(&$csrf_tokens, $artifact, $user_purchases, $user_cart) {
 
 				if (isset($build_price['download_raw'])) {
 					$download_version = $build_price['download'];
-					$purchase_price = '10.00';
 
 					[$error, $download_id] = get_download_id(
 						$artifact['product_id'],
@@ -96,7 +94,6 @@ function show_product(&$csrf_tokens, $artifact, $user_purchases, $user_cart) {
 						}
 					} else {
 						$available_version = $purchase_version;
-						$purchase_price = $cost_str;
 					}
 
 					if (!array_key_exists($product_id, $csrf_tokens)) {
@@ -122,7 +119,7 @@ function show_product(&$csrf_tokens, $artifact, $user_purchases, $user_cart) {
 					}
 				}
 			} else {
-				$price = $build_price['is_free'] ? 'free' : '';
+				$price = $build_price['is_free'] ? 'free' : sprintf("%.2f", raw_to_price($product_cost)) . $char_usd;
 
 				$artifact_id = $artifact['artifact_id'];
 				$download_id = (isset($artifact_id)) ? make_download_id($artifact_id) : 'null';
@@ -150,10 +147,8 @@ function show_product(&$csrf_tokens, $artifact, $user_purchases, $user_cart) {
 	}
 	if (isset($user_purchases)) {
 	echo "<div class=\"tile-shop-left\">\n";
-		// if (isset($upgrade_action)) {
-			if (isset($stroke_price)) {
-				echo "<div class=\"tile-shop-price-line-through\">{$stroke_price}</div>\n";
-			// }
+		if (isset($stroke_price)) {
+			echo "<div class=\"tile-shop-price-line-through\">{$stroke_price}</div>\n";
 			echo "<div class=\"tile-shop-price\">{$upgrade_price}</div>\n";
 		}
 		else {

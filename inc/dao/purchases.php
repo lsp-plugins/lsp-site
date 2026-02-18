@@ -156,8 +156,8 @@ function dao_build_prices($db, $product_ids, $latest_orders)
 				$version_raw = $mapping_version;
 				$download_raw = $version_raw;
 				$purchase_raw = null;
-				$major_update = false;
-				$order_price = null;
+				$has_major_update = false;
+				$product_price = null;
 				$price = 0;
 				$is_free = false;
 				
@@ -168,22 +168,21 @@ function dao_build_prices($db, $product_ids, $latest_orders)
 					$version_raw = $row['version_raw'];
 					
 					// First row?
-					if (!isset($order_price)) {
-						$order_price = $row['price'];
-						$is_free = ($order_price <= 0);							
-						if ($version_raw !== $mapping_version) {
-							$price = $order_price;
-						}
+					if (!isset($product_price)) {
+						$product_price = $row['price'];
+						$is_free = ($product_price <= 0);							
 					}
 					
-					// Check current state
-					if ($build_type === 'major') {
-						$major_update = true;
-						$price = $order_price;
-					} else if (isset($update_price)) {
-						if (!$major_update) {
-							// We don't take more than 80% of original price for upgrades
-							$price = min($price + $update_price, intval($order_price * 0.8));
+					// Check price state for all versions above current
+					if ($version_raw != $mapping_version) {
+						if ($build_type === 'major') {
+							$has_major_update = true;
+							$price = $product_price;
+						} else if (isset($update_price)) {
+							if (!$has_major_update) {
+								// We don't take more than 80% of original price for upgrades
+								$price = min($price + $update_price, intval($product_price * 0.8));
+							}
 						}
 					}
 					
@@ -205,7 +204,7 @@ function dao_build_prices($db, $product_ids, $latest_orders)
 					'is_upgrade' => $is_upgrade,
 					'is_free' => $is_free,
 					'price' => $price,
-					'product_price' => (isset($order_price)) ? $order_price : 0
+					'product_price' => (isset($product_price)) ? $product_price : 0
 				];
 			} else {
 				// Purchase logic
