@@ -56,9 +56,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 	echo "<p><b>Created</b>: {$order['created']}</p>\n";
 	echo "<p><b>Expires</b>: {$order['expire']}</p>\n";
 	if ($order['status'] == 'active') {
-		echo "<input type=\"submit\" value=\"Complete as successful\" name=\"success'\">";
-		echo "<input type=\"submit\" value=\"Complete as cancelled\" name=\"cancel'\">";
-		echo "<input type=\"submit\" value=\"Complete as timed out\" name=\"timeout'\">";
+		echo "<input type=\"submit\" value=\"Complete as successful\" name=\"success\">";
+		echo "<input type=\"submit\" value=\"Complete as cancelled\" name=\"cancel\">";
+		echo "<input type=\"submit\" value=\"Complete as timed out\" name=\"timeout\">";
 	}
 	echo "</form>\n";
 	
@@ -78,7 +78,31 @@ elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		exit;
 	}
 	
-	// TODO
+	// Update order status
+	$order_id = $_REQUEST['id'];
+	if (!update_test_processing_order($order_id, $new_status))
+	{
+		error_log("Error updating order {$order_id}");
+		http_response_code(400);
+		echo "Error updating order\n";
+		exit;
+	}
+	
+	// Get order URL
+	[$error, $order] = find_test_processing_order($order_id);
+	if ($error) {
+		error_log("Order id={$order_id} not found: {$error}");
+		http_response_code(404);
+		echo "Order not found: {$error}\n";
+		exit;
+	}
+	
+	// Redirect
+	$redirect_url = ($order['status'] == 'success') ? $order['success_url'] : $order['cancel_url'];
+	
+	// Redirect to specified URL
+	error_log("Redirecting to: {$redirect_url}");
+	header("Location: $redirect_url");
 }
 else
 {

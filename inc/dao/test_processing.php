@@ -5,8 +5,8 @@ require_once('./inc/service/uuid.php');
 
 function dao_create_test_processing_order($db, $amount, $timeout, $success_url, $cancel_url, $user_data) {
 	$stmt = mysqli_prepare($db,
-		"INSERT INTO orders(id, amount, status_id, success_url, cancel_url, client_data, created, expires) " .
-		"VALUES (?, ?, (SELECT id FROM order_status WHERE name=?), ?, ?, ?, ?, ?)");
+		"INSERT INTO orders(id, amount, status_id, success_url, cancel_url, client_data, created, expires, completed) " .
+		"VALUES (?, ?, (SELECT id FROM order_status WHERE name=?), ?, ?, ?, ?, ?, NULL)");
 	
 	$created = db_current_timestamp();
 	$expire = db_add_time_interval($created, "+{$timeout} minute");
@@ -32,6 +32,7 @@ function dao_create_test_processing_order($db, $amount, $timeout, $success_url, 
 				'amount' => $amount,
 				'created' => $created,
 				'expire' => $expire,
+				'completed' => null,
 				'success_url' => $success_url,
 				'cancel_url' => $cancel_url
 			];
@@ -51,7 +52,8 @@ function dao_create_test_processing_order($db, $amount, $timeout, $success_url, 
 function dao_get_test_processing_order($db, $id) {
 	$stmt = mysqli_prepare($db,
 		"SELECT " .
-			"o.amount amount, os.name status, o.created created, o.expires expires, " .
+			"o.amount amount, os.name status, " .
+		    "o.created created, o.expires expires, o.completed completed, " .
 			"o.success_url success_url, o.cancel_url cancel_url, o.client_data client_data ".
 		"FROM orders o " .
 		"INNER JOIN order_status os " .
@@ -60,12 +62,14 @@ function dao_get_test_processing_order($db, $id) {
 	
 	try {
 		mysqli_stmt_bind_param($stmt, 's', $id);
-		if (!mysqli_stmt_execute($stmt))
+		if (!mysqli_stmt_execute($stmt)) {
 			return null;
+		}
 			
 		$result = mysqli_stmt_get_result($stmt);
-		if (!isset($result))
+		if (!isset($result)) {
 			return null;
+		}
 			
 		$row = mysqli_fetch_array($result);
 		if (!isset($row)) {
@@ -78,10 +82,32 @@ function dao_get_test_processing_order($db, $id) {
 			'status' => $row['status'],
 			'created' => $row['created'],
 			'expire' => $row['expires'],
+			'completed' => $row['completed'],
 			'success_url' => $row['success_url'],
 			'cancel_url' => $row['cancel_url'],
 			'user_data' => json_decode($row['client_data'])
 		];
+	} finally {
+		db_safe_close($stmt);
+	}
+}
+
+function dao_update_test_processing_order($db, $id, $status) {
+	$stmt = mysqli_prepare($db,
+		"UPDATE orders " .
+		"SET status_id=(SELECT id from order_status where name=?), completed=? ".
+		"WHERE (id=?) AND (status_id = (SELECT id from order_status where name='active'))");
+	
+	$completed = db_current_timestamp();
+	
+	try {
+		mysqli_stmt_bind_param($stmt, 'sss', $status, $completed, $id);
+		if (!mysqli_stmt_execute($stmt)) {
+			return false;
+		}
+
+		$updated = mysqli_affected_rows($db);
+		return $updated > 0;
 	} finally {
 		db_safe_close($stmt);
 	}

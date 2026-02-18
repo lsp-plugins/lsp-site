@@ -77,4 +77,23 @@ function find_test_processing_order($id) {
 	}
 }
 
+function update_test_processing_order($id, $status) {
+	[$error, $db] = connect_test_processing();
+	if (isset($error)) {
+		return [$error, null];
+	}
+	
+	try {
+		$result = dao_update_test_processing_order($db, $id, $status);
+		if ($result) {
+			mysqli_commit($db);
+		}
+		
+		return $result;
+	} finally {
+		db_safe_disconnect($db);
+	}
+}
+
+
 ?>

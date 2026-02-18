@@ -22,7 +22,8 @@ CREATE TABLE orders
   cancel_url VARCHAR(255),
   client_data TINYTEXT,
   created TIMESTAMP NOT NULL,
-  expires TIMESTAMP NOT NULL, 
+  expires TIMESTAMP NOT NULL,
+  completed TIMESTAMP, 
   
   PRIMARY KEY(id),
   CONSTRAINT FK_ORDER_STATUS FOREIGN KEY (status_id) REFERENCES order_status(id)
