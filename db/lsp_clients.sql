@@ -15,6 +15,7 @@ INSERT INTO order_status (id, name) VALUES (3, 'verified');
 INSERT INTO order_status (id, name) VALUES (4, 'expired');
 INSERT INTO order_status (id, name) VALUES (5, 'refunded');
 INSERT INTO order_status (id, name) VALUES (6, 'draft');
+INSERT INTO order_status (id, name) VALUES (7, 'cancelled');
 
 CREATE TABLE customer_type
 (

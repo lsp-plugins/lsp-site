@@ -727,6 +727,85 @@ function synchronize_draft_order($db, $order)
 	return [ null, $affected > 0 ];
 }
 
+function synchronize_test_order_status($db, $order)
+{
+	$order_id = $order['order_id'];
+	$remote_id = $order['remote_id'];
+	
+	[$error, $order] = find_test_processing_order($remote_id);
+	if (isset($error)) {
+		return [ "Could not fetch test processing order id={$remote_id}: {$error}", false];
+	}
+	
+	$status = $order['status'];
+	
+	if ($status == 'timeout') {
+		[$error, $affected] = dao_update_order($db, $order_id, [
+			'completed' => $order['completed'],
+			'status' => 'expired'
+		]);
+		if (isset($error)) {
+			return [ "Could not mark test processing order {$order_id} as expired: {$error}", false ];
+		}
+		if ($affected > 0) {
+			dao_log_user_action($db, $order['customer_id'], null, 'order_expired', [
+				'order_id' => $order_id,
+				'remote_id' => $remote_id,
+				'method' => 'test'
+			]);
+			mysqli_commit($db);
+		}
+		
+		return [ null, $affected > 0 ];
+	} elseif ($status == 'success') {
+		[$error, $affected] = dao_update_order($db, $order_id, [
+			'completed' => db_current_timestamp(),
+			'status' => 'paid'
+		]);
+		if (isset($error)) {
+			return [ "Could not mark test processing order {$order_id} as completed: {$error}", false ];
+		}
+		if ($affected > 0) {
+			dao_log_user_action($db, $order['customer_id'], null, 'order_complete', [
+				'order_id' => $order_id,
+				'remote_id' => $remote_id,
+				'method' => 'test'
+			]);
+			mysqli_commit($db);
+			on_order_processed($order_id);
+		}
+		
+		return [ null, $affected > 0 ];
+	} elseif ($status == 'cancel') {
+		[$error, $affected] = dao_update_order($db, $order_id, [
+			'completed' => $order['completed'],
+			'status' => 'cancelled'
+		]);
+		if (isset($error)) {
+			return [ "Could not mark test processing order {$order_id} as cancelled: {$error}", false ];
+		}
+		if ($affected > 0) {
+			dao_log_user_action($db, $order['customer_id'], null, 'order_cancelled', [
+				'order_id' => $order_id,
+				'remote_id' => $remote_id,
+				'method' => 'test'
+			]);
+			mysqli_commit($db);
+		}
+		
+		return [ null, $affected > 0 ];
+	} else {
+		return [ "Unexpected test processing orders status '{$status}' for remote order {$remote_id}, order {$order_id}", false ];
+	}
+	
+	$created = gmdate("Y-m-d H:i:s", $order['created']);
+	$expire = gmdate("Y-m-d H:i:s", $order['expire']);
+	$ctime = gmdate("Y-m-d H:i:s");
+	error_log("Test processing remote order {$remote_id} for order '{$order_id}' is still active (created at ${created} UTC, expires at ${expire} UTC, now is ${ctime} UTC)");
+	
+	return [ null, false ];
+}
+
 function synchronize_active_order($db, $order)
 {
 	$method = $order['method'];
