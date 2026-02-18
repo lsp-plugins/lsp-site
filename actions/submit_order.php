@@ -21,6 +21,7 @@ function validate_proceed_order_request()
 function process_proceed_order()
 {
 	global $SITE_URL;
+	global $ACCOUNTING;
 	
 	$error = validate_proceed_order_request();
 	if (isset($error)) {
@@ -54,7 +55,7 @@ function process_proceed_order()
 		}
 		
 		// Update order price
-		$method = 'stripe';
+		$method = (isset($ACCOUNTING) && isset($ACCOUNTING['method'])) ? $ACCOUNTING['method'] : 'test';
 		$price = 0;
 		foreach ($order['items'] as $item) {
 			$price += $item['price'];
@@ -115,6 +116,7 @@ if (isset($error)) {
 }
 
 // Redirect to specified URL
+error_log("Redirecting to: {$url}");
 header("Location: $url");
 
 ?>

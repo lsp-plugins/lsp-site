@@ -11,6 +11,20 @@ function db_log_exception($e) {
 	return $message;
 }
 
+function db_safe_disconnect($db) {
+	if (!isset($db)) {
+		return;
+	}
+	
+	try {
+		mysqli_close($db);
+	} catch (Exception $e) {
+		/* nothing */
+	} finally {
+		$db = null;
+	}
+}
+
 function db_safe_close(&$stmt) {
 	if (!isset($stmt)) {
 		return;

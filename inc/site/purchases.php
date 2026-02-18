@@ -5,6 +5,7 @@ require_once('./inc/dao/logging.php');
 require_once("./inc/dao/purchases.php");
 require_once("./inc/dao/stripe.php");
 require_once("./inc/service/stripe.php");
+require_once("./inc/service/test_processing.php");
 require_once("./inc/site/auth.php");
 require_once("./inc/site/notifications.php");
 require_once("./inc/site/session.php");
@@ -538,6 +539,55 @@ function create_stripe_payment_url($session_id, $customer_id, $order_id, $produc
 	}
 }
 
+function create_test_processing_payment_url($session_id, $customer_id, $order_id, $product, $price) {
+	global $SITE_URL;
+	
+	[$error, $order] = create_test_processing_order(
+		$price, 15,
+		"{$SITE_URL}/actions/finish_order?order_id={$order_id}",
+		"{$SITE_URL}/actions/finish_order?order_id={$order_id}",
+		[
+			'order_id' => $order_id
+		]);
+
+	if (isset($error)) {
+		error_log("Failed to create test processing payment: {$error}");
+		return [$error, null];
+	}
+	elseif (!isset($order)) {
+		error_log("Missing order object");
+		return ['Missing order object', null];
+	}
+	
+	// Log user action
+	try {
+		// Connect to database
+		$db = connect_db('customers');
+		if (!isset($db)) {
+			return [ "Database connection error", null ];
+		}
+		
+		dao_log_user_action($db, $customer_id, $session_id, 'create_payment_url', [
+			'method' => 'test',
+			'url' => $order['url'],
+			'data' => $order
+		]);
+		mysqli_commit($db);
+		return [
+			null,
+			[
+				'id' => $order['id'],
+				'url' => $order['url']
+			]
+		];
+	} catch (mysqli_sql_exception $e) {
+		$error = db_log_exception($e);
+		return [ $error, null ];
+	} finally {
+		db_safe_rollback($db);
+	}
+}
+
 function create_payment_url($service, $customer_id, $order_id, $product, $price) {
 	$session_id = user_session_id();
 	if (!isset($session_id)) {
@@ -546,6 +596,8 @@ function create_payment_url($service, $customer_id, $order_id, $product, $price)
 	
 	if ($service == 'stripe') {
 		return create_stripe_payment_url($session_id, $customer_id, $order_id, $product, $price);
+	} elseif ($service == 'test') {
+		return create_test_processing_payment_url($session_id, $customer_id, $order_id, $product, $price);
 	}
 	
 	return ["Unknown provider id: {$service}", null];
@@ -681,6 +733,8 @@ function synchronize_active_order($db, $order)
 	
 	if ($method == 'stripe') {
 		return synchronize_stripe_order_status($db, $order);
+	} elseif ($method == 'test') {
+		return synchronize_test_order_status($db, $order);
 	}
 	
 	return [ "Unknown payment method '{$method}' for order {$order_id}", null ];

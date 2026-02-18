@@ -13,12 +13,12 @@ function get_stripe_session($test = null) {
 	global $ACCOUNTING;
 	
 	// Check that stripe configuration is present
-	if (!isset($ACCOUNTING['stripe'])) {
+	if ((!isset($ACCOUNTING)) || (!isset($ACCOUNTING['methods'])) || (!isset($ACCOUNTING['methods']['stripe']))) {
 		return [ 'No accounting information related to Stripe', null, null ];
 	}
 
 	// Ensure that API key is present
-	$stripe_cfg = $ACCOUNTING['stripe'];
+	$stripe_cfg = $ACCOUNTING['methods']['stripe'];
 	if (!isset($test)) {
 		$test = (isset($stripe_cfg['test'])) ? $stripe_cfg['test'] : true;
 	}
