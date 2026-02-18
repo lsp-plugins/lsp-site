@@ -6,6 +6,7 @@ require_once("./inc/dao/purchases.php");
 require_once("./inc/dao/stripe.php");
 require_once("./inc/service/stripe.php");
 require_once("./inc/service/test_processing.php");
+require_once("./inc/service/utils.php");
 require_once("./inc/site/auth.php");
 require_once("./inc/site/notifications.php");
 require_once("./inc/site/session.php");
@@ -543,7 +544,7 @@ function create_test_processing_payment_url($session_id, $customer_id, $order_id
 	global $SITE_URL;
 	
 	[$error, $order] = create_test_processing_order(
-		$price, 15,
+		raw_to_price($price), 15,
 		"{$SITE_URL}/actions/finish_order?order_id={$order_id}",
 		"{$SITE_URL}/actions/finish_order?order_id={$order_id}",
 		[

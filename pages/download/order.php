@@ -6,65 +6,69 @@ require_once('./pages/download/parts/order_total.php');
 
 
 function show_order($order) {
-	echo "<div id=\"plugins_page_name\"><h1>Order preview</h1></div>\n";
-
-	echo "<div id=\"order-contents\">\n";
-	if (isset($order)) {
-		$order_id = $order['order_id'];
-		$csrf_token = make_csrf_token('order');
-		$order_cost = 0;
-		foreach ($order['items'] as $item) {
-			$order_cost += $item['price'];
-		}
-
-		echo "<form id=\"order_form\" action=\"/actions/submit_order\" method=\"POST\">\n";
-		echo "<input type=\"hidden\" name=\"token\" value=\"{$csrf_token}\">\n";
-		echo "<input type=\"hidden\" name=\"order_id\" value=\"{$order_id}\">\n";
-
-		// Order items
-		echo "<div class=\"form-cont\">\n";
-
-		if ($order_cost > 0) {
-			echo "<div class=\"order-checkout-list\">";
-			foreach ($order['items'] as $item) {
-				show_order_item($order, $item);
-			}
-			echo "</div>";
-			$order['price'] = $order_cost;
-			show_order_total($order);
-		} else {
-			echo "<div class=\"order-message\">Your order is empty</div>\n";
-		}
-		echo "</div>\n";
-
-		// Output order status
-		$order_status = $order['status'];
-		$order_proceed = ($order_status == 'draft') || ($order_status == 'created');
-		if ($order_status == 'created') {
-			$order_status = "Order created at {$order['created']} UTC";
-		} elseif ($order_status == 'paid') {
-			$order_status = "Order successfully completed at {$order['completed']} UTC";
-		} elseif ($order_status == 'refunded') {
-			$order_status = "Order successfully refunded at {$order['refunded']} UTC";
-		} elseif ($order_status == 'expired') {
-			$order_status = "Order has expired at {$order['completed']} UTC";
-		} else {
-			$order_status = null;
-		}
-		if (isset($order_status)) {
-			echo "<div class=\"order-status\">" . htmlspecialchars($order_status) . "</div>\n";
-		}
-
-		// Buttons
-		echo "<div class=\"order-buttons\">\n";
-		echo "<input type=\"submit\" value=\"Back\" name=\"back\">\n";
-		if (($order_cost > 0) && ($order_proceed)) {
-			echo "<input type=\"submit\" value=\"Proceed\" name=\"proceed\">\n";
-		}
-		echo "</div>\n";
-
-		echo "</form>\n";
+	if (!isset($order)) {
+		return "";
 	}
+	
+	$order_status = $order['status'];
+	$order_caption = ($order_status == 'draft') ? 'Order preview' : 'Order status';
+	
+	echo "<div id=\"plugins_page_name\"><h1>{$order_caption}</h1></div>\n";
+	echo "<div id=\"order-contents\">\n";
+
+	$order_id = $order['order_id'];
+	$csrf_token = make_csrf_token('order');
+	$order_cost = 0;
+	foreach ($order['items'] as $item) {
+		$order_cost += $item['price'];
+	}
+
+	echo "<form id=\"order_form\" action=\"/actions/submit_order\" method=\"POST\">\n";
+	echo "<input type=\"hidden\" name=\"token\" value=\"{$csrf_token}\">\n";
+	echo "<input type=\"hidden\" name=\"order_id\" value=\"{$order_id}\">\n";
+
+	// Order items
+	echo "<div class=\"form-cont\">\n";
+
+	if ($order_cost > 0) {
+		echo "<div class=\"order-checkout-list\">";
+		foreach ($order['items'] as $item) {
+			show_order_item($order, $item);
+		}
+		echo "</div>";
+		$order['price'] = $order_cost;
+		show_order_total($order);
+	} else {
+		echo "<div class=\"order-message\">Your order is empty</div>\n";
+	}
+	echo "</div>\n";
+
+	// Output order status
+	$order_proceed = ($order_status == 'draft') || ($order_status == 'created');
+	if ($order_status == 'created') {
+		$order_status = "Order created at {$order['created']} UTC";
+	} elseif ($order_status == 'paid') {
+		$order_status = "Order successfully completed at {$order['completed']} UTC";
+	} elseif ($order_status == 'refunded') {
+		$order_status = "Order successfully refunded at {$order['refunded']} UTC";
+	} elseif ($order_status == 'expired') {
+		$order_status = "Order has expired at {$order['completed']} UTC";
+	} else {
+		$order_status = null;
+	}
+	if (isset($order_status)) {
+		echo "<div class=\"order-status\">" . htmlspecialchars($order_status) . "</div>\n";
+	}
+
+	// Buttons
+	echo "<div class=\"order-buttons\">\n";
+	echo "<input type=\"submit\" value=\"Back\" name=\"back\">\n";
+	if (($order_cost > 0) && ($order_proceed)) {
+		echo "<input type=\"submit\" value=\"Proceed\" name=\"proceed\">\n";
+	}
+	echo "</div>\n";
+
+	echo "</form>\n";
 	echo "</div>\n";
 }
 

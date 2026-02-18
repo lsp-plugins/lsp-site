@@ -2,8 +2,7 @@
 
 require_once('./inc/dao/test_processing.php');
 
-function connect_test_processing()
-{
+function connect_test_processing() {
 	global $ACCOUNTING;
 	
 	// Check if we have connection descriptor
@@ -32,10 +31,12 @@ function connect_test_processing()
 	return [null, $db];
 }
 
-function create_test_processing_order($amount, $timeout, $success_url, $cancel_url, $user_data)
-{
+function create_test_processing_order_url($order_id) {
 	global $SITE_URL;
-	
+	return "{$SITE_URL}/actions/process_test_payment.php?id={$order_id}";
+}
+
+function create_test_processing_order($amount, $timeout, $success_url, $cancel_url, $user_data) {
 	[$error, $db] = connect_test_processing();
 	if (isset($error)) {
 		return [$error, null];
@@ -48,7 +49,27 @@ function create_test_processing_order($amount, $timeout, $success_url, $cancel_u
 		}
 		mysqli_commit($db);
 		
-		$order['url'] = "{$SITE_URL}/actions/process_test_payment.php?id={$order['id']}";
+		$order['url'] = create_test_processing_order_url($order['id']);
+		
+		return [null, $order];
+	} finally {
+		db_safe_disconnect($db);
+	}
+}
+
+function find_test_processing_order($id) {
+	[$error, $db] = connect_test_processing();
+	if (isset($error)) {
+		return [$error, null];
+	}
+	
+	try {
+		$order = dao_get_test_processing_order($db, $id);
+		if (!isset($order)) {
+			return ['Failed to retrieve order', null];
+		}
+		
+		$order['url'] = create_test_processing_order_url($order['id']);
 		
 		return [null, $order];
 	} finally {
