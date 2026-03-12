@@ -1,5 +1,33 @@
 <h1>NEWS</h1>
 
+<h3>2025-03-12</h3>
+<p>New LSP Plugins 1.2.27 release available!</p>
+<ul>
+<li>Implemented plugin launcher for standalone plugins to avoid icon flood in menus of modern desktop environments.</li>
+<li>Added new experimental light UI schema 'Paper'. Contributed by suedwestlicht at github.com.</li>
+<li>Added support of filter decramping for Parametric Equalizer and Filter plugin series.</li>
+<li>Moved all code related to OpenGL rendering into a separate thread to prevent freezing and stuttering of the main UI loop of the host application.</li>
+<li>Added possibility to independently equalize left and right channels of wet signal for convolution-base plugins series:</li>
+	<ul>
+	<li>Impulse Responses;</li>
+	<li>Impulse Reverb;</li>
+	<li>Room Builder.</li>
+	</ul>
+<li>Added support of visual schema selection via the command line argument for standalone versions of plugins.</li>
+<li>Added keyboard shortcuts for quickly closing some dialogs.</li>
+<li>Added support of switching presets by scrolling of the mouse wheel.</li>
+<li>Added better support of APO equalizer configuration files.</li>
+<li>Reorganized inputs and outputs of Noise Generator x2 and x4 into stereo groups.</li>
+<li>Some optimizations, bugfixes and improvements in core libraries.</li>
+<li>Fixed bug in Artistic Delay plugin which could yield to crackling sound when using feedback.</li>
+<li>Fixed and regressions in plugin window sizing and optimized window behaviour.</li>
+<li>Fixed bug in waveform display for Multiband Clipper plugin series.</li>
+<li>Eliminated some unnecessary redrawing of widgets triggered by other widgets.</li>
+<li>Memory consumption optimizations in the Slap-back Delay plugin series: memory is not allocated for non-used delay lines.</li>
+<li>Fixed muting of delay line when delay is zero in Slap-back Delay plugin series.</li>
+<li>Fixed bug of failing UI creation when plugins's global configuration file is missing.</li>
+</ul>
+
 <h3>2025-12-21</h3>
 
 <p>New LSP Plugins 1.2.26 available!</p>
