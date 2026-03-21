@@ -1,6 +1,6 @@
 <h1>NEWS</h1>
 
-<h3>2025-03-12</h3>
+<h3>2026-03-12</h3>
 <p>New LSP Plugins 1.2.27 release available!</p>
 <ul>
 <li>Implemented plugin launcher for standalone plugins to avoid icon flood in menus of modern desktop environments.</li>
