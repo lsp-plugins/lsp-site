@@ -15,7 +15,7 @@
 				<?php if (isset($user)) { ?>
 				<div class="fs-support-id">Support identifier:</div>
 				<div class="fs-support-id"><?= htmlspecialchars($user['support_id']) ?></div>
-				?>
+				<?php } ?>
 				<?php if (!isset($user)) { ?>
 				<div class="fs-privacy">
 					<span>I agree with <a data-fancybox data-type="ajax" data-src="/ajax/privacy.php" href="javascript:;">privacy policy</a> (<a href="/?page=privacy" alt="Direct link to Privacy Policy" target="_blank">Direct Link</a>)</span>
