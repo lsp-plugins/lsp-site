@@ -8,6 +8,7 @@ $PAGES = array(
 	//'video' => array('name' => 'Video', 'page' => 'video.php', 'icon' => 'video.png', 'style' => 'video_class' ),
 	'download' => array('name' => 'Download', 'page' => 'download.php', 'icon' => 'download.png', 'style' => 'download_class' ),
 	'feedback' => array('name' => 'Feedback', 'page' => 'feedback.php', 'icon' => 'feedback.png', 'style' => 'feedback_class', 'session' => true ),
+	'terms' => array('name' => 'Terms of Service', 'page' => 'terms_of_service.php', 'hidden' => 1 ),
 	'privacy' => array('name' => 'Privacy Policy', 'page' => 'privacy.php', 'hidden' => 1 ),
 	'tos' => array('name' => 'Terms of Service', 'page' => 'terms_of_service.php', 'hidden' => 1 ),
 	'qiwi' => array('name' => 'QIWI', 'page' => 'qiwi.php', 'hidden' => 1),

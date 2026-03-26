@@ -32,6 +32,9 @@
 							echo "</li>\n";
 						}
 					?>
+					<?php if ($curr_page == 'download') { ?>
+					<li class="menu-li-footer "><a href="?page=terms">Terms of Service</a></li>
+					<?php } ?>
 					<li class="menu-li-footer "><a href="?page=privacy">Privacy Policy</a></li>
 				</ul>
 			</div>
