@@ -18,7 +18,7 @@
 				<?php } ?>
 				<?php if (!isset($user)) { ?>
 				<div class="fs-privacy">
-					<span>I agree with <a data-fancybox data-type="ajax" data-src="/ajax/privacy.php" href="javascript:;">privacy policy</a> (<a href="/?page=privacy" alt="Direct link to Privacy Policy" target="_blank">Direct Link</a>)</span>
+					<span>I agree with <a data-fancybox data-type="ajax" data-src="/ajax/privacy.php" href="javascript:;">Privacy Policy</a> (<a href="/?page=privacy" alt="Direct link to Privacy Policy" target="_blank">Direct Link</a>)</span>
 					<input type="checkbox" name="privacy_agreement">
 				</div>
 				<?php } ?>
