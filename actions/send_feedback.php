@@ -9,12 +9,14 @@ require_once("./inc/service/validation.php");
 require_once("./inc/site/notifications.php");
 require_once("./inc/site/banhammer.php");
 
-function verify_request() {
+function verify_request($user) {
 	$error = null;
 	$error = verify_isset($error, $_POST, 'name', 'Name');
 	$error = verify_email($error, $_POST, 'email', 'E-mail');
 	$error = verify_isset($error, $_POST, 'text', 'Text');
-	$error = verify_checked($error, $_POST, 'privacy_agreement', true);
+	if (!isset($user)) {
+		$error = verify_checked(null, $_POST, 'privacy_agreement', true);
+	}
 	$error = verify_csrf_token($error, 'feedback', $_POST, 'token');
 	$error = verify_captcha($error);
 	
@@ -33,15 +35,15 @@ function verify_request() {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	$button = 'Try again';
+
+	ensure_user_session_is_set();
+	$user = get_session_user();
 	
-	$message = verify_request();
+	$message = verify_request($user);
 
 	if (!isset($message)) {
 		// Ensure that user session is set
-		ensure_user_session_is_set();
-		$user = get_session_user();
 		$support_id = isset($user) ? $user['support_id'] : '';
-		
 		$result = notify_user_feedback($_POST['name'], $_POST['email'], $_POST['text'], $support_id);
 		if ($result) {
 			$message = 'Thank you for feedback! We will respond to your e-mail as soon as possible.';

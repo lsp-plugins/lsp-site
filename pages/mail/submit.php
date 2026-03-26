@@ -15,11 +15,11 @@
 				<?php if (isset($user)) { ?>
 				<div class="fs-support-id">Support identifier:</div>
 				<div class="fs-support-id"><?= htmlspecialchars($user['support_id']) ?></div>
-				<?php } ?>
 				<div class="fs-privacy">
-					<span>I agree with <a data-fancybox data-type="ajax" data-src="/ajax/privacy.php" href="javascript:;">privacy policy</a></span>
+					<span>I agree with <a data-fancybox data-type="ajax" data-src="/ajax/privacy.php" href="javascript:;">privacy policy</a> (<a href="/?page=privacy" alt="Direct link to Privacy Policy" target="_blank">Direct Link</a>)</span>
 					<input type="checkbox" name="privacy_agreement">
 				</div>
+				<?php } ?>
 				<div class="fs-message">Enter the message you want to inform us:<textarea name="text"></textarea></div>
 				<div data-theme="dark" class="g-recaptcha" data-sitekey="<?= $GOOGLE['recaptcha_pub'] ?>"></div>
 				<div class="fs-send"><input type="submit" value="Send feedback"></div>

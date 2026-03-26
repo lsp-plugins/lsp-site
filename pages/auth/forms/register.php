@@ -7,12 +7,12 @@
 			<div class="form-field">Password:<input type="password" name="password" style="width: 180px;"></div>
 			<div class="form-field" style="margin-bottom: 20px;">Confirm password:<input type="password" name="password2" style="width: 180px;"></div>
 			<div class="fs-privacy">
-				<span>I agree with <a data-fancybox data-type="ajax" data-src="/ajax/privacy.php" href="javascript:;">privacy policy</a></span>
-				<input type="checkbox" name="privacy_agreement">
+				<span>I agree with <a data-fancybox data-type="ajax" data-src="/ajax/terms_of_service.php" href="javascript:;">Terms of Service</a> (<a href="/?page=terms" alt="Direct link to Terms of Service" target="_blank">Direct Link</a>)</span>
+				<input type="checkbox" name="tos_agreement">
 			</div>
 			<div class="fs-privacy">
-				<span>I agree with <a data-fancybox data-type="ajax" data-src="/ajax/terms_of_service.php" href="javascript:;">terms of service</a></span>
-				<input type="checkbox" name="tos_agreement">
+				<span>I agree with <a data-fancybox data-type="ajax" data-src="/ajax/privacy.php" href="javascript:;">Privacy Policy</a> (<a href="/?page=privacy" alt="Direct link to Privacy Policy" target="_blank">Direct Link</a>)</span>
+				<input type="checkbox" name="privacy_agreement">
 			</div>
 			<?php require('./pages/parts/captcha.php'); ?>
 			<div class="form-button">
