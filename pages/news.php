@@ -1,5 +1,22 @@
 <h1>NEWS</h1>
 
+<h3>2026-04-01</h3>
+<p>New LSP Plugins 1.2.29 release with fixes of bugs and regressions available!</p>
+<ul>
+<li>Added multiple plugins launch option by Launcher tool.</li>
+<li>Added measured latency display in samples for the Latency Detector tool.</li>
+<li>Additional DSP code optimizations for AVX-512 instruction set.</li>
+<li>Better support of Haiku by core libraries.</li>
+<li>Sidechain optimizations: Sidechain now uses ring buffer instead of shift buffer. This allows to reduce the number of memory copies and memory consumption.</li>
+<li>Frequency knob now also is affected by note quantization switch in Parametric Equalizer plugin series.</li>
+<li>Fixed regression related to UI scaling and font scaling.</li>
+<li>Fixed non-properly working 8th band of crossover in the Multiband Ring Modulated Sidechain.</li>
+<li>Fixed widget redrawing atrifacts for some use cases.</li>
+<li>Fixed possible read/write concurrency on the global configuration file.</li>
+<li>Fixed recurse plugin window positioning bug which could yield memory leaks in the X11-emulated Wayland environment.</li>
+<li>Fixed memory leaks when using Cairo library as a fallback to OpenGL.</li>
+</ul>
+
 <h3>2026-03-12</h3>
 <p>New LSP Plugins 1.2.27 release available!</p>
 <ul>
