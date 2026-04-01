@@ -7,6 +7,7 @@ chdir($cwd);
 
 require_once('./config/config.php');
 require_once('./inc/site/artifacts.php');
+require_once('./inc/service/utils.php');
 
 $files = [];
 $options = [];

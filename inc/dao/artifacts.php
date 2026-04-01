@@ -198,7 +198,7 @@ function dao_create_build($db, $product_id, $build_type_id, $version, $price) {
 			"VALUES (?, current_date, ?, ?, ?, ?, ?, ?)");
 		
 		$raw_version = ($version[0] * 1000 + $version[1]) * 1000 + $version[2];
-		mysqli_stmt_bind_param($stmt, 'iiiiii', $product_id, $build_type_id, $version[0], $version[1], $version[2], $raw_version, );
+		mysqli_stmt_bind_param($stmt, 'iiiiiii', $product_id, $build_type_id, $version[0], $version[1], $version[2], $raw_version, $price);
 		if (mysqli_stmt_execute($stmt)) {
 			return mysqli_insert_id($db);
 		}
