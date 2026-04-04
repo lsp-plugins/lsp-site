@@ -1,6 +1,15 @@
 {
     "require": {
         "swiftmailer/swiftmailer": "^6.3",
-        "stripe/stripe-php": "^19.3"
+        "stripe/stripe-php": "^19.3",
+        "paddlehq/paddle-php-sdk": "^1.17",
+        "symfony/http-client": "^7.4",
+        "nyholm/psr7": "^1.8",
+        "guzzlehttp/promises": "^2.3"
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
     }
 }
