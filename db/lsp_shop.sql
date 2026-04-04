@@ -179,6 +179,7 @@ AS
   INNER JOIN platform pl
   ON (pl.id = a.platform_id)
   INNER JOIN build_type bt
-  ON (bt.id = b.type_id);
+  ON (bt.id = b.type_id)
+  ORDER BY p.name ASC, a.file_name ASC;
 
 

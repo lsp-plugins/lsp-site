@@ -12,7 +12,7 @@ UPDATE product set description='Impulse Responses', bundle_name='impulse_respons
 UPDATE product set description='Impulse Reverb', bundle_name='impulse_reverb' where name='lsp-plugins-impulse-reverb';
 UPDATE product set description='Latency Meter', bundle_name='latency_meter' where name='lsp-plugins-latency-meter';
 UPDATE product set description='Loudness Compensator', bundle_name='loud_comp' where name='lsp-plugins-loud-comp';
-UPDATE product set description='Multiband Clipper', bundle_name='mb_clipper' where name='lsp-plugins-mb-clipper';
+UPDATE product set description='M/B Clipper', bundle_name='mb_clipper' where name='lsp-plugins-mb-clipper';
 UPDATE product set description='Mixer', bundle_name='mixer' where name='lsp-plugins-mixer';
 UPDATE product set description='Noise Generator', bundle_name='noise_generator' where name='lsp-plugins-noise-generator';
 UPDATE product set description='Oscillator', bundle_name='oscillator' where name='lsp-plugins-oscillator';
@@ -22,3 +22,29 @@ UPDATE product set description='Profiler', bundle_name='profiler' where name='ls
 UPDATE product set description='Slap-back Delay', bundle_name='slap_delay' where name='lsp-plugins-slap-delay';
 UPDATE product set description='Spectrum Analyzer', bundle_name='spectrum_analyzer' where name='lsp-plugins-spectrum-analyzer';
 UPDATE product set description='Surge Filter', bundle_name='surge_filter' where name='lsp-plugins-surge-filter';
+
+UPDATE product set description='Automatic Gain Control', bundle_name='autogain', price=20*100000 where name='lsp-plugins-autogain';
+UPDATE product set description='Compressor', bundle_name='compressor', price=40*100000 where name='lsp-plugins-compressor';
+UPDATE product set description='Crossover', bundle_name='crossover', price=20*100000 where name='lsp-plugins-crossover';
+UPDATE product set description='Dynamics Processor', bundle_name='dyna_processor', price=40*100000 where name='lsp-plugins-dyna-processor';
+UPDATE product set description='Expander', bundle_name='expander', price=40*100000 where name='lsp-plugins-expander';
+UPDATE product set description='Gate', bundle_name='gate', price=40*100000 where name='lsp-plugins-gate';
+UPDATE product set description='GOTT Compressor', bundle_name='gott_compressor', price=40*100000 where name='lsp-plugins-gott-compressor';
+UPDATE product set description='Graphic Equalizer', bundle_name='graph_equalizer', price=40*100000 where name='lsp-plugins-graph-equalizer';
+UPDATE product set description='Limiter', bundle_name='limiter', price=30*100000 where name='lsp-plugins-limiter';
+UPDATE product set description='Matcher', bundle_name='matcher', price=30*100000 where name='lsp-plugins-matcher';
+UPDATE product set description='M/B Compressor', bundle_name='mb_compressor', price=40*100000 where name='lsp-plugins-mb-compressor';
+UPDATE product set description='M/B Dynamics Processor', bundle_name='mb_dyna_processor', price=40*100000 where name='lsp-plugins-mb-dyna-processor';
+UPDATE product set description='M/B Expander', bundle_name='mb_expander', price=40*100000 where name='lsp-plugins-mb-expander';
+UPDATE product set description='M/B Gate', bundle_name='mb_gate', price=40*100000 where name='lsp-plugins-mb-gate';
+UPDATE product set description='M/B Limiter', bundle_name='mb_limiter', price=40*100000 where name='lsp-plugins-mb-limiter';
+UPDATE product set description='M/B RingMod Sidechain', bundle_name='mb_ringmod_sc', price=25*100000 where name='lsp-plugins-mb-ringmod-sc';
+UPDATE product set description='Parametric Equalizer', bundle_name='para_equalizer', price=40*100000 where name='lsp-plugins-para-equalizer';
+UPDATE product set description='Phaser', bundle_name='phaser', price=20*100000 where name='lsp-plugins-phaser';
+UPDATE product set description='Referencer', bundle_name='referencer', price=40*100000 where name='lsp-plugins-referencer';
+UPDATE product set description='Return', bundle_name='return', price=0*100000 where name='lsp-plugins-return';
+UPDATE product set description='RingMod Sidechain', bundle_name='ringmod_sc', price=20*100000 where name='lsp-plugins-ringmod-sc';
+UPDATE product set description='Room Builder', bundle_name='room_builder', price=60*100000 where name='lsp-plugins-room-builder';
+UPDATE product set description='Sampler', bundle_name='sampler', price=30*100000 where name='lsp-plugins-sampler';
+UPDATE product set description='Send', bundle_name='send', price=0*100000 where name='lsp-plugins-send';
+UPDATE product set description='Trigger', bundle_name='trigger', price=20*100000 where name='lsp-plugins-trigger';

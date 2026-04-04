@@ -126,7 +126,9 @@ echo "</div>\n";
 
 foreach ($artifacts as $arch => $list) {
 	usort($list, function($a, $b) {
-		return $a['product'] <=> $b['product'];
+		$a_id = isset($a['description']) ? $a['description'] : $a['product'];
+		$b_id = isset($b['description']) ? $b['description'] : $b['product'];
+		return $a_id <=> $b_id;
 	});
 
 	$style_class = (($architecture === $arch) ? 'display: block;' : 'display: none;');
