@@ -3,7 +3,7 @@
 require_once("./inc/dao/artifacts.php");
 require_once('./inc/dao/logging.php');
 require_once("./inc/dao/purchases.php");
-require_once("./inc/dao/stripe.php");
+require_once("./inc/service/paddle.php");
 require_once("./inc/service/stripe.php");
 require_once("./inc/service/test_processing.php");
 require_once("./inc/service/utils.php");
@@ -384,219 +384,17 @@ function submit_order($customer_id, $order_id, $method, $remote_id, $payment_url
 	}
 }
 
-function ensure_stripe_product_id_exists($db, $stripe_session, $product_name) {
-	while (true) {
-		// Fetch product from database
-		[$error, $db_product] = dao_get_stripe_product($db, $stripe_session['test'], $product_name);
-		if (isset($error)) {
-			error_log("Error fetching stripe product identifier from database: {$error}");
-			return [ $error, null ];
-		} else if (isset($db_product)) {
-			return [ null, $db_product['product_id'] ];
-		}
-		
-		// Try to find or create the product using Stripe API
-		$api_product_id = get_stripe_product_id($stripe_session, $product_name);
-		if (!isset($api_product_id)) {
-			// Create product using the stripe API
-			$api_product = create_stripe_product($stripe_session, $product_name, null);
-			if (!isset($api_product)) {
-				error_log("Error creating stripe product using Stripe API");
-				return ["Error creating stripe product using Stripe API", null];
-			}
-			$api_product_id = $api_product['id'];
-		}
-		
-		// Now we need to save the product in the database
-		try {
-			[$error, $db_product] = dao_create_stripe_product($db, $stripe_session['test'], $product_name, $api_product_id);
-			if (isset($error)) {
-				error_log("Error creating database stripe product: {$error}");
-				return [$error, null];
-			}
-			
-			return [null, $db_product['product_id']];
-		} catch (mysqli_sql_exception $e) {
-			if (!unique_key_violation($e)) {
-				return [ db_log_exception($e), null ];
-			}
-		}
-	}
-}
-
-function ensure_stripe_price_id_exists($db, $stripe_session, $product_id, $amount) {
-	while (true) {
-		// Fetch price for specified product from database
-		[$error, $db_price] = dao_get_stripe_price($db, $stripe_session['test'], $product_id, $amount);
-		if (isset($error)) {
-			error_log("Error fetching stripe price identifier from database: {$error}");
-			return [ $error, null ];
-		} else if (isset($db_price)) {
-			return [ null, $db_price['price_id'] ];
-		}
-		
-		// Create product using the stripe API
-		$api_price = create_stripe_price($stripe_session, $product_id, 'usd', $amount);
-		if (!isset($api_price)) {
-			error_log("Error creating stripe price using Stripe API");
-			return ["Error creating stripe price using Stripe API", null];
-		}
-		$api_price_id = $api_price['id'];
-		
-		// Now we need to save the product in the database
-		try {
-			[$error, $db_price] = dao_create_stripe_price($db, $stripe_session['test'], $product_id, $api_price_id, $amount);
-			if (isset($error)) {
-				error_log("Error creating database stripe product: {$error}");
-				return [$error, null];
-			}
-			
-			return [null, $db_price['price_id']];
-		} catch (mysqli_sql_exception $e) {
-			if (!unique_key_violation($e)) {
-				return [ db_log_exception($e), null ];
-			}
-		}
-	}
-}
-
-function get_stripe_price_for_product($stripe_session, $product_name, $price) {
-	$db = null;
-	
-	try {
-		// Connect to database
-		$db = connect_db('customers');
-		if (!isset($db)) {
-			return [ "Database connection error", null ];
-		}
-		
-		// Ensure that product identifier exists
-		[$error, $stripe_product_id] = ensure_stripe_product_id_exists($db, $stripe_session, $product_name);
-		if (isset($error)) {
-			return [ $error, null ];
-		}
-		
-		// Ensure that price identifier exists
-		[$error, $stripe_price_id] = ensure_stripe_price_id_exists($db, $stripe_session, $stripe_product_id, $price);
-		if (isset($error)) {
-			return [ $error, null ];
-		}
-		
-		// Commit information about product and price to database
-		mysqli_commit($db);
-		return [null, $stripe_price_id];
-	} catch (mysqli_sql_exception $e) {
-		$error = db_log_exception($e);
-		return [$error, null];
-	} finally {
-		db_safe_rollback($db);
-	}
-}
-
-function create_stripe_payment_url($session_id, $customer_id, $order_id, $product, $price) {
-	[$error, $stripe_session] = get_stripe_session();
-	if (isset($error)) {
-		error_log("Failed to estimate stripe session: {$error}");
-		return [$error, null];
-	}
-	
-	[$error, $price_id] = get_stripe_price_for_product($stripe_session, $product, $price);
-	if (isset($error)) {
-		return [$error, null];
-	}
-	
-	// Now we have stripe price identifier. We are ready to create payment URL.
-	$result = make_stripe_payment_session($stripe_session, $price_id, $order_id);
-	if (!isset($result)) {
-		return [ "Error creating payment URL for Stripe service", null ];
-	}
-	
-	// Log user action
-	try {
-		// Connect to database
-		$db = connect_db('customers');
-		if (!isset($db)) {
-			return [ "Database connection error", null ];
-		}
-		
-		dao_log_user_action($db, $customer_id, $session_id, 'create_payment_url', [
-				'method' => 'stripe',
-				'url' => $result['url'],
-				'data' => $result
-			]);
-		mysqli_commit($db);
-		return [
-			null,
-			[
-				'id' => $result['id'],
-				'url' => $result['url']
-			]
-		];
-	} catch (mysqli_sql_exception $e) {
-		$error = db_log_exception($e);
-		return [ $error, null ];
-	} finally {
-		db_safe_rollback($db);
-	}
-}
-
-function create_test_processing_payment_url($session_id, $customer_id, $order_id, $product, $price) {
-	global $SITE_URL;
-	
-	[$error, $order] = create_test_processing_order(
-		raw_to_price($price), 15,
-		"{$SITE_URL}/actions/finish_order?order_id={$order_id}",
-		"{$SITE_URL}/actions/finish_order?order_id={$order_id}",
-		[
-			'order_id' => $order_id
-		]);
-
-	if (isset($error)) {
-		error_log("Failed to create test processing payment: {$error}");
-		return [$error, null];
-	}
-	elseif (!isset($order)) {
-		error_log("Missing order object");
-		return ['Missing order object', null];
-	}
-	
-	// Log user action
-	try {
-		// Connect to database
-		$db = connect_db('customers');
-		if (!isset($db)) {
-			return [ "Database connection error", null ];
-		}
-		
-		dao_log_user_action($db, $customer_id, $session_id, 'create_payment_url', [
-			'method' => 'test',
-			'url' => $order['url'],
-			'data' => $order
-		]);
-		mysqli_commit($db);
-		return [
-			null,
-			[
-				'id' => $order['id'],
-				'url' => $order['url']
-			]
-		];
-	} catch (mysqli_sql_exception $e) {
-		$error = db_log_exception($e);
-		return [ $error, null ];
-	} finally {
-		db_safe_rollback($db);
-	}
-}
-
-function create_payment_url($service, $customer_id, $order_id, $product, $price) {
+function create_payment_url($service, $customer_id, $order_id, $product, $price, $product_image = null) {
 	$session_id = user_session_id();
 	if (!isset($session_id)) {
 		return ["No active user session", null];
 	}
 	
+	// Create payment URL
 	if ($service == 'stripe') {
 		return create_stripe_payment_url($session_id, $customer_id, $order_id, $product, $price);
+	} elseif ($service == 'paddle') {
+		return create_paddle_payment_url($session_id, $customer_id, $order_id, $product, $price, $product_image);
 	} elseif ($service == 'test') {
 		return create_test_processing_payment_url($session_id, $customer_id, $order_id, $product, $price);
 	}
@@ -628,84 +426,6 @@ function on_order_processed($order_id)
 	}
 }
 
-function synchronize_stripe_order_status($db, $order)
-{
-	$order_id = $order['order_id'];
-	$remote_id = $order['remote_id'];
-	
-	// Check for test status
-	$test = null;
-	if (preg_match('/^cs_test_/', $remote_id)) {
-		$test = true;
-	} elseif (preg_match('/^cs_live_/', $remote_id)) {
-		$test = false;
-	}
-	if (!isset($test)) {
-		return ["Could not determine test/live status of the order {$order_id}", false];
-	}
-	
-	// Retrieve Stripe payment session
-	[$error, $stripe_session] = get_stripe_session($test);
-	if (isset($error)) {
-		return [ "Could not acquire Stripe session for the order {$order_id}: {$error}", false];
-	}
-	$payment_session = retrieve_stripe_payment_session($stripe_session, $remote_id);
-	if (!isset($payment_session)) {
-		return [ "Could not get Stripe payment session {$remote_id} for {$order_id}", false ];
-	}
-	
-	// Check session status
-	$status = $payment_session['status'];
-	
-	if ($status == 'expired') {
-		[$error, $affected] = dao_update_order($db, $order_id, [
-			'completed' => db_unix_timestamp($payment_session['expires_at']),
-			'status' => 'expired'
-		]);
-		if (isset($error)) {
-			return [ "Could not mark order {$order_id} as expired: {$error}", false ];
-		}
-		if ($affected > 0) {
-			dao_log_user_action($db, $order['customer_id'], null, 'order_expired', [
-				'order_id' => $order_id,
-				'remote_id' => $remote_id,
-				'method' => 'stripe'				
-			]);
-			mysqli_commit($db);
-		}
-		
-		return [ null, $affected > 0 ];
-	} elseif ($status == 'complete') {
-		[$error, $affected] = dao_update_order($db, $order_id, [
-			'completed' => db_current_timestamp(),
-			'status' => 'paid'
-		]);
-		if (isset($error)) {
-			return [ "Could not mark order {$order_id} as completed: {$error}", false ];
-		}
-		if ($affected > 0) {
-			dao_log_user_action($db, $order['customer_id'], null, 'order_complete', [
-				'order_id' => $order_id,
-				'remote_id' => $remote_id,
-				'method' => 'stripe'
-			]);
-			mysqli_commit($db);
-			on_order_processed($order_id);
-		}
-		
-		return [ null, $affected > 0 ];
-	} elseif ($status != 'open') {
-		return [ "Unexpected Stripe session status '{$status}' for session {$remote_id}, order {$order_id}", false ];
-	}
-	
-	$created = gmdate("Y-m-d H:i:s", $payment_session['created']);
-	$expire = gmdate("Y-m-d H:i:s", $payment_session['expires_at']);
-	$ctime = gmdate("Y-m-d H:i:s");
-	error_log("Stripe session {$remote_id} for order '{$order_id}' is still active (created at ${created} UTC, expires at ${expire} UTC, now is ${ctime} UTC)"); 
-	
-	return [ null, false ];
-}
-
 function synchronize_draft_order($db, $order)
 {
 	$ctime = db_current_timestamp();
@@ -727,85 +447,6 @@ function synchronize_draft_order($db, $order)
 	return [ null, $affected > 0 ];
 }
 
-function synchronize_test_order_status($db, $order)
-{
-	$order_id = $order['order_id'];
-	$remote_id = $order['remote_id'];
-	
-	[$error, $order] = find_test_processing_order($remote_id);
-	if (isset($error)) {
-		return [ "Could not fetch test processing order id={$remote_id}: {$error}", false];
-	}
-	
-	$status = $order['status'];
-	
-	if ($status == 'timeout') {
-		[$error, $affected] = dao_update_order($db, $order_id, [
-			'completed' => $order['completed'],
-			'status' => 'expired'
-		]);
-		if (isset($error)) {
-			return [ "Could not mark test processing order {$order_id} as expired: {$error}", false ];
-		}
-		if ($affected > 0) {
-			dao_log_user_action($db, $order['customer_id'], null, 'order_expired', [
-				'order_id' => $order_id,
-				'remote_id' => $remote_id,
-				'method' => 'test'
-			]);
-			mysqli_commit($db);
-		}
-		
-		return [ null, $affected > 0 ];
-	} elseif ($status == 'success') {
-		[$error, $affected] = dao_update_order($db, $order_id, [
-			'completed' => db_current_timestamp(),
-			'status' => 'paid'
-		]);
-		if (isset($error)) {
-			return [ "Could not mark test processing order {$order_id} as completed: {$error}", false ];
-		}
-		if ($affected > 0) {
-			dao_log_user_action($db, $order['customer_id'], null, 'order_complete', [
-				'order_id' => $order_id,
-				'remote_id' => $remote_id,
-				'method' => 'test'
-			]);
-			mysqli_commit($db);
-			on_order_processed($order_id);
-		}
-		
-		return [ null, $affected > 0 ];
-	} elseif ($status == 'cancel') {
-		[$error, $affected] = dao_update_order($db, $order_id, [
-			'completed' => $order['completed'],
-			'status' => 'cancelled'
-		]);
-		if (isset($error)) {
-			return [ "Could not mark test processing order {$order_id} as cancelled: {$error}", false ];
-		}
-		if ($affected > 0) {
-			dao_log_user_action($db, $order['customer_id'], null, 'order_cancelled', [
-				'order_id' => $order_id,
-				'remote_id' => $remote_id,
-				'method' => 'test'
-			]);
-			mysqli_commit($db);
-		}
-		
-		return [ null, $affected > 0 ];
-	} else {
-		return [ "Unexpected test processing orders status '{$status}' for remote order {$remote_id}, order {$order_id}", false ];
-	}
-	
-	$created = gmdate("Y-m-d H:i:s", $order['created']);
-	$expire = gmdate("Y-m-d H:i:s", $order['expire']);
-	$ctime = gmdate("Y-m-d H:i:s");
-	error_log("Test processing remote order {$remote_id} for order '{$order_id}' is still active (created at ${created} UTC, expires at ${expire} UTC, now is ${ctime} UTC)");
-	
-	return [ null, false ];
-}
-
 function synchronize_active_order($db, $order)
 {
 	$method = $order['method'];
@@ -813,6 +454,8 @@ function synchronize_active_order($db, $order)
 	
 	if ($method == 'stripe') {
 		return synchronize_stripe_order_status($db, $order);
+	} elseif ($method == 'paddle') {
+		return synchronize_paddle_order_status($db, $order);
 	} elseif ($method == 'test') {
 		return synchronize_test_order_status($db, $order);
 	}

@@ -60,7 +60,13 @@ function process_proceed_order()
 		foreach ($order['items'] as $item) {
 			$price += $item['price'];
 		}
-		[$error, $order_info] = create_payment_url($method, $customer_id, $order_id, 'LSP Plugins binary builds', $price);
+		[$error, $order_info] = create_payment_url(
+			$method,
+			$customer_id,
+			$order_id,
+			'LSP Plugins binary builds',
+			$price,
+			"{$SITE_URL}/img/product.png");
 		if (isset($error)) {
 			error_log($error);
 			return ["Error occurred while generating remote payment URL", null];

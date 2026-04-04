@@ -146,6 +146,27 @@ CREATE TABLE stripe_prices
   CONSTRAINT UK_PRICE_VALUE UNIQUE(product_id, test, amount)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE paddle_products
+(
+  name VARCHAR(128) NOT NULL,
+  product_id VARCHAR(64) NOT NULL,
+  test tinyint NOT NULL,
+  
+  CONSTRAINT PK_STRIPE_PRODUCT PRIMARY KEY(name, test),
+  CONSTRAINT UK_STRIPE_PRODUCT UNIQUE(product_id, test)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE paddle_prices
+(
+  price_id VARCHAR(64) NOT NULL,
+  product_id VARCHAR(64) NOT NULL,
+  test tinyint NOT NULL,
+  amount bigint(20) NOT NULL,
+
+  CONSTRAINT PK_PADDLE_PRICE_ID PRIMARY KEY(price_id, test),
+  CONSTRAINT UK_PADDLE_PRICE_VALUE UNIQUE(product_id, test, amount)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 CREATE VIEW v_latest_orders
 AS
   SELECT
