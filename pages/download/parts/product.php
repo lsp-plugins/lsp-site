@@ -8,7 +8,7 @@ function show_product(&$csrf_tokens, $artifact, $user_purchases, $user_cart) {
 	$product_id = $artifact['product_id'];
 	$arch = $artifact['architecture'];
 	$platform = $artifact['platform'];
-	$description = htmlspecialchars($artifact['description']);
+	$description = htmlspecialchars($artifact['short_desc']);
 
 	$name = $description;
 	$download = null;

@@ -76,6 +76,7 @@ CREATE TABLE product
   description VARCHAR(128),
   price BIGINT(20),
   bundle_name varchar(32),
+  short_desc varchar(64),
 
   PRIMARY KEY (id),
   CONSTRAINT UK_PRODUCT_NAME UNIQUE KEY (name)

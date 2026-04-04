@@ -414,6 +414,7 @@ function dao_get_artifacts($db, $view, $filter) {
 				'product_id' => $row['product_id'],
 				'bundle' => $row['bundle'],
 				'description' => $description,
+				'short_desc' => $row['short_desc'] ?: $description,
 				'build_id' => $row['build_id'],
 				'type' => $row['type'],
 				'artifact_id' => $row['artifact_id'],

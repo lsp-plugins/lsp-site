@@ -126,8 +126,8 @@ echo "</div>\n";
 
 foreach ($artifacts as $arch => $list) {
 	usort($list, function($a, $b) {
-		$a_id = isset($a['description']) ? $a['description'] : $a['product'];
-		$b_id = isset($b['description']) ? $b['description'] : $b['product'];
+		$a_id = isset($a['short_desc']) ? $a['short_desc'] : $a['description'];
+		$b_id = isset($b['short_desc']) ? $b['short_desc'] : $b['description'];
 		return $a_id <=> $b_id;
 	});
 
