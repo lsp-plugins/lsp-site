@@ -61,7 +61,6 @@ CREATE TABLE customer_token
   CONSTRAINT FK_CUSTOMER_TOKEN_CID FOREIGN KEY(customer_id) REFERENCES customer(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-DROP TABLE orders;
 
 CREATE TABLE orders
 (
@@ -115,7 +114,7 @@ CREATE TABLE cart
 
 CREATE TABLE customer_log
 (
-  time TIMESTAMP NOT NULL,
+  time timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   customer_id bigint(20) NOT NULL,
   session_id varchar(36),
   action varchar(64) NOT NULL,
@@ -183,8 +182,4 @@ AS
   GROUP BY
     o.customer_id,
     oi.product_id;
-
-
-ALTER TABLE orders add COLUMN method VARCHAR(16) BEFORE remote_id; 
-
 
