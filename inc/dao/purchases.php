@@ -442,8 +442,9 @@ function dao_find_order($db, $filter)
 			return ['Not found', null];
 		}
 		
+		$order_id = $row['order_id'];
 		$order = [
-			'order_id' => $row['order_id'],
+			'order_id' => $order_id,
 			'method' => $row['method'],
 			'remote_id' => $row['remote_id'],
 			'payment_url' => $row['payment_url'],

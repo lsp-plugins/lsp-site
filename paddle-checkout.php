@@ -2,6 +2,7 @@
 	chdir($_SERVER['DOCUMENT_ROOT']);
 	require_once("./inc/top.php");
 	
+	require_once("./pages/download/order.php");
 	require_once("./inc/service/validation.php");
 	require_once("./inc/site/purchases.php");
 ?>
@@ -35,10 +36,12 @@
 		return [
 			null,
 			[
+				'order' => $order,
 				'paddle_sandbox' => ($paddle_test) ? "Paddle.Environment.set(\"sandbox\");" : "",
 				'paddle_key' => $paddle_user_key,
 				'paddle_txn' => $paddle_transaction_id,
-				'success_url' => "{$SITE_URL}/actions/finish_order?order_id={$order['order_id']}"
+				'success_url' => "{$SITE_URL}/actions/finish_order?order_id={$order['order_id']}",
+				'cancel_url' => "{$SITE_URL}/?page=download"
 			]
 		];
 	}
@@ -49,6 +52,8 @@
 		echo $error;
 	}
 	else {
+		error_log("Order: " . var_export($result['order'], true));
+		show_order($result['order']);
 ?>
 <script type="text/javascript" src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
 <script type="text/javascript">
@@ -57,11 +62,16 @@
 		token: '<?= $result['paddle_key'] ?>',
 		eventCallback: function(data) {
 			console.log("Paddle event CALLBACK:", data);
-// 		    if (data.name === "checkout.completed") {
-// 		        setTimeout(() => {
-//		            window.location.href = "<?= $result['success_url'] ?>";
-// 		        }, 2000);
-// 		    }
+			if (data.name === "checkout.completed") {
+				setTimeout(() => {
+					window.location.href = "<?= $result['success_url'] ?>";
+				}, 2000);
+			}
+			else if (data.name === "checkout.closed") {
+				setTimeout(() => {
+					window.location.href = "<?= $result['cancel_url'] ?>";
+				}, 1000);
+			}
 		}
 	});
 	Paddle.Checkout.Open({
