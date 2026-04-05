@@ -402,7 +402,10 @@ function dao_find_order($db, $filter)
 		$condition = '(o.remote_id = ?) AND (o.method = ?)';
 	}
 	else {
-		return ['Invalid parameters', null];
+		error_log("filter: " . var_export($filter, true));
+		$e = new Exception();
+		error_log($e->getTraceAsString());
+		return ['Invalid parameters for dao_find_order', null];
 	}
 	
 	$order = null;

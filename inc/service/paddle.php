@@ -1,6 +1,4 @@
 <?php
-use Paddle\SDK\Entities\Shared\PriceQuantity;
-
 require_once("./vendor/autoload.php");
 require_once("./inc/dao/paddle.php");
 require_once("./inc/service/utils.php");
@@ -325,10 +323,135 @@ function create_paddle_payment_url($session_id, $customer_id, $order_id, $produc
 	}
 }
 
+function retrieve_paddle_transaction($session, $remote_id) {
+	$paddle = $session['client'];
+	try {
+		$transaction = $paddle->transactions->get($remote_id);
+		return [ null, $transaction];
+	} catch (Exception $ex) {
+		return ["Error fetching paddle transaction: {$ex->getMessage()}", null];
+	}
+}
+
+function cancel_paddle_transaction($session, $remote_id) {
+	$paddle = $session['client'];
+	
+	try {
+		$transaction = $paddle->transactions->update(
+			$remote_id,
+			new \Paddle\SDK\Resources\Transactions\Operations\UpdateTransaction(
+				status: \Paddle\SDK\Entities\Shared\TransactionStatus::Canceled()
+			)
+		);
+		return [ null, $transaction];
+	} catch (Exception $ex) {
+		return ["Error fetching paddle transaction: {$ex->getMessage()}", null];
+	}
+}
+
 function synchronize_paddle_order_status($db, $order)
 {
-	// TODO
-	return [ null, false ];
+	$order_id = $order['order_id'];
+	$remote_id = $order['remote_id'];
+	
+	// Retrieve Paddle payment session
+	[$error, $paddle_session] = get_paddle_session();
+	if (isset($error)) {
+		return [ "Could not acquire Paddle session for the order {$order_id}: {$error}", false];
+	}
+	[$error, $transaction] = retrieve_paddle_transaction($paddle_session, $remote_id);
+	if (isset($error)) {
+		return [$error, false];
+	} elseif (!isset($transaction)) {
+		return [ "Could not get Paddle transaction {$remote_id} for {$order_id}", false ];
+	}
+	
+	$status = $transaction->status;
+	
+	if (($status == \Paddle\SDK\Entities\Shared\TransactionStatus::Draft()) ||
+		($status == \Paddle\SDK\Entities\Shared\TransactionStatus::Ready()) ||
+		($status == \Paddle\SDK\Entities\Shared\TransactionStatus::Billed()))
+	{
+		// Check that transaction has not reached deadline
+		$deadline = db_current_timestamp('-30 minutes');
+		if (strcmp($order['submitted'], $deadline) > 0) {
+			return [null, false];
+		}
+		
+		// Need to cancel transaction by deadline. We need to ensure that transaction status has changed
+		// to 'canceled'. Otherwise it may be fulfilled.
+		[$error, $transaction] = cancel_paddle_transaction($paddle_session, $remote_id);
+		if (isset($error)) {
+			return [$error, false];
+		}
+		
+		$status = $transaction->status;
+		if (($status != \Paddle\SDK\Entities\Shared\TransactionStatus::Canceled())) {
+			return ["Failed to cancel Paddle transaction  {$remote_id}, order {$order_id}", false];
+		}
+		
+		// Now we are ready to update the order in the database
+		[$error, $affected] = dao_update_order($db, $order_id, [
+			'completed' => db_current_timestamp(),
+			'status' => 'expired'
+		]);
+		if (isset($error)) {
+			return [ "Could not mark order {$order_id} as expired: {$error}", false ];
+		}
+		if ($affected > 0) {
+			dao_log_user_action($db, $order['customer_id'], null, 'order_expired', [
+				'order_id' => $order_id,
+				'remote_id' => $remote_id,
+				'method' => 'paddle'
+			]);
+			mysqli_commit($db);
+		}
+		
+		return [ null, $affected > 0 ];
+	}
+	elseif (($status == \Paddle\SDK\Entities\Shared\TransactionStatus::Paid()) ||
+		($status == \Paddle\SDK\Entities\Shared\TransactionStatus::Completed()))
+	{
+		[$error, $affected] = dao_update_order($db, $order_id, [
+			'completed' => db_current_timestamp(),
+			'status' => 'paid'
+		]);
+		if (isset($error)) {
+			return [ "Could not mark order {$order_id} as completed: {$error}", false ];
+		}
+		if ($affected > 0) {
+			dao_log_user_action($db, $order['customer_id'], null, 'order_complete', [
+				'order_id' => $order_id,
+				'remote_id' => $remote_id,
+				'method' => 'paddle'
+			]);
+			mysqli_commit($db);
+			on_order_processed($order_id);
+		}
+		
+		return [ null, $affected > 0 ];
+	}
+	elseif (($status == \Paddle\SDK\Entities\Shared\TransactionStatus::Canceled())) {
+		[$error, $affected] = dao_update_order($db, $order_id, [
+			'completed' => db_current_timestamp(),
+			'status' => 'cancelled'
+		]);
+		if (isset($error)) {
+			return [ "Could not mark order {$order_id} as cancelled: {$error}", false ];
+		}
+		if ($affected > 0) {
+			dao_log_user_action($db, $order['customer_id'], null, 'order_cancelled', [
+				'order_id' => $order_id,
+				'remote_id' => $remote_id,
+				'method' => 'paddle'
+			]);
+			mysqli_commit($db);
+		}
+		
+		return [ null, $affected > 0 ];
+	}
+	
+	return [ "Unexpected transaction status {$status} for Paddle transaction {$remote_id}, order {$order_id}", false ];
 }
 
 ?>

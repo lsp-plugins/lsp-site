@@ -52,8 +52,11 @@
 		echo $error;
 	}
 	else {
-		error_log("Order: " . var_export($result['order'], true));
-		show_order($result['order']);
+		$order = $result['order'];
+		error_log("Order: " . var_export($order, true));
+		show_order($order);
+		
+		if ($order['status'] == 'created') {
 ?>
 <script type="text/javascript" src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
 <script type="text/javascript">
@@ -86,6 +89,7 @@
 </script>
 
 <?php
+		}
 	}
 ?>
 

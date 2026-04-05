@@ -539,7 +539,7 @@ function update_order_status($order_id)
 			return [$error, null];
 		}
 		
-		return ($updated) ? dao_find_order($db, $order_id) : [null, $order];
+		return ($updated) ? dao_find_order($db, [ 'order_id' => $order_id ]) : [null, $order];
 	} finally {
 		db_safe_rollback($db);
 	}
