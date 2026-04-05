@@ -53,7 +53,7 @@ function dao_get_test_processing_order($db, $id) {
 	$stmt = mysqli_prepare($db,
 		"SELECT " .
 			"o.amount amount, os.name status, " .
-		    "o.created created, o.expires expires, o.completed completed, " .
+			"o.created created, o.expires expires, o.completed completed, " .
 			"o.success_url success_url, o.cancel_url cancel_url, o.client_data client_data ".
 		"FROM orders o " .
 		"INNER JOIN order_status os " .

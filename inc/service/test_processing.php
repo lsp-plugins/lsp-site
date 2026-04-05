@@ -157,7 +157,7 @@ function synchronize_test_order_status($db, $order)
 	}
 	
 	$status = $order['status'];
-	
+
 	if ($status == 'timeout') {
 		[$error, $affected] = dao_update_order($db, $order_id, [
 			'completed' => $order['completed'],
@@ -213,16 +213,16 @@ function synchronize_test_order_status($db, $order)
 		}
 		
 		return [ null, $affected > 0 ];
-	} else {
-		return [ "Unexpected test processing orders status '{$status}' for remote order {$remote_id}, order {$order_id}", false ];
+	} elseif ($status == 'active') {
+		$created = $order['created'];
+		$expire = $order['expire'];
+		$ctime = gmdate("Y-m-d H:i:s");
+		error_log("Test processing remote order {$remote_id} for order '{$order_id}' is still active (created at ${created} UTC, expires at ${expire} UTC, now is ${ctime} UTC)");
+		
+		return [ null, false ];
 	}
 	
-	$created = gmdate("Y-m-d H:i:s", $order['created']);
-	$expire = gmdate("Y-m-d H:i:s", $order['expire']);
-	$ctime = gmdate("Y-m-d H:i:s");
-	error_log("Test processing remote order {$remote_id} for order '{$order_id}' is still active (created at ${created} UTC, expires at ${expire} UTC, now is ${ctime} UTC)");
-	
-	return [ null, false ];
+	return [ "Unexpected test processing orders status '{$status}' for remote order {$remote_id}, order {$order_id}", false ];
 }
 
 
