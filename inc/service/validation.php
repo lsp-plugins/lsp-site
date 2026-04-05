@@ -42,12 +42,19 @@ function verify_uuid($map, $key = null) {
 	return preg_match("/^$CC{8}\\-$CC{4}\\-$CC{4}\\-$CC{4}\\-$CC{12}$/", $value);
 }
 
+function verify_paddle_transaction_id($value) {
+	if ($value == null) {
+		return false;
+	}
+	return preg_match("/^txn_.{8,32}$/", $value);
+}
+
 function verify_checked($error, $map, $key, $value) {
 	if (isset($error)) {
 		return $error;
 	}
 	if (isset($map[$key]) != $value) {
-		return "Checkbox value for field '{$field}' is not valid.";
+		return "Checkbox value for field '{$key}' is not valid.";
 	}
 	return $error;
 }

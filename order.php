@@ -22,7 +22,7 @@ if (!verify_uuid($order_id)) {
 	$order_id = null;
 }
 
-[$error, $order] = find_order($order_id);
+[$error, $order] = find_order(['order_id' => $order_id]);
 
 if (!isset($error)) {
 	error_log("Order: " . var_export($order, true));

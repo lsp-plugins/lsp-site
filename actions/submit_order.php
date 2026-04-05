@@ -30,7 +30,7 @@ function process_proceed_order()
 	
 	$order_id = $_POST['order_id'];
 	
-	[$error, $order] = find_order($order_id);
+	[$error, $order] = find_order(['order_id' => $order_id]);
 	if (isset($error)) {
 		return [$error, null];
 	}

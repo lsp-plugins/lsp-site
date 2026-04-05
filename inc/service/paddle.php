@@ -1,4 +1,6 @@
 <?php
+use Paddle\SDK\Entities\Shared\PriceQuantity;
+
 require_once("./vendor/autoload.php");
 require_once("./inc/dao/paddle.php");
 require_once("./inc/service/utils.php");
@@ -151,12 +153,13 @@ function create_paddle_price($session, $product_id, $currency, $amount) {
 	$paddle = $session['client'];
 	$paddle_price = raw_to_paddle_price($amount);
 	$args = new \Paddle\SDK\Resources\Prices\Operations\CreatePrice(
-		description: 'Automatically generated',
+		description: 'Automatically generated price',
 		productId: $product_id,
 		unitPrice: new \Paddle\SDK\Entities\Shared\Money(
 			amount: "{$paddle_price}",
 			currencyCode: \Paddle\SDK\Entities\Shared\CurrencyCode::from($currency)
 		),
+		quantity: new \Paddle\SDK\Entities\Shared\PriceQuantity(1, 1),
 		billingCycle: null
 	);
 	
@@ -242,9 +245,35 @@ function get_paddle_price_for_product($paddle_session, $product_name, $price, $p
 	}
 }
 
-function make_paddle_transaction($paddle_session, $price, $order_id) {
-	// TODO
-	return [ 'Paddle transaction creation is currently not implemented', null ];
+function make_paddle_transaction($session, $price_id, $order_id) {
+	global $SITE_URL;
+
+	$paddle = $session['client'];
+	$payment_url = "{$SITE_URL}/paddle-checkout";
+	$args = new \Paddle\SDK\Resources\Transactions\Operations\CreateTransaction(
+		items: [
+			new \Paddle\SDK\Resources\Transactions\Operations\Create\TransactionCreateItem(
+				priceId: $price_id,
+				quantity: 1
+			)
+		],
+		customData: new \Paddle\SDK\Entities\Shared\CustomData([
+			'order_id' => $order_id
+		]),
+		collectionMode: \Paddle\SDK\Entities\Shared\CollectionMode::Automatic(),
+		checkout: new \Paddle\SDK\Entities\Shared\Checkout($payment_url)
+	);
+
+	try {
+		$transaction = $paddle->transactions->create($args);
+		
+		return [ null, [
+			'id' => $transaction->id,
+			'url'=> "{$payment_url}?_ptxn={$transaction->id}",
+		]];
+	} catch (Exception $ex) {
+		return ["Error creating paddle transaction: {$ex->getMessage()}", null];
+	}
 }
 
 function create_paddle_payment_url($session_id, $customer_id, $order_id, $product, $price, $product_image = null) {
@@ -264,7 +293,7 @@ function create_paddle_payment_url($session_id, $customer_id, $order_id, $produc
 	// Now we have paddle price identifier. We are ready to create payment URL.
 	[$error, $result] = make_paddle_transaction($paddle_session, $price_id, $order_id);
 	if (!isset($result)) {
-		return [ "Error creating payment URL for Paddle service: {$error}", null ];
+		return [ "Error creating transaction for Paddle service: {$error}", null ];
 	}
 	
 	// Log user action

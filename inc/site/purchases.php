@@ -289,7 +289,7 @@ function enrich_order($order) {
 	}
 }
 
-function find_order($order_id) {
+function find_order($filter) {
 	$customer_db = null;
 	
 	try {
@@ -297,7 +297,7 @@ function find_order($order_id) {
 		$order = null;
 		try {
 			$customer_db = connect_db('customers');
-			[$error, $order] = dao_find_order($customer_db, $order_id);
+			[$error, $order] = dao_find_order($customer_db, $filter);
 			if (isset($error)) {
 				return [$error, null];
 			}
@@ -358,7 +358,7 @@ function submit_order($customer_id, $order_id, $method, $remote_id, $payment_url
 			return ['No order updated', null];
 		}
 		
-		[$error, $order] = dao_find_order($db, $order_id);
+		[$error, $order] = dao_find_order($db, ['order_id' => $order_id ]);
 		if (isset($error)) {
 			error_log("Not found order: {$error}");
 			return [$error, null];
@@ -406,7 +406,7 @@ function on_order_processed($order_id)
 {
 	global $SITE_URL;
 	
-	[$error, $order] = find_order($order_id);
+	[$error, $order] = find_order(['order_id' => $order_id]);
 	if (isset($error)) {
 		return;
 	}
@@ -522,7 +522,7 @@ function update_order_status($order_id)
 		}
 		
 		// Fetch order by it's identifier
-		[$error, $order] = dao_find_order($db, $order_id);
+		[$error, $order] = dao_find_order($db, [ 'order_id' => $order_id ]);
 		if (isset($error)) {
 			return [$error, null];
 		}

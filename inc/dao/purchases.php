@@ -385,9 +385,23 @@ function dao_create_order($db, $customer_id, $positions)
 	}
 }
 
-function dao_find_order($db, $order_id)
+function dao_find_order($db, $filter)
 {
-	if (!isset($order_id)) {
+	$order_id = null;
+	$remote_order_id = null;
+	$method = null;
+	$condition = '';
+	
+	if (isset($filter['order_id'])) {
+		$order_id = $filter['order_id'];
+		$condition = '(o.id = ?)';
+	}
+	elseif (isset($filter['remote_id']) && isset($filter['method'])) {
+		$remote_order_id = $filter['remote_id'];
+		$method = $filter['method'];
+		$condition = '(o.remote_id = ?) AND (o.method = ?)';
+	}
+	else {
 		return ['Invalid parameters', null];
 	}
 	
@@ -405,9 +419,14 @@ function dao_find_order($db, $order_id)
 			"FROM orders o " .
 			"INNER JOIN order_status os " .
 			"ON (os.id = o.status)" .
-			"WHERE (o.id = ?)");
+			"WHERE {$condition}");
 		
-		mysqli_stmt_bind_param($stmt, 's', $order_id);
+		if ($order_id != null) {
+			mysqli_stmt_bind_param($stmt, 's', $order_id);
+		}
+		else {
+			mysqli_stmt_bind_param($stmt, 'ss', $remote_order_id, $method);
+		}
 		
 		if (!mysqli_stmt_execute($stmt)) {
 			return ["Database error (fetch order)", null];

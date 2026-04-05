@@ -52,7 +52,7 @@ function process_remove_from_order_request()
 	}
 	
 	// Show new order contents
-	[$error, $order] = find_order($order_id);
+	[$error, $order] = find_order(['order_id' => $order_id]);
 	if (isset($order)) {
 		show_order($order);
 	}
