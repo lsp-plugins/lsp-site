@@ -11,6 +11,7 @@ $DONATIONS_URL = 'https://salt.bountysource.com/teams/lsp-plugins/supporters';
 $README_FILE = './config/README.md';
 $FILE_STORAGE = './storage';
 $SITE_FEATURES = [
+	'testing' => false,
 	'signin' => true,
 	'windows' => true,
 ];

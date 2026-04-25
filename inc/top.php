@@ -8,6 +8,10 @@ require_once("./inc/site/features.php");
 require_once("./inc/site/preload.php");
 require_once("./inc/site/session.php");
 
+if ($SITE_FEATURES['testing'] ?? false) {
+	header('X-Robots-Tag', 'noindex');
+}
+
 ensure_user_session_is_set();
 
 // Determine current page
