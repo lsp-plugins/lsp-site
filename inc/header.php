@@ -3,11 +3,11 @@
 		<title>Linux Studio Plugins Project</title>
 		<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-	<? if ($SITE_FEATURES['testing'] ?? false) { ?>
+<? if ($SITE_FEATURES['testing'] ?? false) { ?>
 		<meta name="robots" content="noindex, nofollow">
-	<? } else { ?>
+<? } else { ?>
 		<meta name="robots" content="index, follow">
-	<? } ?>
+<? } ?>
 		<link rel="stylesheet" href="<?=$SITEROOT?>/css/main-style.css" type="text/css">
 		<link rel="stylesheet" href="<?=$SITEROOT?>/css/jquery-fancybox.css" type="text/css" media="screen">
 		<link rel="shortcut icon" href="<?=$SITEROOT?>/img/LSP_favicon.png"/>
