@@ -70,6 +70,28 @@ $user = get_session_user();
 $user_purchases = null;
 $user_cart = null;
 
+// Set-up architecture
+$architecture = null;
+if (array_key_exists('arch', $_REQUEST)) {
+	$req_arch = $_REQUEST['arch'];
+	if (array_key_exists($req_arch, $artifacts)) {
+		$architecture = $req_arch;
+	}
+}
+if (isset($current_architectures['windows'])) {
+	$curr_arch = $current_architectures['windows'];
+	if (array_key_exists($curr_arch, $artifacts)) {
+		$architecture = $curr_arch;
+	}
+}
+if (isset($browser_info)) {
+	$architecture = $browser_info['architecture'];
+}
+if (!array_key_exists($architecture, $artifacts)) {
+	$architecture = array_key_first($artifacts);
+}
+$current_architectures['windows'] = $architecture;
+
 echo "<div class=\"sel-arch\">\n";
 
 foreach ($artifacts as $arch => $list) {
@@ -100,27 +122,6 @@ if (isset($user)) {
 		error_log("Error getting user purchases: {$error}");
 	}
 }
-
-$architecture = null;
-if (array_key_exists('arch', $_REQUEST)) {
-	$req_arch = $_REQUEST['arch'];
-	if (array_key_exists($req_arch, $artifacts)) {
-		$architecture = $req_arch;
-	}
-}
-if (isset($current_architectures['windows'])) {
-	$curr_arch = $current_architectures['windows'];
-	if (array_key_exists($curr_arch, $artifacts)) {
-		$architecture = $curr_arch;
-	}
-}
-if (isset($browser_info)) {
-	$architecture = $browser_info['architecture'];
-}
-if (!array_key_exists($architecture, $artifacts)) {
-	$architecture = array_key_first($artifacts);
-}
-$current_architectures['windows'] = $architecture;
 
 echo "</div>\n";
 
