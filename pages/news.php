@@ -1,5 +1,50 @@
 <h1>NEWS</h1>
 
+<h3>2026-06-13</h3>
+
+<p>New LSP Plugins 1.2.31 release with fixes of bugs and regressions available!</p>
+<p>In this release we introduce support of PipeWire without and intermediate JACK layer.</p>
+<p>The overall change list is the following:</p>
+<ul>
+<li>Added new 'standalone' build feature which now replaces the 'jack' build feature for launching standalone plugins.</li>
+<li>The feature 'jack' is now responsible for building JACK audio backend for standalone plugins.</li>
+<li>Moved all JACK-related code into a separate lsp-audio-jack module.</li>
+<li>Added support of PipeWire audio backend using lsp-audio-pipewire module, new build feature 'pipewire'.</li>
+<li>Updated build system: ASAN, CROSS_COMPILE, DEBUG, DEVEL, PROFILE, STRICT, TEST, TRACE makefile flags replaced with 'asan', 'crosscompile', 'debug', 'devel', 'profile', 'strict', 'test' and 'trace' FEATURE flags.</li>
+<li>Updated makefiles to not to clash with launcher tool on MacOS.</li>
+<li>Some fixes arount CLAP plugin format for better support of MacOS (contributed by Benjamin Zeiss @ GitHub).</li>
+<li>Added previous and next preset selection in the preset window.</li>
+<li>Added possibility to reveal played sample on 'Listen' button press for Sampler, Multisampler and Trigger plugin series.</li>
+<li>Updated behaviour of the AudioSample controller when displaying load status to prevent the UI blinking when switching between samples in the file navigator.</li>
+<li>Extended dynamics range for Gate and Multiband Gate plugin series.</li>
+<li>Improved text rendering in hosts that provide their own implementation of FreeType library (like Ardour) by loading the system version of FreeType library if it is available and has greater version number.</li>
+<li>Some costmetic changes in text lables of the UI for several plugins.</li>
+<li>Re-numbered plugins' parameter labels to start counting parameters with 1 for the following plugins:</li>
+	<ul>
+	<li>Artistic Delay;</li>
+  	<li>Crossover;</li>
+  	<li>Dynamics Processor;</li>
+  	<li>Impulse Responses;</li>
+  	<li>Impulse Reverb;</li>
+  	<li>Multiband Compressor;</li>
+  	<li>Multiband Dynamics Processor;</li>
+  	<li>Multiband Expander;</li>
+  	<li>Multiband Gate;</li>
+  	<li>Multiband RingMod Sidechain;</li>
+  	<li>Room Builder;</li>
+  	<li>Slap-Back Delay;</li>
+  	<li>Spectrum Analyzer.</li>
+  	</ul>
+<li>The auto-play and auto-load features in file navigator have been moved into separate 'UI Behavior' options for Impulse Responses and Impulse Reverb Plugin series.</li>
+<li>The ComboBox and ComboGroup widgets now properly react on the 'ESC' key pressure and hide the dropdown list when it is open.</li>
+<li>Fixed Drag & Drop issue under X11 (contributed by Justin Frankel).</li>
+<li>Fixed endless vertical flip of the image on MacOS (contributed by Hoshino Lina).</li>
+<li>Fixed some bugs in the AudioEnvelope controller that did not allow to fully reset the envelope to defaults.</li>
+<li>Fixed out-of-sync event handling for CLAP and VST2 extra UI run loop under Linux when hiding and showing plugin window.</li>
+<li>Fixed generic UI failure for CLAP: removed normalization for discrete parameters.</li>
+<li>Fixed improper handling of plugin factory initialization/finalization for CLAP plugin format (added support of series of initializations and finalizations as it is allowed by CLAP standard).</li>
+</ul>
+
 <h3>2026-04-01</h3>
 <p>New LSP Plugins 1.2.29 release with fixes of bugs and regressions available!</p>
 <ul>
