@@ -1,5 +1,11 @@
 <h1>NEWS</h1>
 
+<h3>2026-06-14</h3>
+
+<p>The exra bugfix release 1.2.33 is out.</p>
+<p>This bugfix release fixes the PipeWire audio driver which was improperly linked with pipewire system
+library and thus could not be loaded by the standalone versions of plugins.</p>
+
 <h3>2026-06-13</h3>
 
 <p>New LSP Plugins 1.2.31 release with fixes of bugs and regressions available!</p>
