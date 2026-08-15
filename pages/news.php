@@ -1,5 +1,36 @@
 <h1>NEWS</h1>
 
+<h3>2026-08-15</h3>
+
+<p>LSP Plugins 1.2.34 release is available!</p>
+<p>The list of changes:</p>
+<ul>
+<li>Implemented Deesser Plugin series.</li>
+<li>VST2 plugins now are packaged into shell plugin which makes faster scanning of plugins and requires less shared object files to provide.</li>
+<li>Significant refactoring of static and dynamic filter functions, eliminated some bugs in mathematics for ARM32 and AArch64 archtectures that were hard to catch.</li>
+<li>Added support of biquad filter cascades that contain 16 filters at one time, optimized filter cascades for AVX-512 support.</li>
+<li>Added hard clipping of the input signal to the maximum peak value of 120 dBFS to avoid mathematic failures which may yield to NaN and Inf values.</li>
+<li>Added delayed display of the 'Loading' status for the AudioSample widget to avoid flickering of the sample widget when quickly navigating samples on the sample navigation panel.</li>
+<li>Added possibility to select audio driver by clicking current Audio driver's name at the bottom-right part of the window.</li>
+<li>The Input Gain knob now controls the gain of input signal only and does not affect the level of external sidechain or shared memory link for the list of following plugins:</li>
+<ul>
+  <li>Multiband Compressor;</li>
+  <li>Multiband Dynamics Processor;</li>
+  <li>Multiband Expander;</li>
+  <li>Multiband Gate;</li>
+  <li>Multiband Limiter;</li>
+  <li>Multiband Ring-Modulated Sidechain.</li>
+</ul>
+<li>Usage of system FreeType library for hosts that provide it's own built-in FreeType library now is turned off by default and can be turned on by setting the LSP_WS_FORCE_SYSTEM_FREETYPE=on environment variable.</li>
+<li>Fixed regression in filter transfer function calculation functions that could yield to improper display of filter characteristics for the highest frequency band on some crossovers.</li>
+<li>Fixed VST3 scaling issues on MacOS (contributed by lltwist @ github.com)</li>
+<li>Fixed regression that caused a crash when launching standalone plugins in headless mode.</li>
+<li>Fixed out of sync parameters for the ctl::Envelope controller which fixes behaviour of audio envelope in Sampler plugin series.</li>
+<li>Bugfixes in PipeWire driver: fixed registry synchronization code that could yield to hangup or crashes.</li>
+<li>Fixed VST3 paths for 32-bit and 64-bit ARM architectures.</li>
+<li>Fixed bug related to failures of saving global configuration file when user's configuration directory of LSP Plugins does not exist (for example, on first installation).</li>
+</ul>
+
 <h3>2026-06-14</h3>
 
 <p>The exra bugfix release 1.2.33 is out.</p>
