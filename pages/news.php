@@ -1,5 +1,11 @@
 <h1>NEWS</h1>
 
+<h3>2026-08-23</h3>
+
+<p>LSP Plugins - now on Windows!</p>
+<p>That was a hard way but we finally managed to open our online store with official builds of LSP Plugins for Windows!</p>
+<p>You may now register and purchase your personal builds on the <a href="https://lsp-builds.com">LSP-BUILDS.COM</a> site!</p>
+
 <h3>2026-08-15</h3>
 
 <p>LSP Plugins 1.2.34 release is available!</p>
