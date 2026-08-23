@@ -2,9 +2,14 @@
 
 <h3>2026-08-23</h3>
 
-<p>LSP Plugins - now on Windows!</p>
+<p>LSP Plugins 1.2.35 - now on Windows!</p>
 <p>That was a hard way but we finally managed to open our online store with official builds of LSP Plugins for Windows!</p>
-<p>You may now register and purchase your personal builds on the <a href="https://lsp-builds.com">LSP-BUILDS.COM</a> site!</p>
+<p>You may now register and get your personal builds on the <a href="https://lsp-builds.com">LSP-BUILDS.COM</a> site!</p>
+<p>The release is mostly minor and contains few fixes of regressions in 1.2.34 release:</p>
+<ul>
+<li>Bugfix in JACK driver that could cause connection estimation problem on the libjack library that could not be detected under PipeWire.</li>
+<li>Updated build scripts that could crash on binary dependencies when issuing multithreaded build.</li>
+</ul>
 
 <h3>2026-08-15</h3>
 

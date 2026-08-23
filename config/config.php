@@ -3,6 +3,7 @@
 $SITEROOT = '';
 $DOCROOT = '';
 $SITE_URL = 'https://lsp-plug.in';
+$BUILDS_SITE_URL = 'https://lsp-builds.com';
 $RES_ROOT = '/';
 $CODE_REPO  = 'https://github.com/sadko4u/lsp-plugins';
 $FILE_SHARE = 'https://sourceforge.net/projects/lsp-plugins/files/lsp-plugins/';
