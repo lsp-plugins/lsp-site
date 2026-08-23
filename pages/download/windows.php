@@ -2,7 +2,7 @@
 
 <p>Latest release for windows is avaialable for download at the special build service site.</p>
 
-<p>Please visit <a href="<?= $BUILDS_SITE_URL ?>"><?= $BUILDS_SITE_URL ?></a> to access Windows builds.</p>
+<p>Please visit <a href="<?= $BUILDS_SITE_URL ?>"><?= $BUILDS_SITE_URL ?></a> to access builds for Windows.</p>
 
 <p>
 	<a class="download-text-button"
