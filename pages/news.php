@@ -1,5 +1,76 @@
 <h1>NEWS</h1>
 
+<h3>2026-11-01</h3>
+
+<p>LSP Plugins 1.2.37 released!</p>
+<ul>
+<li>Added Minimum Phase filter support by following plugins:</li>
+  <ul>
+  <li>Filter;</li>
+  <li>Graphic Equalizer;</li>
+  <li>Referecer;</li>
+  <li>Parametric Equalizer.</li>
+  </ul>
+<li>Added 6 dB/octave and 18 dB/octave filters support by following plugin series:</li>
+  <ul>
+  <li>Crossover;</li>
+  <li>Deesser;</li>
+  <li>Multiband Ring-Modulated Sidechain.</li>
+  </ul>
+<li>Implemented profile smoothing in the Matcher plugin series that allows to reduce extra peaks and sparks in the spectrum.</li>
+<li>Added ability to configure Loudness Compensator plugin for more efficient use of the dynamics headroom when the PCM stream with integral sample format is used. With the 'compensate' button turned on the measured gain should be applied on an analog output of the device.</li>
+<li>Improved Spectrum processing modules in the DSP libraries by utilizing Kaiser-Bessel Derived windows instead of Cosine windows.</li>
+<li>Added Kaiser and Kaiser-Bessel Derived windows to Spectrum Analyzer and Referencer plugin series.</li>
+<li>Added built-in presets for Multiband Compressor plugin serites (contributed by mene311 @ github.com).</li>
+<li>Updated behavior of A/B preset switch in the UI: A and B presets are swapped when switching between them. That makes the UI usage more comfortable: no need to move mouse pointer to perform the A -> B -> A switch order.</li>
+<li>Reduced latency for IIR filter modes by using zero-latency convolver module in the following list of plugin series:</li>
+  <ul>
+  <li>Graphic equalizer;</li>
+  <li>Filter;</li>
+  <li>Parametric Equalizer.</li>
+  </ul>
+<li>Added ability to change the crossover slope for Multiband plugin series:</li>
+  <ul>
+  <li>Compressor;</li>
+  <li>Dynamics Processor;</li>
+  <li>Expander;</li>
+  <li>Gate.</li>
+  </ul>
+<li>Replaced linear phase crossover implementation by more accurate one for Deesser plugin series.</li>
+<li>Optimized CPU consumption: FFT analysis is not performed when UI is not active for the list of following plugin series:</li>
+  <ul>
+  <li>Beat Breather;</li>
+  <li>Crossover;</li>
+  <li>Deesser;</li>
+  <li>Filter;</li>
+  <li>GOTT Compressor;</li>
+  <li>Graphic Equalizer;</li>
+  <li>Multiband Clipper;</li>
+  <li>Multiband Compressor;</li>
+  <li>Multiband Dynamics Processor;</li>
+  <li>Multiband Expander;</li>
+  <li>Multiband Gate;</li>
+  <li>Multiband Limiter;</li>
+  <li>Multiband Ring-Modulated Sidechain;</li>
+  <li>Noise Generator;</li>
+  <li>Parametric Equalizer.</li>
+  </ul>
+<li>Changed numbering of dynamic points in the UI to start with 1 in Dynamics Processor and Multiband Dynamics Processor plugin series.</li>
+<li>Added ability to reset parameter to it's default value in combo boxes by double-clicking with the right mouse button.</li>
+<li>Polling interval of shared memory catalog state became dynamic and varies from 10 milliseconds when there is some load on catalog up to 320 milliseconds, when there is no additional load.</li>
+<li>Added delay (default 200 ms) before changing file status to 'Loading' in File widget to avoid flickering when quickly navigating over file list.</li> 
+<li>Several non-critical fixes and improvements in low-level DSP library of plugin.</li>
+<li>Fixed recent VST3 sizing issues in new Ardour 8.9 version.</li>
+<li>Fixed VST3 getBusArrangement and setBusArrangements call contract. Added less strict VST3 bus arrangement for some hosts.</li>
+<li>Bugfix in shared memory catalog initialization for standalone plugin format that could yield shared memory sends working improperly.</li>
+<li>Fixed regression in sliders that set-up the matching profile limits in the Matcher plugin series.</li>
+<li>Fixed bugs in 3D rendering OpenGL backends for Linux/FreeBSD (lsp-r3d-glx-lib) and Windows (lsp-r3d-wgl-lib).</li> 
+<li>Fixed regression in the Dynamics Processor module which could produce NaN (not-a-number) values.</li>
+<li>Fixed implementation of LR2 filters in the crossover which caused some kind of phase distortion. The previous implementation (special PD2 mode) has been kept for backwared compatibility.</li>
+<li>Fixed bug in DSP code that could cause a crash of Clipper and Multiband Clipper plugin series on processors with AVX-512 instruction set support when setting any of DC Offset parameters to the non-default value.</li>
+<li>Fixed behavior of the Input signal gain knob with the Bypass switch in the Deesser plugin series.</li>
+</ul>
+
 <h3>2026-08-23</h3>
 
 <p>LSP Plugins 1.2.35 - now on Windows!</p>
