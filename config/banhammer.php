@@ -55,6 +55,16 @@ $BANHAMMER = [
 	],
 	[
 		'text' => [
+			'We ring your phone and connect you while',
+			'The best time to call a new lead is the moment they get in touch',
+			'Our AI, on every call',
+			'A quick experiment: this note came through your contact form',
+			'Boost Lead Gen',
+			'Our Basic plan needs no credit card',
+			'https://boostleadgen.com/'
+	],
+	[
+		'text' => [
 			'http://graph.org',
 			'https://graph.org',
 			'BTC received'
