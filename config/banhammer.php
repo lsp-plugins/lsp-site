@@ -62,6 +62,7 @@ $BANHAMMER = [
 			'Boost Lead Gen',
 			'Our Basic plan needs no credit card',
 			'https://boostleadgen.com/'
+		]
 	],
 	[
 		'text' => [
